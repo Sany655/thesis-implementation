@@ -64,6 +64,44 @@ Despite these advancements, the translation of ML into active clinical settings 
 
 ### **CHAPTER 3: METHODOLOGY**
 
+The overall architecture of the age-stratified and interpretable predictive framework is synthesized in the detailed flowchart shown in Fig. 1. The process diagram illustrates the logical flow from initial dataset handling and target harmonization, through the creation of stratified cohorts (Pooled, Pediatric, and Adult), to the development of unique classifiers for each age subgroup. Most notably, the diagram summarizes how TreeExplainer SHAP interpretations are combined with a programmatic cutoff extraction technique using shallow decision trees to arrive at the final localized clinical action plan.
+
+```mermaid
+flowchart TD
+    classDef default fill:#f8f9fa,stroke:#ced4da,stroke-width:2px;
+    classDef pipeline fill:#f4f9ff,stroke:#2b6cb0,stroke-width:2px;
+    classDef rules fill:#fffaf0,stroke:#dd6b20,stroke-width:2px;
+    
+    DataPrep["DATA PREPARATION<br>Ingestion (n=1329) ➔ Filtering (Dengue+) ➔ Imputation ➔ Stratification"]
+    
+    DataPrep --> Pediatric
+    DataPrep --> Adult
+    DataPrep --> Pooled
+    
+    Pediatric["PEDIATRIC PIPELINE (n=158)<br>1. Feature Eng (Removes PLT, adds proxies)<br>2. Model Training (LR, RF, XGB, LGBM, Stacking)<br>3. Validation (Accuracy, AUC-ROC, F1)<br>4. SHAP Interpretability"]
+    class Pediatric pipeline
+    
+    Adult["ADULT PIPELINE (n=814)<br>1. Feature Eng (Removes PLT, adds proxies)<br>2. Model Training (LR, RF, XGB, LGBM, Stacking)<br>3. Validation (Accuracy, AUC-ROC, F1)<br>4. SHAP Interpretability"]
+    class Adult pipeline
+    
+    Pooled["POOLED PIPELINE (n=972)<br>1. Feature Eng (Baseline)<br>2. Model Training (Baseline)<br>3. Validation (Baseline)<br>4. SHAP Interpretability"]
+    class Pooled pipeline
+
+    Pediatric --> Div{"Kendall's tau-b = 0.900<br>Cohort Divergence"}
+    Adult --> Div
+    Pooled --> Div
+    
+    Div --> Extr["Programmatic Cutoff Extraction (Shallow Decision Trees)"]
+
+    Extr --> PedRules["PEDIATRIC HIGH RISK<br>Lymphocyte > 44.50%<br>WBC ≤ 4.34<br>Neutrophil ≤ 48.00%"]
+    class PedRules rules
+
+    Extr --> AdRules["ADULT HIGH RISK<br>Lymphocyte > 24.99%<br>HCT > 40.65%<br>Age > 31.00"]
+    class AdRules rules
+```
+*Fig. 1. Comprehensive architectural schematic of the research methodology, delineating the age-based data stratification, implementation of the ensemble learning pipeline, and the subsequent explainable AI framework.*
+
+
 ### **3.1 Dataset Description and Preprocessing**
 
 This study utilized the "Comprehensive Dengue Hematology and Clinical Dataset" from Bangladesh [2]. The raw dataset includes comprehensive patient demographics and clinical hematological parameters (e.g., White Blood Cell (WBC) count, Hematocrit (HCT), Lymphocyte and Neutrophil percentages, and liver enzymes such as AST and ALT).
@@ -111,7 +149,7 @@ The SHAP global summary plots revealed distinct physiological drivers of Dengue 
 The calculated **Kendall’s tau-b correlation coefficient** between the Pediatric and Adult SHAP feature rankings was **0.900**, quantitatively confirming this divergence. This confirms the study’s core hypothesis: the physiological manifestation of severe dengue differs fundamentally by age. For instance, the pediatric immune response and endothelial vascular integrity are biologically distinct from adults, potentially making children more susceptible to rapid plasma leakage at different physiological thresholds than adults experiencing similar viral loads [15].
 
 ![SHAP Summary Comparison](file:///c:/All/semester%208/CSE%20400%20-%20thesis/v2/shap_summary_comparison.png)
-*Figure 1: SHAP summary plot detailing feature importance across Pooled, Pediatric, and Adult Cohorts.*
+*Fig. 2. SHAP summary plot detailing feature importance across Pooled, Pediatric, and Adult Cohorts.*
 
 ### **4.3 Age-Aware Clinical Decision Framework**
 
