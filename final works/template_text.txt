@@ -1,0 +1,548 @@
+UNIVERSITY OF SCIENCE AND TECHNOLOGY CHITTAGONG
+BACHELOR OF SCIENCE IN COMPUTER SCIENCE AND ENGINEERING
+
+
+A TRANSFER LEARNING-BASED ……….
+
+SUBMITTED BY
+Md XXXXXX   ID: 1111   REG NO: 1111
+Md XXXXXX   ID: 111111   REG NO: 2222
+
+SUPERVISED BY
+XXXXXXXXXXXXXX
+ASSISTANT PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING
+UNIVERSITY OF SCIENCE AND TECHNOLOGY CHITTAGONG
+
+SUBMITTED TO
+DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING (CSE),
+FACULTY OF SCIENCE ENGINEERING AND TECHNOLOGY (FSET),
+UNIVERSITY OF SCIENCE AND TECHNOLOGY CHITTAGONG (USTC)
+
+A TRANSFER LEARNING-BASED ……….
+
+
+Submitted by:
+XXXXXXX
+ID: 222222222 - Reg No: 2222
+XXXXXXXx
+ID: 11111111 – Reg No: 1111
+
+
+Supervised by:
+XXXXXX
+Assistant Professor
+Department of Computer Science and Engineering
+University of Science and Technology Chittagong
+
+
+In partial fulfillment of the requirement for the Degree of Bachelor of
+Science in Computer Science and Engineering, University of Science
+and Technology Chittagong.
+
+
+DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING (CSE),
+FACULTY OF SCIENCE ENGINEERING AND TECHNOLOGY (FSET),
+UNIVERSITY OF SCIENCE AND TECHNOLOGY CHITTAGONG (USTC)
+
+
+
+
+
+
+THIS PAGE IS INTENTIONALLY LEFT BLANK
+
+DECLARATION
+
+This is certifying that the thesis titled “A Transfer ……………………..” is our own research carried out under the guidance of our supervisor of XXXXXXXXXX Assistant Professor, Department of Computer Science and Engineering, University of Science and Technology Chittagong. This thesis has not been submitted, either in whole or in part, for the award of any degree or diploma at any other university or institution.
+All sources of information and materials used in this study have been properly acknowledged through appropriate references. Any assistance received in the course of this research has been duly acknowledged. The results, analysis, and conclusions presented in this thesis are original and based on the experimental work conducted by us.
+We further declare that no part of this thesis has been copied from any other source without proper citation and that the work complies with the academic integrity and ethical standards of the university.
+Student’s Signature
+
+
+
+
+
+XXXXXXXXXX
+ID: 1111111 – Reg No: 1111
+CSE, FSET, USTC.
+
+XXXXXXXXXX
+ID: 222222 – Reg No: 2222
+CSE, FSET, USTC.
+
+
+
+
+
+
+Signature of Supervisor
+
+
+
+XXXXXXXXXXXXXXXXx
+Assistant Professor
+Department Of Computer Science And Engineering (CSE),
+Faculty Of Science Engineering And Technology (FSET),
+University Of Science And Technology Chittagong (USTC).
+
+
+APPROVAL CERTIFICATE
+
+This is to certify that the thesis entitled “A Transfer Learning-……………….” Submitted by XXXXXXXXXx (ID- 1111111) XXXXXXXx (ID- 222222) has been accepted as satisfactory in partial fulfillment of the requirements for the degree of B.Sc. Engineering in Computer Science and Engineering.
+This project submitted to the Department of Computer Science and Engineering, University of Science and Technology Chittagong in partial fulfillment of the requirement for the Degree of Bachelor of Science in Computer Science and Engineering
+
+The Board of Examination Committee for University of Science and Technology Chittagong certifies that it is the approved version of the following report:
+“A Transfer Learning-Based Mobile Application for Nail Disease Detection”
+
+ Examination Committee:
+
+
+
+xxxxxxxxxxx
+Associate Professor (Chairman)
+Department Of Computer Science And Engineering (CSE),
+Faculty Of Science Engineering And Technology (FSET),
+University Of Science And Technology Chittagong (USTC).
+
+
+
+
+
+xxxxxxxxxxxx
+Assistant Professor
+Department Of Computer Science And Engineering (CSE),
+Faculty Of Science Engineering And Technology (FSET),
+University Of Science And Technology Chittagong (USTC).
+
+
+
+
+
+xxxxxxxxx
+Assistant Professor
+Department Of Computer Science And Engineering (CSE),
+Faculty Of Science Engineering And Technology (FSET),
+University Of Science And Technology Chittagong (USTC).
+
+
+
+ACKNOWLEDGEMENT
+
+We would like to express our sincere gratitude to our project supervisor, XXXXXXXXXXXXXXX, Assistant Professor, Department of Computer Science and Engineering, University of Science and Technology Chittagong (USTC), for his continuous guidance, encouragement, valuable suggestions, and constructive criticism throughout the completion of this project. His expertise and constant support played a crucial role in shaping the direction and quality of this research work.
+We are also grateful to the honorable members of the examination committee for their time, evaluation, and valuable feedback on our project.
+Finally, we would like to express our heartfelt gratitude to Almighty Allah for His blessings, strength, and guidance, without which the successful completion of this project would not have been possible. We are also thankful to all individuals who directly or indirectly contributed their support and assistance during the course of this work.
+
+
+DEDICATION
+
+This project is dedicated to all the parents.
+
+
+ABSTRACT
+Blood bnormalities serve as important clinical indicators of both localized dermatological conditions and underlying systemic disorders. 
+………………………………………………………………………………………..
+……………………………………………………………………………………………
+Through systematic experimentation and comparative analysis of multiple deep learning architectures including ……………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………….. two-phase transfer learning strategy, resolution upscaling to 260×260 pixels, class weighting to address data imbalance, L2 regularization, and test-time augmentation to enhance model robustness.
+The trained model is deployed through ………………………………
+-constrained environments, though the system is intended as a decision-support tool rather than a replacement for professional medical diagnosis.
+Keywords: Transfer Learning,  Mobile Healthcare, ……….
+
+
+TABLE OF CONTENTS
+DECLARATIONI
+APPROVAL CERTIFICATEII
+ACKNOWLEDGEMENTIV
+DEDICATIONV
+ABSTRACTVI
+LIST OF FIGURESX
+LIST OF TABLESXI
+
+CHAPTER 1 INTRODUCTION1
+1.1 BACKGROUND AND MOTIVATION2
+1.2 PROBLEM STATEMENT4
+1.3 OBJECTIVES OF THE STUDY5
+1.4 SCOPE OF THE STUDY5
+1.4.1 TECHNICAL SCOPE5
+1.4.2 LIMITATIONS AND BOUNDARIES6
+
+CHAPTER 2 LITERATURE REVIEW7
+2.1 NAIL DISEASE DETECTION USING IMAGE PROCESSING TECHNIQUES7
+2.2 MACHINE LEARNING-BASED APPROACHES FOR NAIL DISEASE CLASSIFICATION8
+2.3 DEEP LEARNING AND CNN-BASED NAIL DISEASE DETECTION8
+2.4 TRANSFER LEARNING FOR NAIL DISEASE DETECTION9
+2.5 HYBRID DEEP LEARNING MODELS11
+2.6 NAIL DISEASE DATASETS AND CHALLENGES11
+2.7 MOBILE AND HEALTHCARE-ORIENTED APPLICATIONS12
+2.8 FUNGAL NAIL DISEASES AND RELATED STUDIES13
+2.9 RESEARCH GAPS AND MOTIVATION13
+2.10 SUMMARY14
+
+CHAPTER 3 METHODOLOGY15
+3.1 RESEARCH METHODOLOGY15
+3.2 DATASET PREPARATION AND PREPROCESSING18
+3.2.1 DATA SOURCES AND COLLECTION18
+3.2.2 DATASET COMPOSITION18
+3.2.3 IMPROVING THE DATA (AUGMENTATION)19
+3.2.4 PRE-TRAINING ENHANCEMENTS19
+3.2.5 IMAGENET-BASED NORMALIZATION19
+3.2.6 CLASS BALANCING STRATEGY19
+3.2.7 HOW THE APP HANDLES YOUR PHOTO (INFERENCE)20
+3.3 PROPOSED ARCHITECTURE IMPLEMENTATION20
+3.3.1 BASE ARCHITECTURE: EFFICIENTNETB020
+3.3.2 REGULARIZED CLASSIFICATION HEAD20
+3.4 TRAINING PROTOCOL21
+3.4.1 PHASE 1: FEATURE EXTRACTION (FROZEN BACKBONE)22
+3.4.2 PHASE 2: DEEP FINE-TUNING22
+3.4.3 CONVERGENCE AND MODEL SELECTION22
+3.5 HYPERPARAMETER CONFIGURATION AND OPTIMIZATION22
+3.5.1 INPUT CONFIGURATION23
+3.5.2 OPTIMIZATION PARAMETERS23
+3.5.3 TWO-PHASE LEARNING RATE STRATEGY23
+3.5.4 REGULARIZATION CONFIGURATION24
+3.5.5 LEARNING RATE SCHEDULING24
+3.5.6 EARLY STOPPING STRATEGY24
+3.5.7 HYPERPARAMETER SELECTION RATIONALE24
+3.6 TEST TIME AUGMENTATION (TTA)24
+3.8 CHAPTER SUMMARY26
+
+CHAPTER 4 SYSTEM DEVELOPMENT AND IMPLEMENTATION27
+4.1 OVERVIEW OF SYSTEM DEVELOPMENT27
+4.2 MOBILE APPLICATION DEVELOPMENT USING REACT NATIVE27
+4.2.1 IMAGE ACQUISITION MODULE27
+4.2.2 FRONTEND IMAGE PREPROCESSING28
+4.2.3 USER INTERFACE AND RESULT VISUALIZATION28
+4.2.4 PDF REPORT ACCESS28
+4.2.5 ACCESSIBILITY AND CROSS-PLATFORM SUPPORT28
+4.3 BACKEND DEVELOPMENT USING FASTAPI28
+4.3.1 RESTFUL API DESIGN29
+4.3.2 INFERENCE ENGINE INTEGRATION29
+4.3.3 AUTOMATED PDF REPORT GENERATOR29
+4.4 DEEP LEARNING MODEL INTEGRATION (EFFICIENTNETB0)29
+4.4.1 FEATURE EXTRACTION BACKBONE29
+4.4.2 CUSTOMIZED CLASSIFICATION HEAD30
+4.4.3 OPTIMIZATION STRATEGY30
+4.5 DATA FLOW AND SYSTEM INTERACTION30
+4.6 CLOUD INFRASTRUCTURE AND DEPLOYMENT30
+4.6.1 CLOUD HOSTING30
+4.6.2 RESOURCE OPTIMIZATION31
+4.6.3 SECURITY AND DATA TRANSMISSION31
+
+CHAPTER 5 RESULTS AND ANALYSIS32
+5.1 OVERVIEW32
+5.2 COMPARATIVE ARCHITECTURE ANALYSIS32
+5.2.1 STANDARDIZED EXPERIMENTAL SETUP32
+5.2.2 QUANTITATIVE ARCHITECTURE COMPARISON33
+5.2.3 ARCHITECTURE-SPECIFIC OBSERVATIONS33
+5.3 EVALUATION FRAMEWORK35
+5.3.1 DATASET SPLIT35
+5.3.2 PERFORMANCE METRICS35
+5.3.3 TEST TIME AUGMENTATION (TTA)36
+5.3.4 STATISTICAL SIGNIFICANCE TESTING36
+5.4 QUANTITATIVE PERFORMANCE EVALUATION36
+5.4.1 OVERALL PERFORMANCE36
+5.4.2 PER-CLASS PERFORMANCE ANALYSIS37
+5.4.3 CONFUSION MATRIX INTERPRETATION37
+5.5 STATISTICAL SIGNIFICANCE38
+5.6 TRAINING DYNAMICS AND CONVERGENCE38
+5.7 QUALITATIVE ERROR ANALYSIS39
+5.7.1 CASE STUDY 1: THE "INVISIBLE CURVE" (CLUBBING VS. HEALTHY)39
+5.7.2 CASE STUDY 2: THE "TEXTURE TWIN" (FUNGUS VS. PSORIASIS)39
+5.8 TEST-TIME AUGMENTATION IMPACT40
+5.9 ACHIEVEMENT OF RESEARCH OBJECTIVES40
+
+CHAPTER 6 DISCUSSION41
+6.1 INTRODUCTION41
+6.2 DISCUSSION OF RESEARCH OUTCOMES41
+6.3 INTERPRETATION OF MODEL PERFORMANCE41
+6.4 CONTRIBUTION AND PRACTICAL SIGNIFICANCE42
+6.5 LIMITATIONS AND FUTURE DIRECTION42
+
+CHAPTER 7 CONCLUSION AND FUTURE WORK43
+7.1 CONCLUSION43
+7.2 LIMITATIONS OF THE STUDY43
+7.3 FUTURE SCOPE AND RECOMMENDATIONS43
+
+REFERENCES44
+
+
+
+
+
+
+
+
+
+LIST OF FIGURES
+
+Fig: 3.1 Flow Chart Of  Proposed Nail Disease Detection Pipeline                 17
+Fig 3.2 technical work flow…………………………………………………        19
+Fig: 3.3 Training Process        21
+Fig: 4.1 Mobile Application                        31
+
+
+
+
+LIST OF TABLES
+
+Table 3.1  Class-wise Distribution of Nail Image Dataset18 
+Table 3.2  ……………………………………………..23
+Table 3.3  …………………………………………………………….23
+Table 3.4  ……………………………………….24
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CHAPTER 1
+INTRODUCTION
+Human nails are not merely protective structures of the distal phalanx; they are clinically significant biological indicators that often reflect both localized dermatological conditions and underlying systemic disorders. Medical research has long established that abnormalities in nail color, texture, thickness, curvature, and surface morphology can serve as early visual markers for a wide range of diseases, including fungal infections, autoimmune disorders, cardiovascular abnormalities, and respiratory illnesses [10], [13].
+Human nails are not merely protective structures of the distal phalanx; they are clinically significant biological indicators that often reflect both localized dermatological conditions and underlying systemic disorders. Medical research has long established that abnormalities in nail color, texture, thickness, curvature, and surface morphology can serve as early visual markers for a wide range of diseases, including fungal infections, autoimmune disorders, cardiovascular abnormalities, and respiratory illnesses [3], [4], [13].
+………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………….
+………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………….
+Human nails are not merely protective structures of the distal phalanx; they are clinically significant biological indicators that often reflect both localized dermatological conditions and underlying systemic disorders. Medical research has long established that abnormalities in nail color, texture, thickness, curvature, and surface morphology can serve as early visual markers for a wide range of diseases, including fungal infections, autoimmune disorders, cardiovascular abnormalities, and respiratory illnesses [10], [13].
+
+1.1 Background and Motivation
+Nails play a significant role in reflecting an individual’s overall health condition. Variations in nail color, texture, thickness, and shape are often associated with a wide range of dermatological and systemic diseases. Conditions such as onychomycosis, psoriasis, and nail clubbing may indicate fungal infections, autoimmune disorders, or underlying respiratory and cardiovascular abnormalities. As a result, nail examination has long been recognized as a valuable, non-invasive diagnostic indicator in clinical practice.
+………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………….
+
+1.2 Problem Statement
+Despite the diagnostic significance of nail conditions, several challenges limit the effectiveness and accessibility of nail disease diagnosis. The key problems addressed in this research are outlined as follows:
+………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………….
+
+1.3 Objectives of the Study
+The primary objectives of this research are as follows:
+………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………….
+.
+
+1.4 Scope of the Study
+………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………….
+1.4.1 TECHNICAL SCOPE
+………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………….
+
+1.4.2 LIMITATIONS AND BOUNDARIES
+While this system is a powerful tool, it has specific boundaries:
+………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………….
+
+
+CHAPTER 2
+LITERATURE REVIEW
+2.1 Image Processing Techniques
+Early research on automated nail disease detection mainly focused on traditional image processing techniques. These methods aimed to analyze visible characteristics of nails, such as color variation, texture patterns, and structural changes, to identify abnormalities associated with different diseases. Due to their low computational requirements, these approaches were initially considered suitable for basic diagnostic support systems.
+………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………….
+
+2.3 Deep Learning and CNN-Based Detection
+The introduction of deep learning, particularly Convolutional Neural Networks (CNNs), significantly advanced the field of nail disease detection by enabling automatic feature extraction from raw images. Unlike traditional machine learning approaches, CNN-based methods eliminate the need for handcrafted features and are capable of learning complex spatial and texture patterns directly from nail images.
+Several studies demonstrated that CNN-based architectures outperform classical machine ………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………….
+Despite their strong performance, CNN-based nail disease detection systems face challenges related to overfitting, dataset imbalance, and deployment constraints. Many deep models are computationally intensive and not optimized for mobile healthcare environments. These limitations highlight the need for efficient architectures and deployment-aware system design.
+
+2.4 TRANSFER LEARNING FOR NAIL DISEASE DETECTION 
+Transfer learning has emerged as a powerful paradigm in medical image classification, particularly in domains where large-scale labeled datasets are unavailable. Instead of training a deep neural network from scratch, transfer learning reuses knowledge acquired from a ………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………….
+
+2.7 Mobile and Healthcare-Oriented Applications
+Mobile healthcare applications have become increasingly important in improving accessibility to medical diagnostic services, particularly in rural and underserved regions. The widespread availability of smartphones equipped with high-resolution cameras has enabled the development of mobile-based disease screening systems that support early detection and health awareness.
+2.10 Summary
+This chapter reviewed existing literature on nail disease detection, covering traditional image processing techniques, machine learning-based methods, deep learning and CNN-based approaches, transfer learning strategies, hybrid models, dataset-related challenges, mobile healthcare applications, and fungal nail disease studies. The review highlights that while ………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………….
+.
+
+CHAPTER 3
+METHODOLOGY
+3.1 Research Methodology
+The methodology adopted in this research is structured to systematically design, optimize, and validate a transfer learning–based deep learning framework for automated multi-class nail disease detection. Given the medical relevance ………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………….
+.
+The research methodology is organized into a structured multi-phase experimental framework:
+Phase 1: Dataset Collection and Preparation
+.
+Phase 2: Image Preprocessing and Data Augmentation
+Phase 3: Iterative Model Selection and Optimization
+
+Fig: 3.1 Flow Chart Of Proposed Nail Disease Detection Pipeline
+
+
+3.2 Dataset Preparation and Preprocessing 
+3.2.1 DATA SOURCES AND COLLECTION
+Because there is no single database for all nail conditions, we collected images from multiple ………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………….
+
+
+
+      
+
+
+
+           Table 3.1: Class-wise Distribution of Nail Image Dataset
+
+3.2.6 CLASS BALANCING STRATEGY
+Although the dataset was numerically balanced (120 samples per class), class weighting was incorporated during training to prevent implicit bias toward visually dominant classes.
+Class weights were computed as:
+.  where 
+This ensured uniform penalization of misclassifications across categories, particularly important for clinically subtle conditions such as clubbing.
+3.2.7 HOW THE APP HANDLES YOUR PHOTO (INFERENCE)
+When a user uploads a photo, the app follows a quick 4-step process before giving a result: 1. Fixes the orientation (rotation). 2. Ensures the color is correct (RGB). 3. Resizes it to 260 x 260. 4. Standardizes the pixels. This whole process usually takes less than 2 seconds.
+
+Fig: 3.3 Training Process
+
+
+
+
+
+
+CHAPTER 4
+SYSTEM DEVELOPMENT AND IMPLEMENTATION
+4.1 Overview of System Development
+The development phase of the proposed nail disease detection system focuses on transforming the designed methodology into a fully functional end-to-end mobile healthcare application. The system was implemented by integrating mobile application development, backend API services, deep learning model deployment, and cloud-based infrastructure into a unified workflow.
+The primary goal of development was to create a lightweight yet intelligent diagnostic ………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………….
+
+4.2 Mobile Application Development Using React Native
+The mobile application represents the primary interaction point between users and the AI diagnostic.
+………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………….
+4.2.1 IMAGE ACQUISITION MODULE
+The application allows users to capture nail images directly using the smartphone camera. Both fingernail and toenail images are supported. To improve prediction consistency, visual alignment guidelines were incorporated into the camera interface, helping users maintain ………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………….
+
+
+CHAPTER 5
+Results and Analysis
+5.1 Overview
+This chapter presents a comprehensive experimental evaluation of the proposed EfficientNetB0-based nail disease classification framework. The objective of this evaluation is threefold:
+To justify the architectural selection through comparative analysis
+………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………….
+
+
+Architecture
+Parameters
+Input Size
+Test Accuracy
+Clubbing Sensitivity
+Observed Behavior
+VGG19
+143M
+224×224
+78.0%
+45%
+Severe overfitting
+MobileNetV1
+3.2M
+224×224
+78.5%
+45%
+Geometric weakness
+DenseNet121
+8.0M
+224×224
+86.25%
+80%
+Strong but heavy
+EfficientNetB0
+5.3M
+260×260
+86.25%
+80%
+Optimal balance
+Table 5.1 : Models performance 
+5.2.3 ARCHITECTURE-SPECIFIC OBSERVATIONS
+VGG19: Overfitting Under Data Scarcity
+
+Fig 5.1: VGG19 Training Graph
+VGG19 contains 143 million parameters, resulting in an extreme parameter-to-sample imbalance.
+Training accuracy: 99.2%
+Test accuracy: 78.0%
+Overfitting gap: 21.2%
+Interpretation: Large-scale architectures without structural efficiency are unsuitable for limited medical datasets.
+
+
+Fig 5.4: EfficientNetB0 Training Graph
+EfficientNetB0 achieved:
+86.25% test accuracy
+80% clubbing sensitivity
+5.3M parameters
+Interpretation: EfficientNetB0 achieves optimal trade-off between accuracy and efficiency, making it the selected backbone.
+5.3 Evaluation Framework
+To rigorously assess the performance of the proposed nail disease classification model, a structured evaluation framework was adopted. This framework defines the dataset partitioning strategy, quantitative performance metrics, robustness enhancement methods, and statistical validation procedures.
+5.3.1 DATASET SPLIT
+The dataset was divided into three mutually exclusive subsets:
+Training Set – Used for model learning
+Validation Set – Used for hyperparameter tuning and checkpoint selection
+Test Set – 80 unseen images (20 per class)
+The four classification categories are:
+Clubbing
+Healthy Nail
+Onychomycosis
+Psoriasis
+The test set was strictly held out during training to ensure unbiased performance estimation.
+5.3.2 PERFORMANCE METRICS
+To comprehensively evaluate classification effectiveness, multiple quantitative metrics were employed.
+Overall Accuracy
+Accuracy measures the proportion of correctly classified samples:
+While accuracy provides an overall performance estimate, it does not capture class-wise diagnostic behavior.
+Precision
+
+5.4.3 CONFUSION MATRIX INTERPRETATION
+The confusion matrix in Figure 5.5 provides a detailed view of the model's classification decisions across all four classes, revealing not only where the model succeeds but also where specific misclassification patterns occur. Analyzing these error patterns is essential for identifying systematic weaknesses and understanding whether they stem from architectural limitations or inherent visual ambiguity between conditions.
+
+
+
+
+
+
+
+
+
+
+     Fig 5.5 : Confusion Matrix
+Two systematic error clusters emerged:
+1. Shape-Blindness (Clubbing → Healthy)
+
+
+
+CHAPTER 6
+DISCUSSION
+6.1 Introduction
+This chapter discusses the overall findings of the study and explains how the proposed AI-based nail disease detection system performed in relation to the research objectives. The results are interpreted from technical, clinical, and practical perspectives to evaluate the real-world applicability of the system.
+
+6.2 Discussion of Research Outcomes
+The proposed transfer learning–based model achieved 86.25% test accuracy with balanced multi-class performance. This indicates that the selected EfficientNetB0 architecture, combined with regularization techniques and two-phase training, was effective for limited medical datasets. The model demonstrated stable generalization and reduced overfitting ………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………….
+
+
+
+6.4 Contribution and Practical Significance
+Compared to many existing studies that focus only on classification models, this research presents a complete end-to-end deployment framework. The study integrates model ………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………….
+
+6.5 Limitations and Future Direction
+Despite promising results, the study is limited by dataset size, class imbalance, and reliance on 2D RGB images. The system also depends on internet connectivity for cloud-based ………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………….
+
+
+
+CHAPTER 7
+
+CONCLUSION AND FUTURE WORK
+
+7.1 Conclusion
+………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………….
+
+7.2 Limitations of the Study
+………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………….
+
+7.3 Future Scope and Recommendations
+………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………….
+
+
+
+REFERENCES
+
+[1] M. Yani, “Application of Transfer Learning Using CNN for Early Detection of Terry’s Nail,” in Proc. Int. Conf. on Computer and Information Technology, 2019, pp. 1–6.
+[2] A. Sharma, R. Singh, and P. Verma, “Fingernail Image-Based Health Assessment Using a Hybrid VGG16 and Random Forest Model,” Journal of Healthcare Engineering, 2024.
+[3] D. Y. Coşar Soğukkuyu and O. Ata, “Classification of Melanonychia, Beau’s Lines, and Nail Clubbing Using Transfer Learning,” Biomedical Signal Processing and Control, vol. 85, 2023.
+[4] R. 

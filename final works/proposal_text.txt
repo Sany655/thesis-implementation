@@ -1,0 +1,496 @@
+
+Pediatric vs Adult Dengue Severity Prediction with Subgroup-Specific SHAP Explanations
+Submitted by:Name: 
+Registration No: 
+Supervised by:
+Mohammed Arif Hasan ChowdhuryDepartment of Computer Science and Engineering
+University of Science and Technology Chittagong
+
+Summary
+Dengue severity spans a wide clinical spectrum — from dengue without warning signs to severe dengue with plasma leakage, hemorrhage, and organ impairment. Accurate early triage is a clinical priority, and machine-learning models have been increasingly deployed to predict progression using routine clinical and laboratory features. Despite this progress, most published dengue severity models pool pediatric and adult patients into a single training cohort and report aggregated feature-importance rankings via SHapley Additive exPlanations or comparable methods. Age is, however, a clinically well-documented effect modifier in dengue, with children exhibiting different pathophysiology, immune responses, and severity patterns than adults. This study proposes an age-stratified ML framework in which pediatric (≤18 years) and adult (>18 years) subgroups are modelled separately, evaluated independently, and explained through subgroup-specific SHAP summaries. The work delivers: (i) separate baselines for each subgroup, (ii) pairwise comparison of pooled-cohort vs subgroup-specific performance, (iii) subgroup-resolved SHAP feature rankings and dependence plots, and (iv) an age-aware clinical-decision framework with feature thresholds adapted to the model's subgroup context. The novelty lies not in any new algorithm but in the systematic, clinically motivated, age-as-an-effect-modifier treatment of an existing problem space, which to our knowledge has not been investigated in published dengue-ML work.
+Keywords: Dengue severity prediction; age stratification; SHAP; explainable ML; pediatric; adult; effect modification; clinical decision support
+
+1. Introduction
+Dengue is a mosquito-borne viral infection caused by the dengue virus, transmitted primarily by Aedes aegypti and Aedes albopictus mosquitoes. It is endemic across tropical and subtropical regions of South-East Asia, South Asia, Latin America, and the Pacific. The World Health Organization classifies dengue illness along a clinical continuum that ranges from asymptomatic infection through dengue fever, dengue with warning signs, and severe dengue, with severe dengue encompassing severe plasma leakage, severe bleeding, and severe organ involvement. Early identification of patients whose illness is likely to progress to severe dengue is clinically important because clinical deterioration can accelerate rapidly and is reversible only with prompt fluid management and supportive care.
+In this context, data-driven approaches — particularly supervised machine learning — have been investigated as decision-support tools that ingest routinely collected clinical and laboratory data and output a predicted severity classification. In recent years, research has progressed from single classifiers to ensemble methods and from "black-box" predictions to interpretable explanations via feature-importance analyses. Notably, SHAP-based explanations have been incorporated into dengue severity studies, including factor analysis using stacked ensembles (Chowdhury et al., 2022), multi-algorithm stacking with SHAP (Masum et al., 2025), hematology-driven severity modelling (Niazi & Momand, 2026), optimized feature-driven diagnosis (Das et al., 2025), and ensemble techniques with hyperparameter optimization (Harshini et al., 2025).
+Despite this momentum, a clinically critical dimension of dengue severity prediction remains under-explored: age. The natural history, clinical presentation, and risk profile of dengue differ markedly between pediatric and adult populations. Children are disproportionately affected by severe dengue in hyperendemic settings; they more frequently progress to dengue shock syndrome and have characteristic physiological signatures (e.g., high hematocrit rise, narrow pulse pressure) that differ from adult patterns, where comorbid conditions and plasma-volume dynamics often dominate. Potts et al. (Potts et al., 2010) demonstrated this explicitly through a pediatric-specific study in Thai children, showing that early-phase laboratory indicators in pediatric cohorts carry distinctive predictive structures. Tanner et al. (Tanner et al., 2008) studied early-phase dengue decision-trees in a Singapore pediatric cohort and noted clear age-related heterogeneity in model performance.
+Subsequent ML work has, however, largely stepped back from age-specific modelling. Whether describing ensembles on Bangladeshi cohorts (Masum et al., 2025; Tuhin et al., 2025), ANN/RF on Taiwanese cohorts (Huang et al., 2020), stacked classifiers on Colombian registries (Arrubla-Hoyos et al., 2023), or hematology-driven models on publicly available datasets (Niazi & Momand, 2026), most studies train a single classifier that mixes pediatric and adult cases and report aggregated SHAP feature-importance summaries. Age is typically included as one predictor among many, with no analysis of how its predictive role interacts with other features in different age strata.
+This proposal argues that treating age as a demographic feature rather than as an effect modifier obscures the disease's subgroup-resolved behaviour. It motivates an investigation in which age defines the structural subdivision of the dataset, models are trained per subgroup, and SHAP explanations are computed per subgroup. Such a study delivers immediate clinical value because clinicians already operate on age-based mental models when triaging patients, and it offers a methodological contribution: a template for subgroup-aware explainable ML that is broadly applicable beyond dengue.
+
+2. Motivation
+The motivation for this research is grounded in four intersecting considerations: clinical heterogeneity, methodological standard practices in the dengue-ML literature, a recent shift toward explainability, and the unmet need for subgroup-resolved explanations.
+2.1. Clinical heterogeneity of dengue across age
+Pediatric and adult dengue patients present differently. Children have an immature immune response and greater vascular permeability at lower hematocrit increment thresholds; they more often progress to shock from plasma leakage than from bleeding. Adults more often present with co-morbid contributors — diabetes, hypertension, secondary infection in later life — and hemorrhage is a relatively more prominent feature. These clinical realities motivate a research design that does not flatten age into a single coefficient in a global model.
+2.2. Methodological standard practices in dengue ML
+Reviews of existing dengue severity studies reveal a broadly consistent pipeline: pooled dataset → preprocessing → train/test split → algorithm selection → cross-validation → metric reporting → global feature-importance via SHAP or similar methods. This pattern appears in the hematology-driven stacking work of Niazi & Momand (Niazi & Momand, 2026), the DengueStackX-19 framework of Tuhin et al. (Tuhin et al., 2025), the stacking-with-SHAP framework of Masum et al. (Masum et al., 2025), the optimized-feature-RF approach of Das et al. (Das et al., 2025), the SHAP-based factor analysis of Chowdhury et al. (Chowdhury et al., 2022), the ANN-driven Taiwanese cohort analysis of Huang et al. (Huang et al., 2020), and the large-scale Colombia study of Arrubla-Hoyos et al. (Arrubla-Hoyos et al., 2023). In each, age is treated as an input feature rather than a stratification variable.
+2.3. Explainability is now expected, but at the wrong granularity
+SHAP has become the de facto explanation standard in dengue severity prediction. Multiple recent studies adopt SHAP as the principal interpretability layer (Chowdhury et al., 2022; Das et al., 2025; Haque et al., 2025; Masum et al., 2025; Niazi & Momand, 2026). Lower-dimensional approaches, including counterfactual and rule-based explainers, are also beginning to surface in adjacent work (Joly et al., 2024). However, the prevailing application of SHAP produces a single global summary for an entire pooled cohort, which by construction averages out subgroup-specific patterns.
+2.4. The unmet need for subgroup-resolved explanations
+For a clinician assessing a 7-year-old or a 52-year-old, a global feature-importance ranking is not directly actionable. A clinician needs to know which features drive prediction in the relevant subgroup. This is the gap the present study seeks to fill.
+2.5. Why "subgroup-specific SHAP" specifically?
+Shapley values are decomposable at any level of conditioning. The advantage of computing SHAP within an age stratum (rather than relying on a pooled computation) is two-fold: (i) it produces a feature ranking tailored to the clinical population a clinician actually faces, and (ii) it enables formal comparison between subgroups, surfacing patterns such as "platelet count dominates pediatric predictions while hematocrit rise dominates adult predictions" — insights that are otherwise hidden in pooled analyses.
+
+3. Related Study
+This section reviews existing dengue severity studies relevant to the proposed research, focusing on age-related aspects.
+3.1. Pediatric-specific foundational work
+Tanner et al. (Tanner et al., 2008) studied decision-tree algorithms to predict dengue diagnosis and outcome in the early phase of illness in a Singapore cohort that was predominantly pediatric. The work demonstrated that simple decision-tree rules could stratify early-phase dengue patients by likely diagnostic and outcome trajectory, and it provided the earliest evidence in this literature of clear age-pattern signals in early prediction performance.
+Potts et al. (Potts et al., 2010) investigated the prediction of dengue severity among pediatric Thai patients using early clinical laboratory indicators. They showed that early-phase laboratory markers carried significant prognostic content and proposed a 1:10 misclassification-cost ratio reflecting the clinical priority of not missing severe cases. The study's pediatric-only framing made age an implicit structural variable; subsequent ML work has not always preserved this structural role.
+Hair et al. (Hair et al., 2019) characterized clinical patterns of dengue patients using unsupervised machine learning and reported that age was among the most discriminating features for separating clinical subtypes, offering evidence that age-related phenotypic variation is a population-level feature of dengue that should be modelled rather than averaged.
+3.2. Mixed-age, SHAP-driven severity studies
+Chowdhury et al. (Chowdhury et al., 2022) proposed SHapley-Additive-Explanations–based factor analysis for dengue severity prediction. XGBoost was trained on a multi-country dataset and SHAP dependence plots were generated globally; the study achieved strong classification performance and identified influential features but grouped all ages into the global summary.
+Huang et al. (Huang et al., 2020) assessed dengue severity using demographic information and laboratory test results on a 798-patient Taiwanese cohort. They trained ANN, Random Forest, Gradient Boosting Machine, SVM, and Logistic Regression models, and they reported that ANN achieved a mean AUC of 0.8324 (± 0.0268). SHAP was applied as the explanation layer, again in an age-pooled, globally summarized manner.
+Masum et al. (Masum et al., 2025) introduced a stacking ensemble with SHAP-based explainability using 17 clinical and demographic features. The study reported a baseline accuracy of approximately 77% (rising to ~83% following SMOTE rebalancing), and it used SHAP to attribute severity risk across features — without subgrouping by age.
+Tuhin et al. (Tuhin et al., 2025) developed the DengueStackX-19 model, a stacked ensemble applied to 1,523 Bangladeshi patients. The model achieved 96.38% accuracy and 94.20% F1 after applying SMOTEENN balancing, and it used SHAP together with LIME for explanation. While age was included as a model input, no age-specific SHAP analysis was performed.
+Das et al. (Das et al., 2025) explored optimized feature-driven diagnosis using RF with recursive feature elimination and XAI explanations via SHAP + LIME, reporting RF accuracy as high as 99.67% in their setup. The work focused on optimized feature selection rather than age stratification.
+3.3. Hematology-driven and modern-tabular severity studies
+Niazi & Momand (Niazi & Momand, 2026) studied hematology-driven severity models on a 1,450-sample Kaggle dataset and reported XGBoost with macro-F1 of 0.59. They applied SHAP for explanation and noted challenges with severe-class imbalance; age entered the model as a feature.
+Haque et al. (Haque et al., 2025) introduced a multi-perspective interpretable framework that combined SHAP, LIME, Morris sensitivity, and permutation importance for dengue prediction on clinical blood parameters. Their framework emphasized methodological breadth in explanation, but again pooled all ages.
+Joly et al. (Joly et al., 2024) applied explainable AI based on patient phenotypic traits using LR, RF, XGBoost, and ANN with SHAP, reporting 84.14% accuracy for RF on 721 Bangladeshi patients — age-aware modeling was not a primary aim.
+Arrubla-Hoyos et al. (Arrubla-Hoyos et al., 2023) compared classical ML with stacking ensembles for severity prediction on a 53,814-record Colombian registry, reaching 88% stacking accuracy; the work addressed scale and method comparison, not subgroup-specific explanation.
+Halwala et al. (Halwala et al., 2025) evaluated early prediction of severe dengue using day-of-illness stratification, reporting best performance on Day 2 (Extra Trees at 93.4% recall, F1 0.937) in a Sri Lankan cohort — a temporal-stratification study that demonstrates the value of structural subgrouping but on time rather than age.
+3.4. Forecasting, outage-risk and adjacent dialogue
+Outage-forecasting and clinical-feature interaction analyses in adjacent domains illustrate a growing appetite for subgroup-resolved explanation in clinical ML, but to date no dengue severity study has applied this template to age-resolved SHAP.
+3.5. Cross-dataset generalizability
+Lu et al. (Lu et al., 2025) evaluated how a dengue classifier trained on one dataset transfers to other datasets and noted sizable degradation for some demographic and clinical-source combinations. Their work illustrates that pooled models may already silently underperform for certain subpopulations. Age-stratified training is a natural extension of their findings.
+3.6 Summary of Existing Dengue Severity ML Studies
+The table below consolidates the studies reviewed in Section 3 into a single comparison framework. It exposes the methodological pattern that this study intends to address: contemporary SHAP-based studies treat age as a single input and produce a single global SHAP summary, while the few age-aware works are rooted in the pre-SHAP era and did not produce subgroup-specific explanations.
+Table 3.1 — Summary of Existing Dengue Severity ML Studies
+#
+Reference
+Focus
+Cohort
+Methods
+Outcome Definition
+Age Treatment
+SHAP / XAI Use
+Reported Performance
+Limitation for This Research
+1
+Tanner et al., 2008 (Tanner et al., 2008)
+Early-phase dengue diagnosis and outcome
+Singapore, predominantly pediatric
+Decision-tree algorithms
+Diagnosis + outcome (early illness)
+Pediatric-predominant cohort
+Not SHAP-era
+(Predates SHAP; specific metrics not stated in this review)
+Age-aware but pre-SHAP; no subgroup-specific explainability
+2
+Potts et al., 2010 (Potts et al., 2010)
+Pediatric severity using early labs
+Thailand, pediatric Thai cohort
+Logistic-style ML with 1:10 misclassification cost ratio
+Dengue severity from early-phase labs
+Pediatric-only cohort
+Not SHAP-era
+(Pediatric-specific metrics; not stated here)
+Age-specific but pre-SHAP; no adult comparison subgroup
+3
+Hair et al., 2019 (Hair et al., 2019)
+Unsupervised clinical-pattern discovery
+Brazil, n=572
+K-means + hierarchical clustering
+Clinical phenotypes (not WHO severity label)
+Age identified as top discriminator feature
+Not SHAP
+(Phenotype characterization; not stated here)
+Confirms age-effect empirically; does not produce subgroup-specific severity prediction
+4
+Chowdhury et al., 2022 (Chowdhury et al., 2022)
+SHAP-based factor analysis
+Multi-country (Vietnam + Bangladesh accents)
+XGBoost + SHAP dependence plots
+WHO-class severity
+Age as input feature
+SHAP global (single summary)
+"Best outcome" reported for XGBoost
+Global SHAP only; no age-conditioned explanation
+5
+Huang et al., 2020 (Huang et al., 2020)
+Demographics + lab ML
+Taiwan, n=798 (138 severe)
+ANN, RF, GBM, SVM, LR + SHAP explainer
+Severe dengue (binary)
+Age as input feature
+SHAP global
+ANN: mean AUC 0.8324 (± 0.0268)
+Single age-pooled cohort; single global SHAP summary
+6
+Masum et al., 2025 (Masum et al., 2025)
+Stacking ensemble + SHAP
+Mixed, 17 clinical + demographic features
+11 ML algorithms + fine-tuned stacking + SMOTE
+Severe dengue
+Age as input feature
+SHAP global
+~77% baseline accuracy / ~83% post-SMOTE
+SMOTE-induced synthetic minorities; global SHAP only
+7
+Tuhin et al., 2025 (Tuhin et al., 2025)
+Stacked ensemble + dual XAI
+Bangladesh, n=1,523
+Stacked ensemble + SMOTEENN balancing + SHAP + LIME
+Dengue severity (multi-class)
+Age as input feature
+SHAP + LIME global
+96.38% accuracy; 94.20% F1
+Severe-class synthetics via SMOTEENN; global explanation only
+8
+Das et al., 2025 (Das et al., 2025)
+Optimized-feature diagnosis
+Mixed, RFE-selected features
+RF + RFE + SHAP + LIME
+Dengue diagnosis/severity
+Age as input feature
+SHAP + LIME global
+RF: 99.67% accuracy (as reported in the proposal text)
+High reported accuracy suggests overfit risk on held-out subgroups; global XAI
+9
+Niazi & Momand, 2026 (Niazi & Momand, 2026)
+Hematology-driven severity
+Public hematology dataset, n=1,450
+LR + RF + SVM + XGBoost + SHAP
+WHO-class severity
+Age as input feature
+SHAP global
+XGBoost: macro-F1 = 0.59
+Low macro-F1 reflects class-imbalance struggle; global SHAP
+10
+Haque et al., 2025 (Haque et al., 2025)
+Multi-perspective interpretability
+Clinical blood parameters
+SHAP + LIME + Morris sensitivity + Permutation + GAN/genetic optimization
+Clinical prediction (clinical blood paradigms)
+Age as input feature
+Multi-XAI global
+(Methodology-focused; specific accuracy not stated here)
+Rich explainability but globally aggregated
+11
+Joly et al., 2024 (Joly et al., 2024)
+Phenotype-based XAI
+Bangladesh, n=721
+LR + RF + XGBoost + ANN + SHAP
+Dengue detection (phenotypic traits)
+Age as input feature
+SHAP global
+RF: 84.14% accuracy
+Global SHAP; no age stratification in modelling
+12
+Arrubla-Hoyos et al., 2023 (Arrubla-Hoyos et al., 2023)
+Classical vs stacking ensembles
+Colombia, n=53,814 (38 attributes)
+Classical ML + Stacking ensembles
+WHO 2009 severity classes
+Age as input feature
+Global explanation only
+Stacking: 88% accuracy
+Large administrative registry; global explanations; cohort effect-masked
+13
+Halwala et al., 2025 (Halwala et al., 2025)
+Day-of-illness stratification
+Sri Lanka, clinical
+Day-stratified multi-classifier analysis
+Severe dengue (binary)
+Age as input; stratified by day-of-illness (Day 2 best)
+Not SHAP-focused
+Day 2 / Extra Trees: 93.4% recall, F1 0.937
+Stratifies by illness day, not age; complements this study
+14
+Madewell et al., 2024 (Madewell et al., 2024)
+ML for severe dengue + clinical features
+Puerto Rico, hospital cohort
+Gradient-boosted ML
+Severe dengue
+Age as input feature
+Limited XAI
+AUC > 94% (bootstrap)
+Single-cohort; limited generalizability validation
+15
+Lu et al., 2025 (Lu et al., 2025)
+Cross-dataset generalizability
+Multi-dataset evaluation
+Logistic-regression + cross-dataset AUC
+Severity-score transferability
+Age as input feature
+Not XAI-focused
+Cross-dataset AUC: 0.55–0.89
+Reveals subgroup fragility — provides direct motivation for age-stratified modelling
+16
+Sangkaew et al., 2026 (Sangkaew et al., 2026)
+Individualised paediatric risk
+Vietnam + Thailand, outpatient febrile cohort
+Individualised risk + calibration
+Pediatric febrile-phase progression
+Pediatric-only
+Calibration-focused XAI
+(Calibration-focused; metrics not stated here)
+Pediatric-only; calibration-of-risk angle; complements age-stratification framing
+17
+Bria et al., 2025 (Bria et al., 2025)
+Early-stage + imbalance handling
+Mixed (clinical)
+RF + SVMSMOTE
+Early dengue
+Age as input feature
+Limited XAI
+
+Synthetic oversampling; global modelling
+
+3.7 Summary of the Literature
+Three patterns are evident from the consolidated comparison.
+Pattern A — Pre-SHAP era is age-aware without modern explainability.Tanner et al. (Tanner et al., 2008), Potts et al. (Potts et al., 2010), and Hair et al. (Hair et al., 2019) age-stratified or age-discussed their analyses, but each predates the widespread availability of SHAP, so subgroup-specific SHAP is not deliverable in their methodological frame.
+Pattern B — Modern SHAP-era work is age-pooled.Chowdhury et al. (Chowdhury et al., 2022), Huang et al. (Huang et al., 2020), Masum et al. (Masum et al., 2025), Tuhin et al. (Tuhin et al., 2025), Das et al. (Das et al., 2025), Niazi & Momand (Niazi & Momand, 2026), Haque et al. (Haque et al., 2025), and Joly et al. (Joly et al., 2024) all apply SHAP to a single age-pooled cohort and produce a single global feature-importance summary. Age is treated as one predictor rather than as a stratification variable.
+Pattern C — Cross-dataset and temporal-stratification studies exist but do not address age stratification.Lu et al. (Lu et al., 2025) document cross-dataset fragility and Halwala et al. (Halwala et al., 2025) document Day-of-Illness stratification, but neither combines age stratification with subgroup-specific SHAP.
+3.8 Identified Research Gap
+The table exposes three intersecting gaps that the present study addresses:
+Gap 1 — No age-stratification in modern dengue ML.No contemporary SHAP-based severity study defines age as a stratification variable and trains separate per-subgroup classifiers. Patterns A and B above describe this disconnect.
+Gap 2 — No subgroup-specific SHAP analyses.Among published works, none reports pediatric-conditioned SHAP versus adult-conditioned SHAP versus pooled SHAP and quantifies their disagreement.
+Gap 3 — Limited clinical-pathophysiological tie-back.Even where age effects are documented (Tanner et al. (Tanner et al., 2008); Potts et al. (Potts et al., 2010); Hair et al. (Hair et al., 2019)), no existing SHAP-augmented study triangulates its subgroup-specific feature rankings against the empirically known pediatric/adult disease phenotypes.
+Together, these gaps motivate the present proposal: a study that pairs age-stratified modelling with subgroup-specific SHAP and uses the comparison between pooled and subgroup views to quantify what is currently hidden when age is collapsed into a single input.
+
+4. Problem Statement
+Existing machine-learning approaches to dengue severity prediction face three structural limitations:
+Age-pooled training. Models are typically trained on the entire cohort without stratifying pediatric and adult patients. They therefore implicitly assume that a single set of feature-importance relationships describes dengue progression across the age spectrum. Published studies that exemplify this practice include those of Chowdhury et al. (Chowdhury et al., 2022), Masum et al. (Masum et al., 2025), Tuhin et al. (Tuhin et al., 2025), Niazi & Momand (Niazi & Momand, 2026), Huang et al. (Huang et al., 2020), and Haque et al. (Haque et al., 2025).
+Global SHAP without subgroup resolution. When SHAP is used for explanation, the feature-importance summary is computed once for the pooled cohort. The summary is, in effect, an average across age groups that may not represent either subgroup well. No dengue severity study in the reviewed body of work reports subgroup-specific SHAP analyses.
+Lack of age-aware decision guidance. Clinicians operate on age-segmented mental models ("How does this 7-year-old compare to other 7-year-olds?"). The output of a global model cannot deliver such guidance, leaving a misalignment between model output and clinical decision-making workflow.
+These three limitations jointly motivate the present problem:
+How effectively can separate, subgroup-trained ML models predict dengue severity within the pediatric (≤18 years) and adult (>18 years) subgroups, and how do subgroup-specific SHAP explanations of these models differ qualitatively and quantitatively from those of an age-pooled global model?
+The problem is both methodological (subgroup-aware modeling and explainability) and clinical (does subgroup-specific SHAP deliver more clinically actionable insight than pooled SHAP?).
+
+5. Research Objectives
+5.1. Main objective
+The main objective of this research is to evaluate age-stratified dengue severity prediction with subgroup-specific SHAP explanations, comparing the performance and feature-importance behaviour of pediatric-only, adult-only, and pooled-cohort models on a publicly available dengue clinical-laboratory dataset.
+5.2. Specific objectives
+The specific research objectives are:
+SO1 — Stratify and characterize the cohort.To partition the chosen cohort into pediatric (≤18 years) and adult (>18 years) subgroups and produce a descriptive comparison of clinical and laboratory feature distributions across subgroups.
+SO2 — Develop per-subgroup and pooled baseline models.To build supervised ML classifiers for severe vs non-severe dengue for each subgroup and a single pooled model, using a consistent algorithm suite.
+SO3 — Compare performance across modelling decisions.To evaluate each model on Accuracy, AUC-ROC, Sensitivity, Specificity, F1-score, and Matthews Correlation Coefficient, comparing pediatric-only, adult-only, and pooled models, and to test whether pooled-model performance masks subgroup-specific strengths or weaknesses.
+SO4 — Compute subgroup-specific SHAP explanations.To apply SHAP within each subgroup and the pooled cohort, and to produce SHAP summary plots, dependence plots, and interaction plots conditioned on the relevant subgroup.
+SO5 — Compare SHAP feature-importance ranked lists across subgroups.To quantify the disagreement between paired SHAP rankings (pediatric vs adult vs pooled) using rank-correlation statistics and to identify features that dominate in one subgroup but not in another.
+SO6 — Synthesize an age-aware clinical-decision framework.To derive, from subgroup-specific SHAP outputs, a structured decision framework that specifies age-adapted feature thresholds and presents them in a clinician-readable format.
+5.3. Research questions
+The study seeks to answer the following research questions:
+RQ1: Do pediatric-only and adult-only models achieve performance comparable to a pooled model within the same subgroup, or does pooled-model evaluation systematically hide subgroup weaknesses?
+RQ2: Which clinical and laboratory features dominate SHAP feature-importance rankings within the pediatric subgroup, and does this differ meaningfully from the adult subgroup?
+RQ3: To what extent do subgroup-specific SHAP rankings agree with those of a pooled model, and where do they diverge?
+RQ4: Can subgroup-specific SHAP outputs be operationalized as a clinician-facing age-aware decision framework with explicit feature thresholds?
+5.4. Significance
+By addressing RQ1–RQ4, the study contributes (i) a methodological template for age-stratified dengue severity prediction, (ii) novel subgroup-specific SHAP feature rankings, (iii) quantitative evidence on whether pooled modelling is appropriate or whether subgroup-stratified modelling is empirically warranted, and (iv) a clinically usable decision framework.
+
+6. Methodology
+The methodology is organized as a single coherent pipeline. The pipeline consists of seven sequential phases, executed once for each modelling pathway (pooled, pediatric, adult). The proposed dataset candidates are publicly available options, including the Bangladeshi hospital cohort used in DengueStackX-19 work (1,523 patients) (Tuhin et al., 2025), the Taiwanese cohort used by Huang et al. (798 patients, 138 severe) (Huang et al., 2020), and the Kaggle hematology dataset used by Niazi & Momand (1,450 samples) (Niazi & Momand, 2026). Final cohort selection will depend on a closer inspection of metadata availability for the age variable and for the WHO-classifiable outcome label.
+Phase 1 — Cohort acquisition and curation
+The selected dataset will be downloaded and documented. Variables will be inventoried. Inclusion and exclusion criteria will be applied (e.g., complete age metadata, non-missing severity label, no out-of-range laboratory values).
+Phase 2 — Subgroup definition
+Age strata will be defined a priori:
+Pediatric subgroup: patients with age ≤ 18 years.
+Adult subgroup: patients with age > 18 years.
+The justification for the 18-year cut-off follows clinical pediatric-adult boundary conventions used in the broader pediatric dengue literature (Potts et al., 2010).
+Phase 3 — Preprocessing
+Preprocessing steps will include: missing-value handling (median imputation for continuous variables, mode imputation for categorical variables, missing-indicator features where appropriate); outlier detection using IQR-based bounds; one-hot encoding of categorical variables; and Yeo–Johnson power transformation for skewed continuous features.
+Phase 4 — Feature engineering
+Derived features will include hematocrit-increment ratios (where admission and baseline values are available), day-of-illness-relative-with-power transformations, and interaction features. Feature selection will be performed using permutation importance with cross-validation. This phase is informed by the optimized-feature-driven approach of Das et al. (Das et al., 2025).
+Phase 5 — Model training
+For each pathway (pooled, pediatric, adult), five classifiers will be trained:
+Logistic Regression — interpretable linear baseline.
+Random Forest — tree-ensemble baseline.
+XGBoost — gradient-boosted ensemble.
+LightGBM — second gradient-boosted ensemble, included to test whether ensemble heterogeneity matters.
+Stacking meta-learner — a calibrated logistic-regression meta-learner over the four classifiers above, in line with the stacking architecture of Masum et al. (Masum et al., 2025) and Tuhin et al. (Tuhin et al., 2025).
+Hyper-parameter tuning will be performed via stratified 5-fold cross-validation using RandomizedSearchCV. Severe-class imbalance — present at meaningful levels in published cohorts (e.g., 17% in (Tuhin et al., 2025), 24.3% in (Madewell et al., 2024), 17% in (Huang et al., 2020)) — will be addressed using class-weighted training rather than synthetic oversampling, on the principle that growing synthetic severe cases can distort real-world decisions. This is a documented trade-off in the literature (Bria et al., 2025).
+Phase 6 — Evaluation
+Performance will be assessed using Accuracy, AUC-ROC, Sensitivity, Specificity, F1-score, and Matthews Correlation Coefficient. Statistical comparison between modelling pathways will be performed using DeLong's test for AUC differences and bootstrap-based confidence intervals (1,000 resamples). Cross-dataset external validation is an optional secondary extension following the generalizability analysis template of Lu et al. (Lu et al., 2025) if cohort access permits.
+Phase 7 — Subgroup-specific SHAP
+SHAP analysis will be computed at three levels:
+Pooled SHAP — TreeSHAP computed on the pooled-trained model over all patients.
+Pediatric SHAP — TreeSHAP computed on the pediatric-trained model over pediatric patients only.
+Adult SHAP — TreeSHAP computed on the adult-trained model over adult patients only.
+Output artefacts will include SHAP summary plots, dependence plots for the top-k features in each subgroup, and SHAP interaction values for clinically plausible feature pairs (e.g., platelet count × hematocrit, age × comorbidity burden where available).
+Phase 8 — Comparison across SHAP rankings
+Feature-importance rankings produced by the three SHAP views will be compared using:
+Kendall's tau-b rank correlation between paired rankings.
+Top-k overlap measures (top-3, top-5, top-10 feature identity overlap).
+Per-feature SHAP magnitude divergence — mean |SHAP value| per feature, compared between subgroups.
+Phase 9 — Age-aware clinical-decision framework
+The subgroup-specific SHAP outputs will be aggregated into a structured clinician-facing framework. The framework will:
+List the top three to five SHAP-relevant features per subgroup.
+Specify thresholds derived from SHAP value discontinuity points (maximal gain-cut analysis).
+Map each threshold to a clinical risk-interpretation rule consistent with WHO 2009 dengue classification.
+Phase 10 — Validation against published age-effects
+The subgroup-specific SHAP feature rankings will be triangulated against two clinically documented age-effect sources: the pediatric-specific predictor analysis of Potts et al. (Potts et al., 2010) and the unsupervised age-discriminator analysis of Hair et al. (Hair et al., 2019). Where the model's subgroup-specific SHAP feature rankings align with these clinical-age patterns, that provides an additional layer of validation; where they diverge, the divergence itself becomes a finding worth documenting.
+6.1. Tools and software
+Layer
+Package
+Data handling
+Pandas, NumPy
+Preprocessing
+scikit-learn imputation, scaling, encoding
+Modeling
+scikit-learn, XGBoost, LightGBM
+Imbalance handling
+class-weight parameters; optional imbalanced-learn
+Explainability
+shap
+Statistical comparison
+scipy.stats, statsmodels
+Visualisation
+Matplotlib, Seaborn, SHAP built-in plots
+6.2. Ethical considerations
+Only publicly available, de-identified datasets will be used. No patient data will be exchanged, and no clinical decisions will be made based on model outputs within this study. Any clinician-facing framework output will be explicitly labelled as a research artefact and not a clinical guideline.
+6.3. Reproducibility
+Random seeds will be fixed for all stochastic operations. Code, processed datasets (where licensing permits), trained models, and SHAP outputs will be archived in a public or institutional repository to enable independent re-running and audit of all reported results.
+7. Expected Outcomes
+The expected deliverables of this study are:
+Quantitative evidence on whether subgroup-specific dengue severity models match, exceed, or fall short of pooled-cohort models within each age stratum.
+Subgroup-specific SHAP feature rankings for pediatric and adult subgroups, accompanied by SHAP summary plots, dependence plots, and interaction plots.
+A rank-difference analysis quantifying disagreement between pooled vs subgroup-specific SHAP rankings.
+An age-aware clinical-decision framework listing subgroup-specific top features, their thresholds, and a clinical-interpretation schema.
+A validation discussion triangulating the model's subgroup-specific behaviour against prior pediatric-specific work (Hair et al., 2019; Potts et al., 2010; Tanner et al., 2008) and SHAP-augmented adult-cohort work (Chowdhury et al., 2022; Huang et al., 2020; Masum et al., 2025).
+8. Timeline
+Phase
+Activity
+Estimated Duration
+1
+Cohort acquisition, dataset exploration, IRB/ethics-clearance confirmation where applicable
+2 weeks
+2–3
+Preprocessing, subgroup definition, descriptive analysis
+2 weeks
+4
+Feature engineering, selection
+2 weeks
+5
+Model training and hyper-parameter tuning
+3 weeks
+6
+Evaluation, comparison of pathways
+2 weeks
+7–8
+Subgroup-specific SHAP computation and ranking comparison
+3 weeks
+9–10
+Age-aware clinical-decision framework, validation against published age-effect literature
+3 weeks
+11
+Thesis write-up, presentation preparation
+4 weeks
+
+Total
+~21 weeks (~5 months)
+
+9. Conlcusion
+This research proposal outlines a feasible, methodologically meaningful, and clinically motivated study that places age — well-established as a determinant of dengue severity — into its proper structural role as a stratification variable rather than a single feature in a pooled model. The combination of age-stratified modelling and subgroup-specific SHAP is, to our knowledge, novel in dengue severity research, and the resulting decision framework has the potential to directly support age-aware clinical triage.
+A note on scope: the proposed cohort selection is contingent on confirming that the selected public dataset offers (i) an age variable of sufficient granularity for pediatric/adult separation, (ii) a clinically meaningful severity label (WHO 1997 or 2009 compatible), and (iii) acceptable sample size within each subgroup. Should a single-cohort design be insufficient, a cross-dataset generalizability extension following Lu et al. (Lu et al., 2025) can be incorporated as a secondary objective.
+
+10. References
+  
+Tanner, L. B., Schreiber, M., Low, J. G. H., et al.. Decision Tree Algorithms Predict the Diagnosis and Outcome of Dengue Fever in the Early Phase of Illness. PLoS Neglected Tropical Diseases. https://doi.org/10.1371/journal.pntd.0000196
+Potts, J., Gibbons, R. V., Rothman, A. L., et al.. Prediction of Dengue Disease Severity among Pediatric Thai Patients Using Early Clinical Laboratory Indicators. PLoS Neglected Tropical Diseases. https://doi.org/10.1371/journal.pntd.0000769
+Hair, G. M., Nobre, F. F., & Brasil, P.. Characterization of clinical patterns of dengue patients using an unsupervised machine learning approach. BMC Infectious Diseases. https://doi.org/10.1186/s12879-019-4282-y
+Huang, S.-W., Tsai, H.-P., Hung, S.-J., et al.. Assessing the risk of dengue severity using demographic information and laboratory test results with machine learning. PLoS Neglected Tropical Diseases. https://doi.org/10.1371/journal.pntd.0008960
+Chowdhury, S. U., Sayeed, S., Rashid, I., et al.. SHAP-Based Factor Analysis for Dengue Severity Prediction. Journal of Imaging. https://doi.org/10.3390/jimaging8090229
+Masum, A. K. M., Khan, M. N. A., Hassan, M. M., et al.. Enhancing Dengue Fever Diagnosis: A Machine Learning Framework with Stacking Ensemble and SHAP Explainability. IEEE ICAIHI.
+Tuhin, I. A., Siam, A., Shanto, M. M. R., et al.. An interpretable machine learning model for dengue detection with clinical hematological data. Healthcare Analytics. https://doi.org/10.1016/j.health.2025.100430
+Niazi, M. & Momand, S.. Dengue Severity Level Prediction Using Hematology-Driven Machine Learning Models. SJET. https://doi.org/10.69739/sjet.v3i1.1542
+Halwala, J. V., Perera, S. D., Ranaweera, U., et al.. Early Prediction of Severe Dengue Using Machine Learning. IEEE ICITR.
+Lu, B., Li, Y., & Evans, C.. Assessing generalizability of a dengue classifier across multiple datasets. PLOS ONE. https://doi.org/10.1371/journal.pone.0323886
+Haque, M. E., Absur, M. N., Farid, F. A., et al.. A novel interpretable and real-time dengue prediction framework using clinical blood parameters. Frontiers in AI. https://doi.org/10.3389/frai.2025.1626699
+Madewell, Z. J., Rodríguez, D. M., Phillips, M. T., et al.. Machine learning for predicting severe dengue, Puerto Rico. https://doi.org/10.1101/2024.11.15.24317377
+Das, K., Mamun, M. S. I., Safat, Y., et al.. Optimized Feature-Driven Dengue Diagnosis Using Explainable Machine Learning Approaches. IEEE QPAIN.
+Arrubla-Hoyos, W., Seveiche-Maury, Z., Saeed, K., et al.. Comparison of classical machine learning and ensemble techniques in the context of dengue severity prediction. IEEE CAC. http://dx.doi.org/10.1109/c358072.2023.10436288
+Joly, N. A., Siddika, S., Mohalder, R. D., et al.. An Explainable AI Based Approach for Forecasting Dengue Diseases Using Patient's Phenotypic Traits. IEEE ICCIT.
+Bria, Y. P., Nani, P. A., Siki, Y. C. H., et al.. Leveraging a Random Forest Classifier and SVMSMOTE for an Early-stage Dengue Prediction. ETASR. https://doi.org/10.48084/etasr.10762
+Sangkaew, S., Cracknell Daniels, B., Ming, D., et al.. Early individualized risk prediction using clinical data for children during the febrile phase of dengue in outpatient settings in Vietnam and Thailand. PLOS Digital Health. https://doi.org/10.1371/journal.pdig.0001171
+
+
+Dataset Source (Updated Section: Phase 1 — Cohort Acquisition)
+.
+Candidate 1 — Mendeley Data: Thakur & Nasrin, 2025 (Amonika & Sonia, 2025)
+Sample size: 1,329 patient records
+Source institutions: Shaheed Suhrawardy Medical College and Hospital; Dhaka Medical College Hospital, Bangladesh
+Collection period: July–November 2025
+Publicly accessible: Yes, via Mendeley Data (DOI: 10.17632/jsbmtk8hty.4)
+Variables: Gender (Male/Female), Age (years); Dengue NS1 antigen test (Positive/Negative) as diagnostic class label; WBC, Platelet Count, RBC, Hematocrit, Lymphocyte %, Neutrophil %; ALT [U/L], AST [U/L] (Amonika & Sonia, 2025).
+Strengths for this study:
+Age variable is present and continuous.
+Hematological variables match the feature tree used by Niazi & Momand (Niazi & Momand, 2026).
+Endemic Bangladeshi source aligns with the broader dengue-ML literature using Bangladeshi hospital cohorts — Masum et al. (Masum et al., 2025), Tuhin et al. (Tuhin et al., 2025), Joly et al. (Joly et al., 2024), Haque et al. (Haque et al., 2025).
+Public CSV download path makes reproducibility straightforward.
+Limitations:
+Class label is binary (NS1 positive/negative), not WHO 2009 severity. A derived severity proxy will need to be constructed from clinical thresholds following the precedent of (Niazi & Momand, 2026).
+Sample size of 1,329 restricts the lower bound of per-subgroup analysis; stratification reduces analytic power per group.
+Candidate 2 — Public Kaggle Repository (referenced in Niazi & Momand, 2026 (Niazi & Momand, 2026))
+Sample size: 1,450 dengue-positive patient records
+Source: Publicly available Kaggle repository (laboratory-confirmed cases, complete hematological profiles)
+Class label: Platelet-count-based severity proxy (minor / moderate / severe) as constructed by (Niazi & Momand, 2026)
+Variables: Complete blood count including platelet count, hematocrit, hemoglobin, WBC (Niazi & Momand, 2026)
+Strengths:
+Continuous severity label (three-class), eliminating the need to derive severity from thresholds
+Used in published SHAP-based dengue severity work (Niazi & Momand, 2026)
+Larger absolute sample size
+Limitations: Age presence and granularity need to be verified upon downloading the repository; if absent, this dataset is unsuitable for age-stratified modelling.
+Candidate 3 — PMC Benchmark (Assaduzzaman et al., 2024)
+Sample: Hematological records for patients admitted to Upazila Health Complex, Kalai, Jaipurhat, Bangladesh
+Variables: Age, sex, hemoglobin, WBC count, differential counts, RBC panel, platelet count, PDW
+Strength: Has age as explicitly named variable plus a complete hematology panel
+Limitations: Sample size is not enumerated in the cited abstract; exact public-access path needs to be confirmed via the PMC link.
+A.2. Final Recommendation
+Primary recommended dataset: Candidate 1 — the Mendeley Data Bangladesh Hematology dataset (Amonika & Sonia, 2025), for the following operational reasons:
+Confirmed public access path with DOI registered in a recognized data-repository platform.
+Age variable is explicitly documented — directly serves the age-stratification objective.
+CSV format, ethically cleared primary data with 12 well-documented columns.
+Hematological completeness — platelet count, hematocrit, WBC, RBC, lymphocyte %, neutrophil %, plus biochemical markers.
+Recent data, ensuring temporal relevance.
+**Secondary recommended dataset: Candidate 2 **(Niazi & Momand, 2026) as an alternative or supplemental cohort for external validation, contingent on confirming age availability and resolving the column-mapping needed to align features with the primary cohort.
+Justification of severe-class labelling strategy:The Mendeley dataset's binary NS1 label (Amonika & Sonia, 2025) does not by itself deliver severity strata. To produce a paediatric-vs-adult severity framework, this study will derive a severity label from the documented clinical thresholds used in (Niazi & Momand, 2026): platelet count, hematocrit, WBC, and hemoglobin combined into a clinically motivated minor/moderate/severe tier. This conversion is explicitly documented in Phase 2 below and is consistent with WHO 2009 warning-sign criteria.
+A.3. Source Citation
+Thakur, A., & Nasrin, S.. Comprehensive Dengue Hematology and Clinical Dataset from Bangladesh for Machine Learning and Diagnostic Research. Mendeley Data, V4. https://doi.org/10.17632/jsbmtk8hty.4
+B. Feature Engineering 
+Feature engineering is the operational layer where clinical meaning is operationalized for ML and where the existing literature leaves methodological room. The work below is divided into domain-driven, statistical, and learned-feature components, each with rationale and an illustration of the operations performed.
+B.1. Domain-Driven Features
+These features use clinical thresholds known from established dengue pathophysiology and serve both to enrich the feature space and to support later clinical interpretability.
+Derived Feature
+Formula / Definition
+Clinical Rationale
+platelet_critical_low
+Binary: PLT < 50,000
+WHO warning sign for severe dengue; threshold around 50 × 10³/µL
+platelet_severe_low
+Binary: PLT < 20,000
+High-risk of spontaneous hemorrhage threshold
+hct_rise_proxy
+HCT% – age- and sex-specific median HCT
+Hemoconcentration marker for plasma leakage (varies with age/sex)
+wbc_leukopenia
+Binary: WBC < 4,000
+Common in dengue, particularly as illness progresses
+lymph_low
+Binary: Lymph% < 20
+Lymphopenia associated with dengue severity
+neut_high
+Binary: Neu% > 70
+Relative neutrophilia signature
+ast_alt_ratio
+AST / (ALT + ε) where ε is a small constant to avoid division by zero
+Elevated in dengue versus other viral hepatitis
+liver_involvement
+Binary (AST > upper limit) OR (ALT > upper limit)
+Captures the hepatic-feature cluster of severe dengue
+ast_to_platelet_ratio_index
+AST / PLT
+Adapted analogue of APRI; non-specific but used in dengue adult cohorts
+plt_to_wbc_ratio
+PLT / (WBC + ε)
+Pediatric-specific platelet-to-leukocyte signature, aligned with the pediatric Thai predictor panel of Potts et al. (Potts et al., 2010)
+age_decade
+Categorical: 0–9, 10–19, 20–29, …
+Stratify age-surrogate beyond binary cut-off
+gender_age_int
+Encoded product term
+Interaction effect relevant to severe-dengue risk in mixed-age cohorts such as Huang et al. (Huang et al., 2020) and the Bangladesh cohorts of (Masum et al., 2025) and (Tuhin et al., 2025)
+These derived features are clinically referenced in WHO 2009 warning signs, the pediatric-specific predictor panel of Potts et al. (Potts et al., 2010), the unsupervised dengue-pattern analysis of Hair et al. (Hair et al., 2019), the hematology-driven severity framework of Niazi & Momand (Niazi & Momand, 2026), and the optimized-feature pipeline of Das et al. (Das et al., 2025).
+B.2. Statistical Transformations
+B.3. Categorical Encoding
+B.4. Missing-Value Engineering
+B.5. Outlier Handling
+B.6. Feature Selection

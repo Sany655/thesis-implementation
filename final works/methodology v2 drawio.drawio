@@ -1,0 +1,150 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="4YnYxwCR3uxY1LYD7rGM">
+    <mxGraphModel dx="1969" dy="804" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="sN3T5Grc20jjirJz2aw2-42" edge="1" parent="1" source="sN3T5Grc20jjirJz2aw2-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="657.56" y="150" />
+              <mxPoint x="30" y="150" />
+              <mxPoint x="30" y="225" />
+            </Array>
+            <mxPoint x="50" y="225" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sN3T5Grc20jjirJz2aw2-50" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="sN3T5Grc20jjirJz2aw2-45">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="657.56" y="150" />
+              <mxPoint x="30" y="150" />
+              <mxPoint x="30" y="385" />
+            </Array>
+            <mxPoint x="657.5" y="130" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <UserObject label="" mermaidData="{&#xa;  &quot;data&quot;: &quot;flowchart TD\n    classDef default fill:#f8f9fa,stroke:#ced4da,stroke-width:2px;\n    classDef pipeline fill:#f4f9ff,stroke:#2b6cb0,stroke-width:2px;\n    classDef rules fill:#fffaf0,stroke:#dd6b20,stroke-width:2px;\n    \n    DataPrep[\&quot;DATA PREPARATION&lt;br&gt;Ingestion (n=1329) ➔ Filtering (Dengue+) ➔ Imputation ➔ Stratification\&quot;]\n    \n    DataPrep --&gt; Pediatric\n    DataPrep --&gt; Adult\n    DataPrep --&gt; Pooled\n    \n    Pediatric[\&quot;PEDIATRIC PIPELINE (n=158)&lt;br&gt;1. Feature Eng (Removes PLT, adds proxies)&lt;br&gt;2. Model Training (LR, RF, XGB, LGBM, Stacking)&lt;br&gt;3. Validation (Accuracy, AUC-ROC, F1)&lt;br&gt;4. SHAP Interpretability\&quot;]\n    class Pediatric pipeline\n    \n    Adult[\&quot;ADULT PIPELINE (n=814)&lt;br&gt;1. Feature Eng (Removes PLT, adds proxies)&lt;br&gt;2. Model Training (LR, RF, XGB, LGBM, Stacking)&lt;br&gt;3. Validation (Accuracy, AUC-ROC, F1)&lt;br&gt;4. SHAP Interpretability\&quot;]\n    class Adult pipeline\n    \n    Pooled[\&quot;POOLED PIPELINE (n=972)&lt;br&gt;1. Feature Eng (Baseline)&lt;br&gt;2. Model Training (Baseline)&lt;br&gt;3. Validation (Baseline)&lt;br&gt;4. SHAP Interpretability\&quot;]\n    class Pooled pipeline\n\n    Pediatric --&gt; Div{\&quot;Kendall&#39;s tau-b = 0.900&lt;br&gt;Cohort Divergence\&quot;}\n    Adult --&gt; Div\n    Pooled --&gt; Div\n    \n    Div --&gt; Extr[\&quot;Programmatic Cutoff Extraction (Shallow Decision Trees)\&quot;]\n\n    Extr --&gt; PedRules[\&quot;PEDIATRIC HIGH RISK&lt;br&gt;Lymphocyte &gt; 44.50%&lt;br&gt;WBC ≤ 4.34&lt;br&gt;Neutrophil ≤ 48.00%\&quot;]\n    class PedRules rules\n\n    Extr --&gt; AdRules[\&quot;ADULT HIGH RISK&lt;br&gt;Lymphocyte &gt; 24.99%&lt;br&gt;HCT &gt; 40.65%&lt;br&gt;Age &gt; 31.00\&quot;]\n    class AdRules rules\n&quot;,&#xa;  &quot;config&quot;: null&#xa;}" id="sN3T5Grc20jjirJz2aw2-51">
+          <mxCell connectable="0" parent="1" style="group;transparentBounds=1;editIcon=1;lockedGroup=0;groupPadding=10;" vertex="1">
+            <mxGeometry as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="DATA PREPARATION&#xa;Ingestion (n=1329) ➔ Filtering (Dengue+) ➔ Imputation ➔ Stratification" mermaidId="n:DataPrep" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#f8f9fa;strokeColor=#ced4da;fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="DATA PREPARATION&#xa;Ingestion (n=1329) ➔ Filtering (Dengue+) ➔ Imputation ➔ Stratification" id="sN3T5Grc20jjirJz2aw2-52">
+          <mxCell parent="sN3T5Grc20jjirJz2aw2-51" style="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#f8f9fa;strokeColor=#ced4da;fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="73" width="580" x="393" y="480" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="PEDIATRIC PIPELINE (n=158)&#xa;1. Feature Eng (Removes PLT, adds proxies)&#xa;2. Model Training (LR, RF, XGB, LGBM, Stacking)&#xa;3. Validation (Accuracy, AUC-ROC, F1)&#xa;4. SHAP Interpretability" mermaidId="n:Pediatric" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#f4f9ff;strokeColor=#2b6cb0;fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="PEDIATRIC PIPELINE (n=158)&#xa;1. Feature Eng (Removes PLT, adds proxies)&#xa;2. Model Training (LR, RF, XGB, LGBM, Stacking)&#xa;3. Validation (Accuracy, AUC-ROC, F1)&#xa;4. SHAP Interpretability" id="sN3T5Grc20jjirJz2aw2-53">
+          <mxCell parent="sN3T5Grc20jjirJz2aw2-51" style="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#f4f9ff;strokeColor=#2b6cb0;fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="131" width="402" x="30" y="603" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="ADULT PIPELINE (n=814)&#xa;1. Feature Eng (Removes PLT, adds proxies)&#xa;2. Model Training (LR, RF, XGB, LGBM, Stacking)&#xa;3. Validation (Accuracy, AUC-ROC, F1)&#xa;4. SHAP Interpretability" mermaidId="n:Adult" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#f4f9ff;strokeColor=#2b6cb0;fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="ADULT PIPELINE (n=814)&#xa;1. Feature Eng (Removes PLT, adds proxies)&#xa;2. Model Training (LR, RF, XGB, LGBM, Stacking)&#xa;3. Validation (Accuracy, AUC-ROC, F1)&#xa;4. SHAP Interpretability" id="sN3T5Grc20jjirJz2aw2-54">
+          <mxCell parent="sN3T5Grc20jjirJz2aw2-51" style="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#f4f9ff;strokeColor=#2b6cb0;fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="131" width="402" x="482" y="603" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="POOLED PIPELINE (n=972)&#xa;1. Feature Eng (Baseline)&#xa;2. Model Training (Baseline)&#xa;3. Validation (Baseline)&#xa;4. SHAP Interpretability" mermaidId="n:Pooled" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#f4f9ff;strokeColor=#2b6cb0;fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="POOLED PIPELINE (n=972)&#xa;1. Feature Eng (Baseline)&#xa;2. Model Training (Baseline)&#xa;3. Validation (Baseline)&#xa;4. SHAP Interpretability" id="sN3T5Grc20jjirJz2aw2-55">
+          <mxCell parent="sN3T5Grc20jjirJz2aw2-51" style="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#f4f9ff;strokeColor=#2b6cb0;fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="131" width="259" x="934" y="603" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Kendall&#39;s tau-b = 0.900&#xa;Cohort Divergence" mermaidId="n:Div" mermaidBaseStyle="rhombus;html=1;strokeWidth=2;whiteSpace=wrap;fillColor=#f8f9fa;strokeColor=#ced4da;fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Kendall&#39;s tau-b = 0.900&#xa;Cohort Divergence" id="sN3T5Grc20jjirJz2aw2-56">
+          <mxCell parent="sN3T5Grc20jjirJz2aw2-51" style="rhombus;html=1;strokeWidth=2;whiteSpace=wrap;fillColor=#f8f9fa;strokeColor=#ced4da;fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="277" width="277" x="545" y="784" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Programmatic Cutoff Extraction (Shallow Decision Trees)" mermaidId="n:Extr" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#f8f9fa;strokeColor=#ced4da;fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Programmatic Cutoff Extraction (Shallow Decision Trees)" id="sN3T5Grc20jjirJz2aw2-57">
+          <mxCell parent="sN3T5Grc20jjirJz2aw2-51" style="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#f8f9fa;strokeColor=#ced4da;fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="54" width="466" x="450" y="1111" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="PEDIATRIC HIGH RISK&#xa;Lymphocyte &gt; 44.50%&#xa;WBC ≤ 4.34&#xa;Neutrophil ≤ 48.00%" mermaidId="n:PedRules" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#fffaf0;strokeColor=#dd6b20;fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="PEDIATRIC HIGH RISK&#xa;Lymphocyte &gt; 44.50%&#xa;WBC ≤ 4.34&#xa;Neutrophil ≤ 48.00%" id="sN3T5Grc20jjirJz2aw2-58">
+          <mxCell parent="sN3T5Grc20jjirJz2aw2-51" style="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#fffaf0;strokeColor=#dd6b20;fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="112" width="212" x="446" y="1215" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="ADULT HIGH RISK&#xa;Lymphocyte &gt; 24.99%&#xa;HCT &gt; 40.65%&#xa;Age &gt; 31.00" mermaidId="n:AdRules" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#fffaf0;strokeColor=#dd6b20;fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="ADULT HIGH RISK&#xa;Lymphocyte &gt; 24.99%&#xa;HCT &gt; 40.65%&#xa;Age &gt; 31.00" id="sN3T5Grc20jjirJz2aw2-59">
+          <mxCell parent="sN3T5Grc20jjirJz2aw2-51" style="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#fffaf0;strokeColor=#dd6b20;fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="112" width="212" x="708" y="1215" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:DataPrep-&gt;Pediatric#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.04;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="sN3T5Grc20jjirJz2aw2-60">
+          <mxCell edge="1" parent="sN3T5Grc20jjirJz2aw2-51" source="sN3T5Grc20jjirJz2aw2-52" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.04;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="sN3T5Grc20jjirJz2aw2-53">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="231" y="578" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:DataPrep-&gt;Adult#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="sN3T5Grc20jjirJz2aw2-61">
+          <mxCell edge="1" parent="sN3T5Grc20jjirJz2aw2-51" source="sN3T5Grc20jjirJz2aw2-52" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="sN3T5Grc20jjirJz2aw2-54">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:DataPrep-&gt;Pooled#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.89;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="sN3T5Grc20jjirJz2aw2-62">
+          <mxCell edge="1" parent="sN3T5Grc20jjirJz2aw2-51" source="sN3T5Grc20jjirJz2aw2-52" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.89;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="sN3T5Grc20jjirJz2aw2-55">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="1064" y="578" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:Pediatric-&gt;Div#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0;entryY=0.32;" mermaidBaseValue="" id="sN3T5Grc20jjirJz2aw2-63">
+          <mxCell edge="1" parent="sN3T5Grc20jjirJz2aw2-51" source="sN3T5Grc20jjirJz2aw2-53" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0;entryY=0.32;rounded=0;" target="sN3T5Grc20jjirJz2aw2-56">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="231" y="759" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:Adult-&gt;Div#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="sN3T5Grc20jjirJz2aw2-64">
+          <mxCell edge="1" parent="sN3T5Grc20jjirJz2aw2-51" source="sN3T5Grc20jjirJz2aw2-54" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="sN3T5Grc20jjirJz2aw2-56">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:Pooled-&gt;Div#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=1;entryY=0.29;" mermaidBaseValue="" id="sN3T5Grc20jjirJz2aw2-65">
+          <mxCell edge="1" parent="sN3T5Grc20jjirJz2aw2-51" source="sN3T5Grc20jjirJz2aw2-55" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=1;entryY=0.29;rounded=0;" target="sN3T5Grc20jjirJz2aw2-56">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="1064" y="759" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:Div-&gt;Extr#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="sN3T5Grc20jjirJz2aw2-66">
+          <mxCell edge="1" parent="sN3T5Grc20jjirJz2aw2-51" source="sN3T5Grc20jjirJz2aw2-56" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="sN3T5Grc20jjirJz2aw2-57">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:Extr-&gt;PedRules#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.35;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="sN3T5Grc20jjirJz2aw2-67">
+          <mxCell edge="1" parent="sN3T5Grc20jjirJz2aw2-51" source="sN3T5Grc20jjirJz2aw2-57" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.35;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="sN3T5Grc20jjirJz2aw2-58">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="552" y="1190" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:Extr-&gt;AdRules#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.65;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="sN3T5Grc20jjirJz2aw2-68">
+          <mxCell edge="1" parent="sN3T5Grc20jjirJz2aw2-51" source="sN3T5Grc20jjirJz2aw2-57" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.65;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="sN3T5Grc20jjirJz2aw2-59">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="814" y="1190" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
