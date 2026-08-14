@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+xgboost
+shap
+pandas
+scikit-learn
+joblib
+sqlalchemy
+aiosqlite

@@ -1,0 +1,576 @@
+\documentclass[12pt, a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{setspace}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{xltabular}
+\onehalfspacing
+
+
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\centering}{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titleformat{name=\chapter,numberless}[block]
+  {\normalfont\huge\bfseries\centering}{}{0pt}{}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    
+    {\Huge \textbf{Pediatric vs Adult Dengue Severity Prediction with Subgroup-Specific SHAP Explanations}\par}
+    \vspace{2cm}
+    
+    {\Large \textbf{By}\par}
+    \vspace{0.5cm}
+    {\large Md. Aftabul Islam (ID: 22070103)\par}
+    {\large Mohammad Mazharul Alam (ID: 22070116)\par}
+    
+    \vspace{2cm}
+    {\large This thesis report is submitted in partial fulfillment of the requirements for the Bachelor of Science in Computer Science and Engineering degree.\par}
+    
+    \vspace{2cm}
+    {\large \textbf{Supervised By}\par}
+    {\large Mohammad Arif Hasan Chowdhury\par}
+    {\large Assistant Professor CSE, FSET, USTC\par}
+    
+    \vfill
+    
+    {\large Department of Computer Science \& Engineering (CSE)\par}
+    {\large Faculty of Science, Engineering \& Technology (FSET)\par}
+    {\large University of Science and Technology, Chittagong (USTC)\par}
+    {\large Chittagong, Bangladesh.\par}
+    {\large July, 2026\par}
+\end{titlepage}
+
+\pagenumbering{roman}
+
+\chapter*{DECLARATION}
+\addcontentsline{toc}{chapter}{DECLARATION}
+This is certifying that the thesis titled ``Pediatric vs Adult Dengue Severity Prediction with Subgroup-Specific SHAP Explanations'' is our own research carried out under the guidance of our supervisor Mohammad Arif Hasan Chowdhury, Assistant Professor, Department of Computer Science and Engineering, University of Science and Technology Chittagong. This thesis has not been submitted, either in whole or in part, for the award of any degree or diploma at any other university or institution.
+
+All sources of information and materials used in this study have been properly acknowledged through appropriate references. Any assistance received in the course of this research has been duly acknowledged. The results, analysis, and conclusions presented in this thesis are original and based on the experimental work conducted by us.
+
+We further declare that no part of this thesis has been copied from any other source without proper citation and that the work complies with the academic integrity and ethical standards of the university.
+
+\vspace{1cm}
+\noindent
+\textbf{Signature of Students:} \\[1cm]
+\noindent
+\begin{minipage}{0.45\textwidth}
+\rule{6cm}{0.4pt} \\
+Md. Aftabul Islam \\
+ID: 22070103
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+\rule{6cm}{0.4pt} \\
+Mohammad Mazharul Alam \\
+ID: 22070116
+\end{minipage}
+
+\vspace{1.5cm}
+\noindent
+\textbf{Signature of Supervisor:} \\[1cm]
+\rule{6cm}{0.4pt} \\
+Mohammad Arif Hasan Chowdhury \\
+Assistant Professor \\
+Department of Computer Science and Engineering (CSE)\\
+University of Science and Technology Chittagong (USTC)
+
+\chapter*{APPROVAL CERTIFICATE}
+\addcontentsline{toc}{chapter}{APPROVAL CERTIFICATE}
+This is to certify that the thesis entitled ``Pediatric vs Adult Dengue Severity Prediction with Subgroup-Specific SHAP Explanations'' submitted by Md. Aftabul Islam (ID: 22070103) and Mohammad Mazharul Alam (ID: 22070116) has been accepted as satisfactory in partial fulfillment of the requirements for the degree of B.Sc. Engineering in Computer Science and Engineering.
+
+This project submitted to the Department of Computer Science and Engineering, University of Science and Technology Chittagong in partial fulfillment of the requirement for the Degree of Bachelor of Science in Computer Science and Engineering.
+
+The Board of Examination Committee for University of Science and Technology Chittagong certifies that it is the approved version of the following report: ``Pediatric vs Adult Dengue Severity Prediction with Subgroup-Specific SHAP Explanations''.
+
+\vspace{1.5cm}
+\noindent
+\textbf{Examination Committee:}\\
+
+\vspace{1cm}
+\noindent\rule{6cm}{0.4pt}\\
+\textbf{Mohammad Arif Hasan Chowdhury}\\
+Assistant Professor (Supervisor)\\
+Department of Computer Science and Engineering (CSE)\\
+University of Science and Technology Chittagong (USTC)
+
+\chapter*{ACKNOWLEDGEMENT}
+\addcontentsline{toc}{chapter}{ACKNOWLEDGEMENT}
+We would like to express our sincere gratitude to our project supervisor, Mohammad Arif Hasan Chowdhury, Assistant Professor, Department of Computer Science and Engineering, University of Science and Technology Chittagong (USTC), for his continuous guidance, encouragement, valuable suggestions, and constructive criticism throughout the completion of this project. His expertise and constant support played a crucial role in shaping the direction and quality of this research work.
+
+We are also grateful to the honorable members of the examination committee for their time, evaluation, and valuable feedback on our project.
+
+Finally, we would like to express our heartfelt gratitude to Almighty Allah for His blessings, strength, and guidance, without which the successful completion of this project would not have been possible. We are also thankful to all individuals who directly or indirectly contributed their support and assistance during the course of this work.
+
+\chapter*{DEDICATION}
+\addcontentsline{toc}{chapter}{DEDICATION}
+This project is dedicated to our beloved parents and respected teachers.
+
+\chapter*{ABSTRACT}
+\addcontentsline{toc}{chapter}{ABSTRACT}
+Dengue fever progression to severe illness presents a major clinical challenge. Machine learning models developed for platelet-derived severe-dengue proxy prediction often pool pediatric and adult patients into a single dataset, assuming that a single feature attribution structure applies across all ages. This thesis investigates whether age-stratified machine learning models provide different predictive performance and feature attribution patterns compared to a pooled cohort model. Using a clinical-laboratory dataset from Bangladesh ($n=972$ laboratory-confirmed dengue positive cases; 158 pediatric $\le 18$ years, 814 adult $> 18$ years), we trained five machine learning classifiers (Logistic Regression, Random Forest, XGBoost, LightGBM, and Stacking Ensemble) across pooled and age-stratified subgroups. To reduce target leakage, platelet count (PLT) and its direct mathematical derivatives were excluded prior to training. In pediatric cases, Stacking achieved 90.6\% accuracy and an AUC of 0.947, whereas Random Forest achieved 84.7\% accuracy and an AUC of 0.892 in adult cases. SHapley Additive exPlanations (SHAP) were used to analyze feature importance. Kendall's $\tau$-b rank correlation between pediatric and adult SHAP rankings reached 0.900, indicating high relative rank similarity overall, though individual feature contribution magnitudes and decision splits differed. Fitting depth-1 decision trees to positive SHAP values ($> 0$) identified feature splits associated with elevated risk, such as a higher lymphocyte percentage threshold in children ($> 44.50\%$) than adults ($> 24.99\%$). The findings indicate that while overall feature priorities are similar across age groups, age-stratified modeling highlights distinct split thresholds that require prospective clinical validation on independent datasets with adjudicated WHO severity labels. Finally, to bridge analytical findings with structured data collection, the trained models and age-specific SHAP explanations are integrated into an early-stage risk-assessment dashboard designed to store repeated laboratory assessments for future longitudinal research.
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\clearpage
+\pagenumbering{arabic}
+
+\chapter{INTRODUCTION}
+
+\section{Background and Motivation}
+Dengue fever is a mosquito-borne viral infection transmitted primarily by \textit{Aedes aegypti} and \textit{Aedes albopictus} mosquitoes. It remains a serious public health concern in tropical and subtropical regions. The World Health Organization (WHO) classifies dengue along a clinical spectrum ranging from mild dengue fever to severe dengue characterized by plasma leakage, severe hemorrhage, and severe organ impairment. Early identification of patients likely to progress to severe disease is critical for timely fluid management and supportive care.
+
+Supervised machine learning algorithms have been increasingly applied to clinical and laboratory data to predict dengue severity outcomes. Recent literature has moved from basic linear and tree-based classifiers to complex ensemble methods and explainable artificial intelligence (XAI) tools, particularly SHapley Additive exPlanations (SHAP). Studies in this domain have utilized stacked ensembles \cite{chowdhury2022, masum2025}, hematology-driven feature sets \cite{niazi2026}, and optimized feature selection \cite{das2025}.
+
+Despite these advances, most existing machine learning models treat patient age as a single input feature within an age-pooled cohort. Clinical studies demonstrate that dengue presentation and risk factors differ between children and adults \cite{potts2010, tanner2008}. Pediatric patients often present with higher microvascular permeability and rapid plasma leakage, whereas adult cases more frequently involve comorbid conditions and hemorrhagic manifestations. Standard age-pooled models collapse these demographic differences into a single global dataset, which may mask age-specific prediction patterns.
+
+This study investigates whether partitioning clinical datasets into pediatric ($\le 18$ years) and adult ($> 18$ years) subgroups alters predictive performance and SHAP feature attributions compared to a pooled cohort approach. Furthermore, to bridge the gap between analytical ML findings and structured clinical data collection, this work integrates the trained models into an early-stage explainable risk-assessment dashboard.
+
+\section{Problem Statement}
+Existing machine learning frameworks for dengue severity prediction exhibit four main limitations:
+\begin{enumerate}
+    \item \textbf{Age-pooled model training:} Classifiers are typically trained on pooled datasets combining pediatric and adult patients, assuming a uniform relationship between features and severity across age groups \cite{chowdhury2022, huang2020, masum2025, tuhin2025}.
+    \item \textbf{Global feature attribution:} Explanations generated via SHAP are calculated for the entire pooled cohort, averaging out potential subgroup-level differences in feature influence.
+    \item \textbf{Alignment with subgroup decision-making:} Clinicians naturally evaluate pediatric and adult patients against age-specific clinical norms, whereas age-pooled models provide a single generalized decision boundary.
+    \item \textbf{Lack of explainable model integration:} Current models are rarely deployed into systems that support patient-level explanations or structured longitudinal data collection for future temporal research.
+\end{enumerate}
+To address these limitations, this research investigates how separate, subgroup-trained models compare against an age-pooled baseline in terms of classification performance and subgroup-conditioned SHAP feature attributions, and develops a dashboard to provide access to these age-specific models.
+
+\section{Objectives of the Study}
+\subsection{Main Objective}
+The primary objective of this study is to evaluate age-stratified machine learning models and subgroup-conditioned SHAP feature attributions for PLT-derived severe-dengue proxy prediction using a clinical hematology dataset.
+
+\subsection{Specific Objectives}
+\begin{itemize}
+    \item \textbf{SO1:} Develop supervised machine learning baseline models on age-stratified (pediatric and adult) and pooled cohorts to predict dengue severity.
+    \item \textbf{SO2:} Compare classification performance and evaluate subgroup-conditioned SHAP feature attributions across the pediatric, adult, and pooled models.
+    \item \textbf{SO3:} Programmatically extract and compare clinical feature splits associated with elevated severe dengue risk using depth-1 decision trees and rank correlation.
+    \item \textbf{SO4:} Develop an early-stage explainable dengue risk-assessment dashboard to provide access to the trained age-specific models, patient-level explanations, and structured storage of repeated laboratory assessments for future temporal research.
+\end{itemize}
+
+\section{Research Questions}
+\begin{itemize}
+    \item \textbf{RQ1:} How does the predictive performance of age-stratified models compare to an age-pooled baseline model?
+    \item \textbf{RQ2:} Do the key clinical features driving severity predictions differ between pediatric and adult subgroups?
+    \item \textbf{RQ3:} Can model-derived SHAP values identify distinct, age-specific feature thresholds associated with elevated risk?
+    \item \textbf{RQ4:} How can trained age-specific ML models and SHAP explanations be integrated into a dashboard to support structured longitudinal data collection?
+\end{itemize}
+
+\section{Scope of the Study}
+This study evaluates machine learning classifiers and SHAP explanations on the public "Comprehensive Dengue Hematology and Clinical Dataset" from Bangladesh \cite{mendeley2026}. The dataset analysis is limited to laboratory-confirmed NS1-positive cases ($n=972$), with severity defined using a platelet-derived proxy target ($\text{PLT} < 50,000 / \mu\text{L}$) rather than independently adjudicated clinical WHO severity labels. The scope is focused on empirical modeling, feature attribution comparison, and programmatic split extraction. The extracted feature splits represent model behavior on this specific dataset and do not constitute established clinical treatment guidelines. Furthermore, the developed dashboard is an early-stage research interface intended for model demonstration and structured data collection. It does not perform temporal prediction and is not intended for clinical diagnosis, treatment selection, or patient management.
+
+\section{Contributions}
+The main contributions of this thesis are as follows:
+\begin{itemize}
+    \item \textbf{Age-stratified dengue severity modeling:} An evaluation of whether training separate models for pediatric and adult cases affects predictive performance compared to a pooled baseline.
+    \item \textbf{Subgroup-specific SHAP analysis:} A quantitative comparison of SHAP feature attributions between pediatric and adult cohorts, demonstrating strong overall rank similarity alongside differences in individual feature contributions.
+    \item \textbf{Model-derived SHAP feature splits:} The programmatic extraction of age-specific clinical feature thresholds associated with positive model risk contributions using depth-1 decision trees.
+    \item \textbf{System application:} An early-stage explainable dengue risk-assessment dashboard is developed to provide access to the trained age-specific models, patient-level explanations, and structured storage of repeated laboratory assessments for future longitudinal research.
+\end{itemize}
+
+\section{Thesis Organization}
+The remainder of this thesis is structured as follows:
+\begin{itemize}
+    \item \textbf{Chapter 2 (Literature Review):} Reviews existing machine learning applications for dengue severity prediction, highlighting the gaps in age stratification and actionable explainability.
+    \item \textbf{Chapter 3 (Methodology and System Development):} Details the dataset, preprocessing steps, machine learning pipeline, SHAP-based feature split extraction, and the development of the early-stage explainable risk-assessment dashboard.
+    \item \textbf{Chapter 4 (Results and Analysis):} Presents the experimental findings, including model performance metrics across age cohorts, SHAP feature rankings, and the dashboard demonstration.
+    \item \textbf{Chapter 5 (Discussion):} Analyzes the differences in SHAP-derived feature splits between pediatric and adult patients, and discusses the role and limitations of the developed dashboard.
+    \item \textbf{Chapter 6 (Conclusion and Future Work):} Summarizes the research outcomes, outlines study limitations, and proposes directions for future work, particularly regarding temporal modeling and prospective validation.
+\end{itemize}
+
+\chapter{LITERATURE REVIEW}
+
+\section{Existing Dengue Severity ML Studies}
+Machine learning research in dengue severity prediction has evolved from early clinical rule extraction to modern explainable ensemble pipelines. However, the treatment of patient age remains inconsistent across the literature.
+
+\subsection{Early Clinical and Pediatric Foundations}
+Early research focused on early-phase laboratory indicators to stratify patient risk. Tanner et al. \cite{tanner2008} applied decision-tree models to early-phase laboratory and clinical variables in a Singapore cohort that was predominantly pediatric, demonstrating that decision rules could categorize early illness trajectories. Potts et al. \cite{potts2010} evaluated early laboratory markers specifically in pediatric Thai patients, incorporating an asymmetric misclassification cost ratio to prioritize severe case detection. Their pediatric-focused design highlighted the predictive value of early hematological markers in children. Unsupervised learning by Rajapakse et al. \cite{rajapakse2014} further identified age as a major discriminating feature among clinical dengue phenotypes, supporting the hypothesis that clinical manifestation varies across age groups.
+
+\subsection{Explainable Machine Learning in Mixed Cohorts}
+Recent dengue prediction studies frequently employ ensemble classifiers combined with SHapley Additive exPlanations (SHAP) for model interpretability. Chowdhury et al. \cite{chowdhury2022} applied XGBoost and SHAP dependence analysis to a multi-country dataset, reporting key feature contributions across the entire patient group. Huang et al. \cite{huang2020} evaluated ANN, Random Forest, and Gradient Boosting models on a Taiwanese dataset ($n=798$), utilizing SHAP to summarize global feature attributions.
+
+Stacking ensemble methods have also gained popularity. Masum et al. \cite{masum2025} and Tuhin et al. \cite{tuhin2025} developed stacked classification frameworks on Bangladeshi patient data, achieving high accuracy using combined clinical features and global SHAP explanations. Similarly, Das et al. \cite{das2025} used Random Forest with recursive feature elimination alongside SHAP and LIME for feature selection. Niazi \& Momand \cite{niazi2026} evaluated hematology-driven severity models on a public dataset ($n=1,450$), highlighting class imbalance challenges while analyzing SHAP feature contributions. Haque et al. \cite{haque2025} combined SHAP, LIME, and Morris sensitivity analysis for comprehensive feature evaluation, and Joly et al. \cite{joly2024} applied SHAP to patient phenotypic traits. Arrubla-Hoyos et al. \cite{arrubla2023} compared classical ML algorithms against stacked ensembles on a large Colombian registry ($n=53,814$).
+
+While these modern XAI studies provide valuable interpretability, almost all train a single classifier on a mixed-age cohort and calculate a single global SHAP summary. Age is included as one input feature among many, rather than used as a stratification variable for subgroup-specific modeling.
+
+\subsection{Temporal Stratification and Cross-Dataset Performance}
+Adjacent research has explored structural subgrouping along other dimensions. Halwala et al. \cite{halwala2025} stratified dengue predictions by day-of-illness, demonstrating that model performance improves when conditioned on temporal stages. Madewell et al. \cite{madewell2024} evaluated gradient-boosted models in a Puerto Rico hospital cohort, while Sangkaew et al. \cite{sangkaew2026} focused on pediatric risk prediction during the early febrile phase. Furthermore, Lu et al. \cite{lu2025} evaluated cross-dataset generalizability across multiple dengue cohorts, observing performance degradation when models trained on one dataset were applied to another. This cross-dataset instability suggests that pooled global models may conceal subgroup-specific performance variations.
+
+\subsection{Summary of Existing Dengue Severity ML Studies}
+Table \ref{tab:lit_review} synthesizes the reviewed literature, summarizing the focus, cohort characteristics, algorithms, and treatment of age in prior studies.
+
+\begingroup
+\renewcommand{\arraystretch}{1.2}
+\small
+\begin{xltabular}{\textwidth}{|c|X|X|X|X|X|}
+\caption{Summary of Existing Dengue Severity ML Studies} \label{tab:lit_review} \\
+\hline
+\textbf{Ref} & \textbf{Focus} & \textbf{Cohort} & \textbf{Methods} & \textbf{Outcome Definition} & \textbf{Notes} \\
+\hline
+\endhead
+
+\hline
+\multicolumn{6}{|r|}{\textit{Continued on next page}} \\
+\hline
+\endfoot
+
+\hline
+\endlastfoot
+
+\cite{tanner2008} & Early-phase dengue diagnosis & Singapore, pediatric cohort & Decision-tree algorithms & Diagnosis + outcome (early illness) & Age-aware but pre-SHAP; no subgroup-specific explainability \\
+\hline
+\cite{potts2010} & Pediatric severity using early labs & Thailand, pediatric cohort & Logistic ML (misclassification cost ratio 1:10) & Dengue severity from early labs & Pediatric-only; no adult comparison subgroup \\
+\hline
+\cite{rajapakse2014} & Clinical-pattern discovery & Brazil, n=572 & K-means + hierarchical clustering & Clinical phenotypes (not WHO severity) & Age identified as top discriminator; no subgroup-specific prediction \\
+\hline
+\cite{chowdhury2022} & SHAP-based factor analysis & Vietnam + Bangladesh & XGBoost + SHAP plots & WHO severity classes & Global SHAP only; no age-conditioned explanation \\
+\hline
+\cite{huang2020} & Demographics + lab ML & Taiwan, n=798 (138 severe) & ANN, RF, GBM, SVM, LR + SHAP & Severe dengue (binary) & ANN AUC $\approx$ 0.83; pooled cohort, global SHAP only \\
+\hline
+\cite{masum2025} & Stacking ensemble + SHAP & Mixed, 17 features & 11 ML models + Stacking + SMOTE & Severe dengue & ~77\% baseline / ~83\% post-SMOTE accuracy; global SHAP only \\
+\hline
+\cite{tuhin2025} & Stacked ensemble + dual XAI & Bangladesh, n=1,523 & Stacked ensemble + SMOTEENN + SHAP/LIME & Dengue severity (multi-class) & 96.38\% accuracy; global explanation only \\
+\hline
+\cite{das2025} & Optimized-feature diagnosis & Mixed, RFE-selected features & RF + RFE + SHAP + LIME & Dengue diagnosis/severity & RF 99.67\% accuracy; global XAI \\
+\hline
+\cite{niazi2026} & Hematology-driven severity & Public dataset, n=1,450 & LR, RF, SVM, XGBoost + SHAP & WHO severity classes & XGBoost macro-F1 = 0.59; global SHAP \\
+\hline
+\cite{halwala2025} & Day-of-illness stratification & Sri Lanka, clinical & Day-stratified multi-classifier & Severe dengue (binary) & Day 2 Extra Trees 93.4\% recall; stratifies by day, not age \\
+\hline
+\end{xltabular}
+\endgroup
+
+\section{Summary and Identified Research Gaps}
+The literature synthesis reveals four main research gaps:
+\begin{enumerate}
+    \item \textbf{Limited age-stratified dengue ML:} While early studies examined pediatric cohorts independently \cite{potts2010, tanner2008}, contemporary SHAP-based studies primarily train on pooled cohorts, overlooking potential age-specific patterns.
+    \item \textbf{Limited subgroup-conditioned SHAP comparison:} Published dengue ML literature does not quantitatively compare SHAP feature attributions computed within pediatric versus adult subgroups against pooled summaries.
+    \item \textbf{Limited quantitative extraction of interpretable SHAP-associated feature splits:} Existing studies largely rely on qualitative inspection of SHAP plots rather than programmatically extracting explicit feature splits associated with model predictions.
+    \item \textbf{Limited translation into a structured data-collection application:} Within the literature reviewed in this study, there is a lack of translation of such age-aware XAI analysis into an application layer that can support structured longitudinal data collection for future temporal research.
+\end{enumerate}
+This study addresses these gaps by evaluating age-stratified modeling, computing subgroup-conditioned SHAP attributions, using shallow decision trees to extract feature splits, and integrating the resulting models into an early-stage explainable risk-assessment dashboard.
+
+\chapter{Methodology and System Development}
+\section{Overall Research Architecture}
+The overall system architecture is conceptually divided into two distinct layers:
+\begin{enumerate}
+    \item \textbf{Analytical Pipeline:} This layer handles dataset collection, NS1 filtering, feature engineering, age-stratification into pediatric and adult cohorts, model training, evaluation, and SHAP-based feature split extraction.
+    \item \textbf{Application / Research Layer:} This layer translates the analytical models into a functional Early-stage Dengue Risk Assessment Dashboard, providing age-aware risk evaluation and longitudinal snapshot monitoring.
+\end{enumerate}
+Figure \ref{fig:flowchart} outlines this two-layer workflow.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{../images/methodology.drawio.png}
+    \caption{Workflow overview highlighting the division between the Analytical Pipeline (dataset to XAI evaluation) and the Application Layer (Early-stage Dengue Risk Dashboard).}
+    \label{fig:flowchart}
+\end{figure}
+
+\section{Dataset and Clinical Features}
+\subsection{Dataset Description}
+This study used the public "Comprehensive Dengue Hematology and Clinical Dataset" from Bangladesh \cite{mendeley2026}. The initial dataset is retrospective in nature and contains 1,329 records of dengue patients. 
+
+\subsection{Hematological Features}
+The dataset includes routine clinical blood parameters essential for assessing dengue progression:
+\begin{itemize}
+    \item \textbf{WBC (White Blood Cell Count):} Indicates potential leukopenia common in viral infections.
+    \item \textbf{HCT (Hematocrit):} Used to monitor plasma leakage and hemoconcentration.
+    \item \textbf{RBC (Red Blood Cell Count):} A routine component of complete blood counts.
+    \item \textbf{Lymphocyte \%:} Proportion of lymphocytes, reflecting immune response.
+    \item \textbf{Neutrophil \%:} Proportion of neutrophils.
+    \item \textbf{AST (Aspartate Aminotransferase) \& ALT (Alanine Aminotransferase):} Biochemical markers indicating liver involvement.
+    \item \textbf{PLT (Platelet Count):} A critical indicator of dengue severity, used primarily to construct the target variable.
+\end{itemize}
+
+\subsection{Demographic Features}
+The dataset includes patient age and gender. Age plays a critical role in establishing the age-based cohort definitions, allowing the separation of pediatric and adult patients for stratified analysis.
+
+\subsection{Feature Description and Clinical Relevance}
+Table \ref{tab:features} details the clinical and demographic variables used in this study, clarifying their roles. Importantly, PLT is strictly used for target construction and is excluded from the predictor set.
+
+\begin{table}[htbp]
+\centering
+\caption{Feature Description and Clinical Relevance}
+\label{tab:features}
+\begin{tabularx}{\textwidth}{|l|l|X|l|}
+\hline
+\textbf{Feature} & \textbf{Category} & \textbf{Description} & \textbf{Role in Model} \\ \hline
+Age & Demographic & Patient age & Predictor + cohort split \\ \hline
+Gender & Demographic & Patient gender & Predictor \\ \hline
+WBC & Hematological & White blood cell count & Predictor \\ \hline
+HCT & Hematological & Hematocrit & Predictor \\ \hline
+RBC & Hematological & Red blood cell count & Predictor \\ \hline
+Lymphocyte \% & Differential & Lymphocyte proportion & Predictor \\ \hline
+Neutrophil \% & Differential & Neutrophil proportion & Predictor \\ \hline
+AST & Biochemical & Aspartate aminotransferase & Predictor \\ \hline
+ALT & Biochemical & Alanine aminotransferase & Predictor \\ \hline
+PLT & Hematological & Platelet count & Target construction; excluded \\ \hline
+\end{tabularx}
+\end{table}
+
+\section{Data Preprocessing and Cohort Formation}
+\subsection{NS1-based Dataset Filtering}
+To ensure diagnostic certainty, records negative or missing for the Dengue NS1 antigen were excluded. This filtering reduced the initial 1,329 records to 972 laboratory-confirmed NS1-positive cases.
+
+\subsection{Missing-value Treatment}
+Missing numerical values within the filtered dataset were handled using median imputation. This approach is robust to outliers and preserves the central tendency of clinical distributions without introducing significant bias.
+
+\subsection{Cohort Stratification}
+The dataset of 972 NS1-positive patients was stratified based on age into a pediatric cohort ($\le 18$ years, $n=158$) and an adult cohort ($> 18$ years, $n=814$).
+
+\subsection{Target Definition}
+Clinical severity labels were established following the platelet-based proxy described by Niazi \& Momand \cite{niazi2026}. Platelet counts were grouped into Severe ($< 50,000 / \mu\text{L}$), Moderate ($50,000\text{--}100,000 / \mu\text{L}$), and Minor ($> 100,000 / \mu\text{L}$). For binary classification, Moderate and Minor cases formed a "Non-Severe" class, creating a binary target of Severe versus Non-Severe dengue. This is an explicit limitation of the study, as it relies on a PLT-derived proxy rather than independently adjudicated WHO clinical severity.
+
+\subsection{Target Leakage Prevention}
+To prevent target leakage during model training, the platelet count (PLT) and any features directly derived from it (such as the platelet-to-WBC ratio) were removed from the predictor set. Including these would artificially inflate model performance since they directly determine the target label.
+
+\section{Feature Engineering}
+\subsection{Hematological Indicators}
+Engineered clinical flags were created to represent established clinical thresholds:
+\begin{itemize}
+    \item \textbf{Leukopenia:} WBC $< 4,000 \text{ cells/mm}^3$.
+    \item \textbf{Lymphopenia:} Lymphocytes $< 20\%$.
+    \item \textbf{Neutrophilia:} Neutrophils $> 70\%$.
+\end{itemize}
+
+\subsection{Biochemical Features}
+Liver involvement was assessed by creating an AST/ALT ratio and a binary flag for elevated transaminases ($\text{AST} > 40 \text{ U/L}$ or $\text{ALT} > 40 \text{ U/L}$).
+
+\subsection{Demographic Interaction Features}
+Additional features included the patient's age grouped by decade, and a gender-age interaction term, to capture non-linear demographic effects.
+
+\section{Machine Learning Model Development}
+\subsection{Dataset Splitting}
+The data was split using an 80/20 train-test ratio. To preserve the class distribution in both sets, a stratified splitting strategy was applied with a random state of 42 to ensure reproducibility.
+
+\subsection{Classification Models}
+Five supervised classification algorithms were trained for each cohort: Logistic Regression, Random Forest, eXtreme Gradient Boosting (XGBoost), Light Gradient Boosting Machine (LightGBM), and a Stacking Ensemble meta-learner.
+
+\subsection{Class Imbalance Handling}
+To address class imbalances, the \texttt{class\_weight='balanced'} parameter was utilized across models where applicable. For XGBoost, the \texttt{scale\_pos\_weight} parameter was used to prioritize the minority class during training.
+
+\subsection{Hyperparameter Tuning}
+The base models were configured with robust default parameters alongside class imbalance corrections to establish a reliable baseline performance across the cohorts. The Stacking Ensemble utilized Logistic Regression as its final meta-estimator.
+
+\subsection{Model Selection}
+All five models were evaluated across the cohorts to determine the most effective classifier. The Random Forest and Stacking Ensemble models generally exhibited the highest predictive performance, while XGBoost provided highly stable and interpretable tree structures for downstream XAI analysis.
+
+\section{Model Evaluation}
+\subsection{Evaluation Metrics}
+Model performance was assessed using Accuracy, Area Under the Receiver Operating Characteristic Curve (AUC-ROC), Sensitivity, Specificity, F1-score, and the Matthews Correlation Coefficient (MCC).
+
+\subsection{Evaluation Strategy}
+Evaluations were conducted independently on the pooled cohort, pediatric cohort, and adult cohort. A recognized limitation of this strategy is the reliance on a single stratified 80/20 split, particularly constrained by the small pediatric sample size.
+
+\section{Explainable AI Analysis}
+\subsection{SHAP and TreeExplainer}
+The TreeExplainer from the \texttt{shap} library was applied to the trained eXtreme Gradient Boosting (XGBoost) models. This approach extracted precise feature importance values, highlighting the variables driving the predictions.
+
+\subsection{Global Feature Attribution}
+Global feature attributions were calculated to summarize the overall impact of each clinical variable across the entire patient cohort, establishing a baseline for subgroup comparisons.
+
+\subsection{Age-specific SHAP Analysis}
+SHAP summary plots were constructed separately for the pediatric model, adult model, and pooled model, revealing age-conditioned differences in feature behavior.
+
+\subsection{Kendall's $\tau$-b}
+Kendall's $\tau$-b rank correlation was used to compare the pediatric and adult feature rankings. The resulting correlation of $\tau$-b = 0.900 indicates strong relative rank agreement in overall feature importance, rather than a profound biological divergence.
+
+\section{Model-derived SHAP Feature Splits}
+\subsection{SHAP $>$ 0 Transformation}
+To derive actionable insights, continuous SHAP values for individual features were transformed into positive ($\text{SHAP} > 0$) or non-positive model contributions, isolating the conditions associated with positive SHAP contributions for the modeled Severe class.
+
+\subsection{Depth-1 Decision Tree}
+A depth-1 decision tree was fitted to these SHAP values to identify single explicit split points associated with elevated risk. 
+
+\subsection{Pediatric and Adult Splits}
+This approach yielded model-derived SHAP feature splits. For pediatric cases, critical splits included Lymphocyte $> 44.50\%$, Neutrophil $\le 48.00\%$, and WBC $\le 4.34$. For adult cases, the splits shifted to Lymphocyte $> 24.99\%$, HCT $> 40.65\%$, and Age $> 31.00$. The extracted splits are model-derived interpretation results and are not used as prediction rules or clinical treatment thresholds.
+
+\section{Early-stage Explainable Dengue Risk Assessment Dashboard}
+\subsection{System Objective}
+To translate the age-stratified machine learning framework into a tangible software artifact, an Early-stage Explainable Dengue Risk Assessment Dashboard was developed. The objective is to provide an interface that offers access to the trained age-specific models, patient-level explanations, and structured storage of repeated laboratory assessments for future longitudinal research.
+
+\subsection{Technology Stack}
+The system architecture consists of a React and Vite-based dashboard interface that communicates with a Python backend/API. This backend integrates the trained ML models and the SHAP explanation module. A PostgreSQL database provides the relational data layer, supporting JSON/JSONB for flexible, structured storage of repeated laboratory records.
+
+\subsection{Model Integration}
+Within the dashboard workflow, the predicted risk probability comes directly from the trained ML model, while the corresponding feature explanations are generated by the SHAP TreeExplainer. The model-derived splits (e.g., Lymphocyte $> 44.50\%$ or $> 24.99\%$) are only displayed as model-derived interpretation results to provide context, not to calculate probabilities.
+
+\subsection{Database and Longitudinal Record Storage}
+The dashboard incorporates a database designed to store repeated patient assessments. Conceptually, a single patient record can be linked to a Day 1 assessment and its model prediction, a Day 2 assessment and its model prediction, and so forth. This enables the structured collection of longitudinal data.
+
+\subsection{Temporal Visualization}
+The dashboard provides longitudinal visualization of repeated laboratory measurements and independently generated model predictions. Temporal prediction is outside the scope of the current model.
+
+\subsection{Patient-level Explainability}
+For each individual assessment, the dashboard displays the predicted class, the actual model probability, the SHAP feature contributions, the specific cohort/model used, and the model-derived SHAP splits as contextual research findings.
+
+\subsection{Early-stage Dashboard Disclaimer}
+To ensure the appropriate use of the system, a disclaimer is integrated into the interface: ``The dashboard is an early-stage research interface intended for model demonstration and structured data collection. It is not intended for clinical diagnosis, treatment selection, or patient management. Its predictions are based on a retrospective dataset and require independent and prospective validation.''
+
+\subsection{Longitudinal Data Collection}
+Each recorded assessment captures the patient/case identifier, date/time, laboratory values, model prediction, the model used, and the corresponding SHAP explanation. This structured storage framework bridges the current snapshot ML approach with future work, allowing researchers to build an actual longitudinal dataset.
+
+\section{Chapter Summary}
+The methodology established the dataset, preprocessing procedure, age-specific cohorts, PLT-derived target, predictive features, classification models, SHAP-based interpretation procedure, and the application architecture. The following chapter presents the experimental results and discusses the differences observed across the pooled, pediatric, and adult cohorts.
+
+\chapter{RESULTS AND ANALYSIS}
+\section{Exploratory Data Analysis}
+Exploratory analysis of baseline hematological parameters showed differences in feature distributions between age cohorts (Figure \ref{fig:eda}). Pediatric cases exhibited higher baseline median lymphocyte percentages compared to adult cases.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{../images/pediatric_vs_adult_eda.png}
+    \caption{Comparison of key hematological parameters between pediatric ($n=158$) and adult ($n=814$) cohorts.}
+    \label{fig:eda}
+\end{figure}
+
+\section{Model Performance Evaluation}
+Classifier evaluations demonstrated varying performance across age cohorts.
+
+In the pediatric cohort, the Stacking Ensemble achieved 90.6\% Accuracy, 0.947 AUC-ROC, 1.000 Specificity, and an F1-Score of 0.800. In the adult cohort, Random Forest achieved 84.7\% Accuracy, 0.892 AUC-ROC, 0.900 Specificity, and an F1-Score of 0.820.
+
+These results suggest that the relative performance of individual classifiers varies across age cohorts. However, evaluations were based on a single 80/20 train-test split due to dataset size constraints, particularly in the pediatric cohort ($n=158$). Consequently, these performance metrics reflect single-split validation rather than established cross-center generalizability.
+
+\section{SHAP Feature Attribution}
+Feature attribution rankings were generated using XGBoost TreeExplainer outputs (Figure \ref{fig:shap}). Lymphocyte percentage, WBC count, and AST emerged among the top predictive features across models.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{../images/shap_summary_comparison.png}
+    \caption{SHAP summary plots comparing feature attributions across Pooled, Pediatric, and Adult cohorts.}
+    \label{fig:shap}
+\end{figure}
+
+\section{Pediatric--Adult Rank Comparison}
+Kendall's $\tau$-b rank correlation between pediatric and adult SHAP feature rankings was 0.900. This indicates strong relative agreement in overall feature importance ranking between age groups. However, while feature rankings were similar, individual feature contribution magnitudes and decision splits differed between cohorts.
+
+\section{Model-derived Feature Splits}
+To convert continuous SHAP values into explicit feature thresholds, a depth-1 decision tree was fitted to SHAP values ($> 0$), identifying single feature splits associated with positive model contribution:
+\begin{itemize}
+    \item \textbf{Pediatric Feature Splits ($\text{SHAP} > 0$):}
+    \begin{itemize}
+        \item Lymphocyte Percentage: Split at \textbf{$> 44.50\%$}
+        \item Neutrophil Percentage: Split at \textbf{$\le 48.00\%$}
+        \item White Blood Cell Count (WBC): Split at \textbf{$\le 4.34 \text{ cells/mm}^3$}
+    \end{itemize}
+    \item \textbf{Adult Feature Splits ($\text{SHAP} > 0$):}
+    \begin{itemize}
+        \item Lymphocyte Percentage: Split at \textbf{$> 24.99\%$}
+        \item Hematocrit (HCT): Split at \textbf{$> 40.65\%$}
+        \item Age: Split at \textbf{$> 31.00 \text{ years}$}
+    \end{itemize}
+\end{itemize}
+
+Figure \ref{fig:shap_wbc} and Figure \ref{fig:shap_ast} illustrate SHAP dependence curves for WBC and AST across age cohorts.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.48\textwidth]{../images/shap_dependence_WBC_Pediatric.png}
+    % \hfill
+    \includegraphics[width=0.48\textwidth]{../images/shap_dependence_WBC_Adult.png}
+    \caption{SHAP dependence plots for WBC count in pediatric (left) and adult (right) cohorts.}
+    \label{fig:shap_wbc}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.48\textwidth]{../images/shap_dependence_AST_Pediatric.png}
+    % \hfill
+    \includegraphics[width=0.48\textwidth]{../images/shap_dependence_AST_Adult.png}
+    \caption{SHAP dependence plots for AST in pediatric (left) and adult (right) cohorts.}
+    \label{fig:shap_ast}
+\end{figure}
+
+\section{Dashboard Demonstration}
+The dashboard successfully integrated the selected age-specific models and generated the corresponding prediction and SHAP explanation for an entered assessment. A sample case demonstrated that the application correctly routed pediatric inputs to the pediatric model, returning a model-estimated probability of the PLT-derived Severe class alongside patient-level SHAP contributions, confirming the technical feasibility of the proposed application layer.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/dashboard_demo.png}
+    \caption{The Early-stage Explainable Dengue Risk Assessment Dashboard. The interface displays the patient demographics, the computed snapshot probability from the XGBoost model, the contextual SHAP feature contributions, and the longitudinal timeline of repeated assessments.}
+    \label{fig:dashboard_demo}
+\end{figure}
+
+\chapter{DISCUSSION}
+\section{Age-Conditioned Modeling and Feature Behavior}
+The results highlight that model performance varies between age cohorts. The differences in performance metrics between pediatric and adult cohorts suggest that models can adapt to age-specific clinical profiles. Furthermore, while the Kendall's $\tau$-b rank correlation demonstrates strong overall similarity in SHAP feature rankings across cohorts, the extracted model-derived splits reveal critical differences. For instance, the decision tree split for Lymphocyte percentage was higher in children ($> 44.50\%$) than in adults ($> 24.99\%$). This divergence underscores that even when features share similar importance rankings, their specific behavioral thresholds within the model differ by age.
+
+\section{Interpretation Limitations of Feature Splits}
+It is essential to recognize why these model-derived feature splits are not clinical thresholds. These splits reflect model behavior strictly optimized on a retrospective dataset using a PLT-derived severity proxy. They isolate conditions associated with positive SHAP contributions for the modeled Severe class within this specific computational framework, but they have not undergone independent or prospective validation against WHO-adjudicated clinical labels.
+
+\section{Dashboard Utility and Longitudinal Storage}
+The early-stage explainable dengue risk-assessment dashboard proves useful by translating complex analytical XAI findings into an interactive interface. More importantly, its integration with a relational database for structured storage of repeated laboratory assessments addresses a critical gap. By storing independent Day 1, Day 2, and subsequent assessments with their corresponding predictions, the dashboard enables descriptive longitudinal analysis. This framework facilitates future researchers in constructing rich, longitudinal datasets. However, it is critical to emphasize that the current machine learning models operate as snapshot predictors; therefore, the current system cannot claim to perform temporal prediction, but rather longitudinal visualization of independent cross-sectional inferences.
+
+\chapter{CONCLUSION AND FUTURE WORK}
+\section{Conclusion}
+This thesis evaluated whether training machine learning models separately on pediatric and adult patients changes severity prediction performance or feature importance patterns compared to an age-pooled model. Using a dataset of 972 laboratory-confirmed NS1-positive dengue patients from Bangladesh (158 pediatric, 814 adult), five baseline classifiers were trained on routine hematology parameters. To prevent target leakage, platelet count and its direct mathematical derivatives were removed prior to model training. While overall feature ranking remained consistent across age groups (Kendall's $\tau$-b = 0.900), depth-1 decision trees fitted to positive SHAP contributions ($\text{SHAP} > 0$) identified different decision split points across age groups. 
+
+\section{Contributions}
+The contributions of this study are:
+\begin{itemize}
+    \item Age-stratified dengue severity modeling evaluating predictive performance.
+    \item Pooled versus pediatric versus adult cohort performance comparison.
+    \item Subgroup-specific SHAP analysis to quantify feature influence.
+    \item Kendall's $\tau$-b rank correlation demonstrating high relative feature ranking similarity.
+    \item Extraction of model-derived SHAP feature splits for pediatric and adult subgroups.
+    \item Development of an early-stage explainable dashboard integrating the trained models.
+    \item Design of a structured storage framework for repeated laboratory assessments to support future longitudinal research.
+\end{itemize}
+
+\section{Limitations}
+This study has several explicit limitations:
+\begin{itemize}
+    \item The reliance on a retrospective, single-center dataset.
+    \item The use of a PLT-derived severity proxy rather than independently adjudicated WHO clinical severity labels.
+    \item The evaluation is based on a single 80/20 train-test split, compounded by a small pediatric cohort size.
+    \item The absence of external validation across geographically distinct datasets.
+    \item The current machine learning model is not temporal; it provides snapshot predictions.
+    \item The dashboard's longitudinal analysis is purely descriptive and does not constitute temporal prediction.
+\end{itemize}
+
+\section{Future Work}
+This research establishes a foundation for a logical progression of future studies:
+\begin{enumerate}
+    \item \textbf{External Validation:} Testing the current snapshot ML approach and age-specific XAI patterns on independent, prospective datasets.
+    \item \textbf{Larger Pediatric Cohort:} Expanding the dataset to ensure more robust pediatric modeling.
+    \item \textbf{WHO-Aligned Severity Labels:} Utilizing rigorous clinical outcome adjudications instead of a laboratory proxy.
+    \item \textbf{Dashboard-Assisted Longitudinal Data Collection and Temporal Modeling:} Utilizing the repeated assessment storage layer of the early-stage dashboard to prospectively build a longitudinal dataset, enabling the future development of sequential machine learning models (e.g., recurrent neural networks) that can achieve true temporal prediction.
+\end{enumerate}
+
+\begin{thebibliography}{99}
+\bibitem{tanner2008} L. B. Tanner et al., "Decision Tree Algorithms Predict the Diagnosis and Outcome of Dengue Fever in the Early Phase of Illness," \textit{PLOS Neglected Tropical Diseases}, 2008.
+\bibitem{potts2010} J. A. Potts et al., "Prediction of Dengue Disease Severity among Pediatric Thai Patients Using Early Clinical Laboratory Indicators," \textit{PLOS Neglected Tropical Diseases}, vol. 4, no. 8, p. e769, 2010.
+\bibitem{rajapakse2014} S. Rajapakse et al., "Clinical features of dengue in adults and children: A comparative study," \textit{Transactions of the Royal Society of Tropical Medicine and Hygiene}, vol. 108, no. 1, pp. 24-29, 2014.
+\bibitem{mendeley2026} Mendeley Data, "Comprehensive Dengue Hematology and Clinical Dataset," 2026. [Online].
+\bibitem{lundberg2017} S. M. Lundberg and S. I. Lee, "A unified approach to interpreting model predictions," in \textit{Advances in Neural Information Processing Systems (NeurIPS)}, vol. 30, 2017.
+\bibitem{niazi2026} M. Niazi and S. Momand, "Dengue Severity Level Prediction Using Hematology-Driven Machine Learning Models," \textit{Scientific Journal of Engineering, and Technology}, vol. 3, no. 1, 2026.
+\bibitem{breiman2001} L. Breiman, "Random Forests," \textit{Machine Learning}, vol. 45, no. 1, pp. 5-32, 2001.
+\bibitem{pedregosa2011} F. Pedregosa et al., "Scikit-learn: Machine Learning in Python," \textit{Journal of Machine Learning Research}, vol. 12, pp. 2825-2830, 2011.
+\bibitem{chen2016} T. Chen and C. Guestrin, "XGBoost: A Scalable Tree Boosting System," in \textit{Proc. of the 22nd ACM SIGKDD International Conference}, 2016.
+\bibitem{ke2017} G. Ke et al., "LightGBM: A Highly Efficient Gradient Boosting Decision Tree," in \textit{Advances in Neural Information Processing Systems}, vol. 30, 2017.
+\bibitem{wolpert1992} D. H. Wolpert, "Stacked generalization," \textit{Neural Networks}, vol. 5, no. 2, pp. 241-259, 1992.
+\bibitem{huang2020} S.-W. Huang et al., "Assessing the risk of dengue severity using demographic information and laboratory test results with machine learning," \textit{PLOS Neglected Tropical Diseases}, vol. 14, no. 12, p. e0008960, 2020.
+\bibitem{chowdhury2022} S. U. Chowdhury et al., "Shapley-Additive-Explanations-Based Factor Analysis for Dengue Severity Prediction," \textit{Journal of Imaging}, vol. 8, no. 9, p. 229, 2022.
+\bibitem{masum2025} A. K. M. Masum et al., "Enhancing Dengue Fever Diagnosis: A Machine Learning Framework with Stacking Ensemble and SHAP Explainability," \textit{IEEE QPAIN}, 2025.
+\bibitem{tuhin2025} I. A. Tuhin et al., "An interpretable machine learning model for dengue detection with clinical hematological data," \textit{Healthcare Analytics}, 2025.
+\bibitem{lu2025} B. Lu et al., "Assessing generalizability of a dengue classifier across multiple datasets," \textit{PLOS ONE}, vol. 20, no. 8, p. e0323886, 2025.
+\bibitem{haque2025} M. E. Haque et al., "A novel interpretable and real-time dengue prediction framework using clinical blood parameters," \textit{Frontiers in AI}, vol. 8, p. 1626699, 2025.
+\bibitem{joly2024} N. A. Joly et al., "An Explainable AI Based Approach for Forecasting Dengue Diseases Using Patient's Phenotypic Traits," \textit{IEEE ICCIT}, 2024.
+\bibitem{arrubla2023} W. Arrubla-Hoyos et al., "Comparison of classical machine learning and ensemble techniques in the context of dengue severity prediction," \textit{IEEE Colombian Caribbean Conference}, 2023.
+\bibitem{das2025} K. Das et al., "Optimized Feature-Driven Dengue Diagnosis Using Explainable Machine Learning Approaches," \textit{IEEE QPAIN}, 2025.
+\bibitem{sangkaew2026} S. Sangkaew et al., "Early individualized risk prediction using clinical data for children during the febrile phase of dengue," \textit{PLOS Digital Health}, vol. 5, p. e0001171, 2026.
+\bibitem{halwala2025} R. Halwala et al., "Early prediction models for dengue in Sri Lanka: A comparative analysis," \textit{International Journal of Medical Informatics}, vol. 183, p. 105432, 2025.
+\bibitem{madewell2024} Z. J. Madewell et al., "Machine learning for predicting severe dengue, Puerto Rico," \textit{medRxiv}, Nov. 2024.
+\end{thebibliography}
+\end{document}
