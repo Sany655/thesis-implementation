@@ -2,6 +2,8 @@
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{amsmath}
+\usepackage{float}
+\usepackage{multirow}
 \usepackage{hyperref}
 \usepackage{geometry}
 \geometry{a4paper, margin=1in}
@@ -113,7 +115,7 @@ Finally, we would like to express our heartfelt gratitude to Almighty Allah for 
 
 \chapter*{DEDICATION}
 \addcontentsline{toc}{chapter}{DEDICATION}
-This project is dedicated to our beloved parents and respected teachers.
+This project is dedicated to all.
 
 \chapter*{ABSTRACT}
 \addcontentsline{toc}{chapter}{ABSTRACT}
@@ -272,7 +274,7 @@ Figure \ref{fig:flowchart} outlines this two-layer workflow.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\textwidth]{../images/methodology.drawio.png}
+    \includegraphics[width=0.7\textwidth]{methodology.drawio.png}
     \caption{Workflow overview highlighting the division between the Analytical Pipeline (dataset to XAI evaluation) and the Application Layer (Early-stage Dengue Risk Dashboard).}
     \label{fig:flowchart}
 \end{figure}
@@ -370,6 +372,7 @@ All five models were evaluated across the cohorts to determine the most effectiv
 \subsection{Evaluation Metrics}
 Model performance was assessed using Accuracy, Area Under the Receiver Operating Characteristic Curve (AUC-ROC), Sensitivity, Specificity, F1-score, and the Matthews Correlation Coefficient (MCC).
 
+
 \subsection{Evaluation Strategy}
 Evaluations were conducted independently on the pooled cohort, pediatric cohort, and adult cohort. A recognized limitation of this strategy is the reliance on a single stratified 80/20 split, particularly constrained by the small pediatric sample size.
 
@@ -388,20 +391,20 @@ Kendall's $\tau$-b rank correlation was used to compare the pediatric and adult 
 
 \section{Model-derived SHAP Feature Splits}
 \subsection{SHAP $>$ 0 Transformation}
-To derive actionable insights, continuous SHAP values for individual features were transformed into positive ($\text{SHAP} > 0$) or non-positive model contributions, isolating the conditions associated with positive SHAP contributions for the modeled Severe class.
+To characterize the conditions associated with positive SHAP contributions, continuous SHAP values for individual features were transformed into positive ($\text{SHAP} > 0$) or non-positive model contributions, isolating the conditions associated with positive SHAP contributions for the modeled Severe class.
 
 \subsection{Depth-1 Decision Tree}
-A depth-1 decision tree was fitted to these SHAP values to identify single explicit split points associated with elevated risk. 
+A depth-1 decision tree was fitted to these SHAP values to identify a single feature split associated with positive SHAP contribution for the modeled Severe class.   
 
 \subsection{Pediatric and Adult Splits}
-This approach yielded model-derived SHAP feature splits. For pediatric cases, critical splits included Lymphocyte $> 44.50\%$, Neutrophil $\le 48.00\%$, and WBC $\le 4.34$. For adult cases, the splits shifted to Lymphocyte $> 24.99\%$, HCT $> 40.65\%$, and Age $> 31.00$. The extracted splits are model-derived interpretation results and are not used as prediction rules or clinical treatment thresholds.
+This approach yielded model-derived SHAP feature splits. For pediatric cases, the resulting model-derived splits included   Lymphocyte $> 44.50\%$, Neutrophil $\le 48.00\%$, and WBC $\le 4.34$. For adult cases, the splits shifted to Lymphocyte $> 24.99\%$, HCT $> 40.65\%$, and Age $> 31.00$. The extracted splits are model-derived interpretation results and are not used as prediction rules or clinical treatment thresholds.
 
 \section{Early-stage Explainable Dengue Risk Assessment Dashboard}
 \subsection{System Objective}
 To translate the age-stratified machine learning framework into a tangible software artifact, an Early-stage Explainable Dengue Risk Assessment Dashboard was developed. The objective is to provide an interface that offers access to the trained age-specific models, patient-level explanations, and structured storage of repeated laboratory assessments for future longitudinal research.
 
 \subsection{Technology Stack}
-The system architecture consists of a React and Vite-based dashboard interface that communicates with a Python backend/API. This backend integrates the trained ML models and the SHAP explanation module. A PostgreSQL database provides the relational data layer, supporting JSON/JSONB for flexible, structured storage of repeated laboratory records.
+The system architecture consists of a React and Vite-based dashboard interface that communicates with a Python backend/API. This backend integrates the trained ML models and the SHAP explanation module. A PostgreSQL provides the relational storage layer, with structured columns for patient and laboratory attributes and JSON/JSONB available for flexible storage of selected model or explanation metadata.
 
 \subsection{Model Integration}
 Within the dashboard workflow, the predicted risk probability comes directly from the trained ML model, while the corresponding feature explanations are generated by the SHAP TreeExplainer. The model-derived splits (e.g., Lymphocyte $> 44.50\%$ or $> 24.99\%$) are only displayed as model-derived interpretation results to provide context, not to calculate probabilities.
@@ -430,24 +433,55 @@ Exploratory analysis of baseline hematological parameters showed differences in 
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\textwidth]{../images/pediatric_vs_adult_eda.png}
+    \includegraphics[width=\textwidth]{pediatric_vs_adult_eda.png}
     \caption{Comparison of key hematological parameters between pediatric ($n=158$) and adult ($n=814$) cohorts.}
     \label{fig:eda}
 \end{figure}
 
 \section{Model Performance Evaluation}
-Classifier evaluations demonstrated varying performance across age cohorts.
-
-In the pediatric cohort, the Stacking Ensemble achieved 90.6\% Accuracy, 0.947 AUC-ROC, 1.000 Specificity, and an F1-Score of 0.800. In the adult cohort, Random Forest achieved 84.7\% Accuracy, 0.892 AUC-ROC, 0.900 Specificity, and an F1-Score of 0.820.
-
-These results suggest that the relative performance of individual classifiers varies across age cohorts. However, evaluations were based on a single 80/20 train-test split due to dataset size constraints, particularly in the pediatric cohort ($n=158$). Consequently, these performance metrics reflect single-split validation rather than established cross-center generalizability.
+Across all cohorts, ensemble methods (RF and Stacking) consistently outperformed Logistic Regression. In the pediatric cohort, the Stacking Ensemble and Random Forest tied on Accuracy (90.6\%) and F1-Score (0.800), with Random Forest achieving the highest AUC of 0.961. In the adult cohort, Random Forest achieved 84.7\% Accuracy, 0.892 AUC-ROC, 0.900 Specificity, and an F1-Score of 0.820. Evaluations were based on a single stratified 80/20 train-test split; consequently, these metrics reflect single-split validation rather than established cross-center generalizability, particularly given the constrained pediatric cohort size ($n=158$).
+\begingroup
+\renewcommand{\arraystretch}{1.2}
+\small
+\begin{table}[htbp]
+\centering
+\caption{Classification Performance Across All Cohorts and Models (Acc = Accuracy, Sens = Sensitivity, Spec = Specificity)}
+\label{tab:results}
+\begin{tabular}{llcccccc}
+\toprule
+\textbf{Cohort} & \textbf{Model} & \textbf{Acc} & \textbf{AUC} & \textbf{Sens} & \textbf{Spec} & \textbf{F1} & \textbf{MCC} \\
+\midrule
+\multirow{5}{*}{Pooled}
+ & LR       & 0.636 & 0.711 & 0.663 & 0.616 & 0.608 & 0.276 \\
+ & RF       & \textbf{0.790} & \textbf{0.860} & 0.699 & 0.857 & \textbf{0.739} & \textbf{0.566} \\
+ & XGB      & 0.733 & 0.834 & 0.699 & 0.759 & 0.690 & 0.456 \\
+ & LGBM     & 0.769 & 0.828 & 0.699 & 0.821 & 0.720 & 0.525 \\
+ & Stacking & 0.759 & 0.856 & 0.675 & 0.821 & 0.704 & 0.503 \\
+\midrule
+\multirow{5}{*}{Pediatric}
+ & LR       & 0.719 & 0.681 & 0.556 & 0.783 & 0.526 & 0.328 \\
+ & RF       & 0.906 & \textbf{0.961} & 0.667 & 1.000 & 0.800 & 0.768 \\
+ & XGB      & 0.844 & 0.899 & 0.778 & 0.870 & 0.737 & 0.628 \\
+ & LGBM     & 0.875 & 0.884 & 0.778 & 0.913 & 0.778 & 0.691 \\
+ & Stacking & \textbf{0.906} & 0.947 & 0.667 & 1.000 & \textbf{0.800} & \textbf{0.768} \\
+\midrule
+\multirow{5}{*}{Adult}
+ & LR       & 0.699 & 0.779 & 0.699 & 0.700 & 0.675 & 0.397 \\
+ & RF       & \textbf{0.847} & \textbf{0.892} & 0.781 & 0.900 & \textbf{0.820} & \textbf{0.690} \\
+ & XGB      & 0.785 & 0.856 & 0.795 & 0.778 & 0.768 & 0.570 \\
+ & LGBM     & 0.791 & 0.853 & 0.753 & 0.822 & 0.764 & 0.577 \\
+ & Stacking & 0.834 & 0.882 & 0.795 & 0.867 & 0.811 & 0.664 \\
+\bottomrule
+\end{tabular}
+\end{table}
+\endgroup
 
 \section{SHAP Feature Attribution}
 Feature attribution rankings were generated using XGBoost TreeExplainer outputs (Figure \ref{fig:shap}). Lymphocyte percentage, WBC count, and AST emerged among the top predictive features across models.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\textwidth]{../images/shap_summary_comparison.png}
+    \includegraphics[width=\textwidth]{shap_summary_comparison.png}
     \caption{SHAP summary plots comparing feature attributions across Pooled, Pediatric, and Adult cohorts.}
     \label{fig:shap}
 \end{figure}
@@ -476,31 +510,99 @@ Figure \ref{fig:shap_wbc} and Figure \ref{fig:shap_ast} illustrate SHAP dependen
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.48\textwidth]{../images/shap_dependence_WBC_Pediatric.png}
+    \includegraphics[width=0.48\textwidth]{shap_dependence_WBC_Pediatric.png}
     % \hfill
-    \includegraphics[width=0.48\textwidth]{../images/shap_dependence_WBC_Adult.png}
+    \includegraphics[width=0.48\textwidth]{shap_dependence_WBC_Adult.png}
     \caption{SHAP dependence plots for WBC count in pediatric (left) and adult (right) cohorts.}
     \label{fig:shap_wbc}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.48\textwidth]{../images/shap_dependence_AST_Pediatric.png}
+    \includegraphics[width=0.48\textwidth]{shap_dependence_AST_Pediatric.png}
     % \hfill
-    \includegraphics[width=0.48\textwidth]{../images/shap_dependence_AST_Adult.png}
+    \includegraphics[width=0.48\textwidth]{shap_dependence_AST_Adult.png}
     \caption{SHAP dependence plots for AST in pediatric (left) and adult (right) cohorts.}
     \label{fig:shap_ast}
 \end{figure}
 
-\section{Dashboard Demonstration}
-The dashboard successfully integrated the selected age-specific models and generated the corresponding prediction and SHAP explanation for an entered assessment. A sample case demonstrated that the application correctly routed pediatric inputs to the pediatric model, returning a model-estimated probability of the PLT-derived Severe class alongside patient-level SHAP contributions, confirming the technical feasibility of the proposed application layer.
+% ============================================================
+% 4.6 Dashboard Demonstration
+% ============================================================
+\subsection{Dashboard Demonstration}
 
-\begin{figure}[htbp]
+An early-stage Explainable Dengue Risk Assessment Dashboard was developed
+to provide an application layer for the trained age-specific models and their
+explanations. The dashboard allows demographic and hematological variables to
+be entered for an assessment and routes the input to the appropriate
+age-specific model. The resulting model-estimated probability and explanation
+are displayed together with the entered laboratory information.
+
+\begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{figures/dashboard_demo.png}
-    \caption{The Early-stage Explainable Dengue Risk Assessment Dashboard. The interface displays the patient demographics, the computed snapshot probability from the XGBoost model, the contextual SHAP feature contributions, and the longitudinal timeline of repeated assessments.}
-    \label{fig:dashboard_demo}
+    \includegraphics[width=0.95\textwidth]{dashboard - 1 - formfillup.png}
+    \caption{Dashboard assessment interface showing patient demographics,
+    hematological inputs, age-specific model assessment, and model-estimated
+    probability.}
+    \label{fig:dashboard_assessment}
 \end{figure}
+
+The dashboard also provides storage and visualization of repeated assessments
+for the same patient. Each assessment is stored as an independent snapshot,
+allowing previous laboratory measurements and model outputs to be reviewed.
+The longitudinal view therefore provides descriptive visualization of repeated
+observations without using previous observations as sequential inputs to the
+current prediction model.A change-analysis component compares the current assessment with the previous
+stored assessment and displays changes in selected laboratory features. This
+function is intended for descriptive inspection of repeated measurements and
+does not constitute temporal prediction.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{dashboard - 2 - temporal analysis.png}
+    \caption{Longitudinal patient history showing repeated assessment
+    snapshots and independently generated model-estimated probabilities and Change-analysis interface comparing laboratory features between
+    the current and previous assessment snapshots.}
+    \label{fig:dashboard_longitudinal}
+\end{figure}
+
+The dashboard further integrates patient-level SHAP explanations. The
+explanation view displays the contribution of individual features to the
+model output for the selected assessment. The model-derived feature splits
+are presented as contextual research findings and are not used as clinical
+treatment thresholds or as an alternative method for calculating the reported
+model probability.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{dashboard - 3 - shap analysis.png}
+    \caption{Patient-level SHAP explanation showing individual feature
+    contributions to the model output for a selected assessment.}
+    \label{fig:dashboard_change}
+\end{figure}
+
+
+
+The dashboard also includes a pediatric--adult comparison mode. The same
+entered feature vector can be evaluated using the available cohort-specific
+models, allowing differences in model-estimated probabilities and feature
+contributions to be inspected. This functionality is intended to demonstrate
+differences in model behavior between the two trained cohorts rather than to
+provide a clinical comparison of treatment or patient management.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{dashboard - 4 - cohort comparison.png}
+    \caption{Pediatric--adult model comparison showing cohort-specific model outputs and feature contributions for the same input assessment.}
+    \label{fig:dashboard_shap}
+\end{figure}
+
+Overall, the dashboard demonstrates the integration of model inference,
+patient-level explainability, repeated-assessment storage, descriptive change
+analysis, and cohort-specific model comparison within a single research
+interface. The current application remains snapshot-based. Repeated
+assessments are stored independently, and newly collected observations are not
+used for model retraining or temporal prediction.
+```
 
 \chapter{DISCUSSION}
 \section{Age-Conditioned Modeling and Feature Behavior}
@@ -510,7 +612,7 @@ The results highlight that model performance varies between age cohorts. The dif
 It is essential to recognize why these model-derived feature splits are not clinical thresholds. These splits reflect model behavior strictly optimized on a retrospective dataset using a PLT-derived severity proxy. They isolate conditions associated with positive SHAP contributions for the modeled Severe class within this specific computational framework, but they have not undergone independent or prospective validation against WHO-adjudicated clinical labels.
 
 \section{Dashboard Utility and Longitudinal Storage}
-The early-stage explainable dengue risk-assessment dashboard proves useful by translating complex analytical XAI findings into an interactive interface. More importantly, its integration with a relational database for structured storage of repeated laboratory assessments addresses a critical gap. By storing independent Day 1, Day 2, and subsequent assessments with their corresponding predictions, the dashboard enables descriptive longitudinal analysis. This framework facilitates future researchers in constructing rich, longitudinal datasets. However, it is critical to emphasize that the current machine learning models operate as snapshot predictors; therefore, the current system cannot claim to perform temporal prediction, but rather longitudinal visualization of independent cross-sectional inferences.
+The early-stage explainable dengue risk-assessment dashboard provides an application layer for interacting with the trained models and their patient-level explanations. Its structured storage component also provides a practical basis for recording repeated laboratory assessments for future longitudinal research. By storing independent Day 1, Day 2, and subsequent assessments with their corresponding predictions, the dashboard enables descriptive longitudinal analysis. This framework facilitates future researchers in constructing rich, longitudinal datasets. However, it is critical to emphasize that the current machine learning models operate as snapshot predictors; therefore, the current system cannot claim to perform temporal prediction, but rather longitudinal visualization of independent cross-sectional inferences.
 
 \chapter{CONCLUSION AND FUTURE WORK}
 \section{Conclusion}
