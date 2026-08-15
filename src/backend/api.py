@@ -6,7 +6,7 @@ import logging
 import traceback
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, field_validator
@@ -23,7 +23,13 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s │ %(name)s │ %
 logger = logging.getLogger("dengue_api")
 
 # ─── DB Setup ─────────────────────────────────────────────────────────────────
-DATABASE_URL = "sqlite+aiosqlite:///./dengue_dashboard.db"
+DATABASE_URL = os.environ.get("DATABASE_URL")
+if not DATABASE_URL:
+    if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"):
+        DATABASE_URL = "sqlite+aiosqlite:////tmp/dengue_dashboard.db"
+    else:
+        DATABASE_URL = "sqlite+aiosqlite:///./dengue_dashboard.db"
+
 engine = create_async_engine(DATABASE_URL, echo=False)
 async_session = async_sessionmaker(engine, expire_on_commit=False)
 
@@ -86,29 +92,48 @@ async def lifespan(app: FastAPI):
         logger.error(f"DB init failed: {e}")
         raise
 
-    base_path = os.path.join(os.path.dirname(__file__), '..', '..', 'models')
-    ped_path = os.path.join(base_path, 'pediatric_best.pkl')
-    adult_path = os.path.join(base_path, 'adult_best.pkl')
+    custom_model_dir = os.environ.get("MODEL_DIR")
+    search_dirs = [
+        custom_model_dir,
+        os.path.join(os.path.dirname(__file__), 'models'),
+        os.path.join(os.path.dirname(__file__), '..', 'models'),
+        os.path.join(os.path.dirname(__file__), '..', '..', 'models'),
+        os.path.join(os.getcwd(), 'models'),
+        os.path.join(os.getcwd(), 'backend', 'models'),
+    ]
 
-    if os.path.exists(ped_path):
+    ped_path = None
+    adult_path = None
+
+    for d in search_dirs:
+        if not d:
+            continue
+        p_cand = os.path.join(d, 'pediatric_best.pkl')
+        a_cand = os.path.join(d, 'adult_best.pkl')
+        if ped_path is None and os.path.exists(p_cand):
+            ped_path = p_cand
+        if adult_path is None and os.path.exists(a_cand):
+            adult_path = a_cand
+
+    if ped_path and os.path.exists(ped_path):
         try:
             models['Pediatric'] = joblib.load(ped_path)
             explainers['Pediatric'] = shap.TreeExplainer(models['Pediatric'])
-            logger.info("Pediatric model loaded.")
+            logger.info(f"Pediatric model loaded from: {ped_path}")
         except Exception as e:
-            logger.error(f"Failed to load Pediatric model: {e}")
+            logger.error(f"Failed to load Pediatric model ({ped_path}): {e}")
     else:
-        logger.warning(f"Pediatric model not found at: {ped_path}")
+        logger.warning("Pediatric model not found in searched directories.")
 
-    if os.path.exists(adult_path):
+    if adult_path and os.path.exists(adult_path):
         try:
             models['Adult'] = joblib.load(adult_path)
             explainers['Adult'] = shap.TreeExplainer(models['Adult'])
-            logger.info("Adult model loaded.")
+            logger.info(f"Adult model loaded from: {adult_path}")
         except Exception as e:
-            logger.error(f"Failed to load Adult model: {e}")
+            logger.error(f"Failed to load Adult model ({adult_path}): {e}")
     else:
-        logger.warning(f"Adult model not found at: {adult_path}")
+        logger.warning("Adult model not found in searched directories.")
 
     yield
 
@@ -146,9 +171,6 @@ async def http_exception_handler(request: Request, exc: HTTPException):
 #   Moderate dengue:   PLT 50,000–100,000 /µL
 #   Minor dengue:      PLT 100,000–150,000 /µL
 #   Normal (non-dengue likely): PLT > 150,000 /µL
-#
-# NOTE: PLT is excluded from model features to prevent data leakage.
-# It is only used here for pre-assessment clinical triage warnings.
 
 PLT_SEVERE_THRESHOLD   = 50_000   # < this → likely severe dengue
 PLT_MODERATE_THRESHOLD = 100_000  # < this → moderate
@@ -272,8 +294,10 @@ def preprocess_features(data: PatientData) -> pd.DataFrame:
     ]
     return df[expected_cols]
 
-# ─── Endpoints ────────────────────────────────────────────────────────────────
-@app.post("/predict")
+# ─── Endpoints Router ─────────────────────────────────────────────────────────
+router = APIRouter()
+
+@router.post("/predict")
 async def predict_risk(data: PatientData):
     try:
         if 'Pediatric' not in models or 'Adult' not in models:
@@ -303,32 +327,14 @@ async def predict_risk(data: PatientData):
         adult_prob = float(models['Adult'].predict_proba(df_features)[0][1] * 100)
 
         def extract_shap(explainer, X):
-            """
-            Normalize SHAP output across model types and SHAP versions:
-
-            - Older SHAP + sklearn RF (binary):
-                shap_values() → list [class0, class1], each (n_samples, n_features)
-                → use raw[1][0]
-
-            - Newer SHAP + sklearn 1.9 RF (binary):
-                shap_values() → single ndarray (n_samples, n_features, n_classes)
-                → use raw[0, :, 1]   (sample 0, all features, class 1 = severe)
-
-            - XGBoost binary:
-                shap_values() → single ndarray (n_samples, n_features)
-                → use raw[0]
-            """
             import numpy as np
             raw = explainer.shap_values(X)
             if isinstance(raw, list):
-                # Old-style list output [class0, class1]
                 return np.array(raw[1][0])
             arr = np.array(raw)
             if arr.ndim == 3:
-                # (n_samples, n_features, n_classes) — use class 1, sample 0
                 return arr[0, :, 1]
             else:
-                # (n_samples, n_features) — sample 0
                 return arr[0]
 
         ped_shap_values   = extract_shap(explainers['Pediatric'], df_features)
@@ -429,7 +435,7 @@ async def predict_risk(data: PatientData):
         raise HTTPException(status_code=500, detail=f"Assessment failed: {str(e)}")
 
 
-@app.get("/assessments/{patient_id}")
+@router.get("/assessments/{patient_id}")
 async def get_assessments(patient_id: str):
     try:
         async with async_session() as session:
@@ -511,10 +517,27 @@ async def get_assessments(patient_id: str):
         raise HTTPException(status_code=500, detail=f"Failed to fetch assessments: {str(e)}")
 
 
-@app.get("/health")
+@router.get("/health")
 async def health_check():
     return {
         "status": "ok",
         "models_loaded": list(models.keys()),
         "db": "connected"
+    }
+
+# ─── Attach Router & Root Handlers ────────────────────────────────────────────
+app.include_router(router)
+app.include_router(router, prefix="/api")
+
+@app.get("/")
+@app.get("/api")
+async def root():
+    return {
+        "name": "Dengue Risk Assessment API",
+        "status": "online",
+        "models_loaded": list(models.keys()),
+        "endpoints": [
+            "/predict", "/assessments/{patient_id}", "/health",
+            "/api/predict", "/api/assessments/{patient_id}", "/api/health"
+        ]
     }

@@ -41,7 +41,7 @@ function App() {
     setIsProcessing(true);
     try {
       const historyPromise = fetchAssessments(patientData.patient_id);
-      
+
       toast.promise(historyPromise, {
         loading: 'Loading patient history...',
         success: 'History loaded successfully!',
@@ -67,7 +67,7 @@ function App() {
       toast.error("Please enter at least Patient ID, Age, Gender, and Lymphocyte %");
       return;
     }
-    
+
     setIsProcessing(true);
     try {
       const assessmentPromise = calculateRisk(patientData);
@@ -112,7 +112,7 @@ function App() {
   const handleDownloadPDF = () => {
     generatePDFReport('report-container');
   };
-  
+
   const currentAssessment = assessments.length > 0 ? assessments[assessments.length - 1] : null;
 
   return (
@@ -136,16 +136,16 @@ function App() {
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <PatientInputForm data={patientData} onChange={handleInputChange} />
             <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-              <button 
-                className="btn btn-secondary" 
+              <button
+                className="btn btn-secondary"
                 style={{ flex: 1 }}
                 onClick={loadHistory}
                 disabled={isProcessing}
               >
                 <RefreshCw size={18} /> Load History
               </button>
-              <button 
-                className="btn btn-primary" 
+              <button
+                className="btn btn-primary"
                 style={{ flex: 2 }}
                 onClick={runAssessment}
                 disabled={isProcessing}
@@ -154,12 +154,12 @@ function App() {
               </button>
             </div>
           </div>
-          
+
           <div>
             {currentAssessment ? (
-              <RiskAssessmentPanel 
-                assessment={currentAssessment} 
-                onDownload={handleDownloadPDF} 
+              <RiskAssessmentPanel
+                assessment={currentAssessment}
+                onDownload={handleDownloadPDF}
               />
             ) : (
               <div className="card" style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', color: 'var(--text-light)' }}>

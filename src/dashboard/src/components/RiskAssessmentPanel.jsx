@@ -3,7 +3,7 @@ import { Download, AlertTriangle, Activity } from 'lucide-react';
 const RiskAssessmentPanel = ({ assessment, onDownload }) => {
   const { activeModel, pediatric, adult, cohort } = assessment;
   const currentModelData = activeModel === 'Pediatric' ? pediatric : adult;
-  
+
   const isHighRisk = currentModelData.probability > 50;
 
   return (
@@ -24,7 +24,7 @@ const RiskAssessmentPanel = ({ assessment, onDownload }) => {
             <h3>{Math.round(currentModelData.probability)}%</h3>
           </div>
         </div>
-        
+
         <h3 style={{ marginTop: '1.5rem', fontSize: '1.5rem', color: isHighRisk ? 'var(--danger)' : 'var(--success)' }}>
           {currentModelData.prediction}
         </h3>

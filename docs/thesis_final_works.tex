@@ -338,19 +338,47 @@ Clinical severity labels were established following the platelet-based proxy des
 To prevent target leakage during model training, the platelet count (PLT) and any features directly derived from it (such as the platelet-to-WBC ratio) were removed from the predictor set. Including these would artificially inflate model performance since they directly determine the target label.
 
 \section{Feature Engineering}
+Feature engineering was guided by established dengue pathophysiological mechanisms and World Health Organization (WHO) clinical diagnostic criteria \cite{who2009}. Rather than relying exclusively on raw numerical laboratory outputs, domain-specific features were constructed to capture discrete diagnostic thresholds, multi-organ enzyme patterns, and demographic interaction dynamics.
+
 \subsection{Hematological Indicators}
-Engineered clinical flags were created to represent established clinical thresholds:
+Engineered clinical flags were designed to represent clinically established hematological thresholds:
 \begin{itemize}
-    \item \textbf{Leukopenia:} WBC $< 4,000 \text{ cells/mm}^3$.
-    \item \textbf{Lymphopenia:} Lymphocytes $< 20\%$.
-    \item \textbf{Neutrophilia:} Neutrophils $> 70\%$.
+    \item \textbf{Leukopenia ($\text{WBC} < 4,000 \text{ cells/mm}^3$):} Leukopenia is one of the earliest and most consistent laboratory abnormalities in acute dengue infection, caused by direct viral suppression of bone marrow hematopoiesis during the early febrile phase (typically Days 3--5) \cite{halstead2007}. The WHO 2009 guidelines formally define $\text{WBC} < 4.0 \times 10^3/\mu\text{L}$ as a key supportive diagnostic criterion \cite{who2009}.
+    \item \textbf{Lymphopenia ($\text{Lymphocytes} < 20\%$) and Neutrophilia ($\text{Neutrophils} > 70\%$):} Dengue induces a dynamic, phase-dependent shift in white blood cell differential counts. The early febrile phase often presents with relative neutrophilia, which is subsequently replaced by reactive lymphocytosis as the infection progresses \cite{potts2008}. However, early-presentation lymphopenia has been identified as a strong predictor of dengue-positive status and severe trajectory \cite{yap2011}. Flagging both ends of this differential spectrum captures the host inflammatory progression.
 \end{itemize}
 
 \subsection{Biochemical Features}
-Liver involvement was assessed by creating an AST/ALT ratio and a binary flag for elevated transaminases ($\text{AST} > 40 \text{ U/L}$ or $\text{ALT} > 40 \text{ U/L}$).
+Hepatic involvement is a hallmark of dengue virus infection, as the virus directly infects hepatocytes and resident macrophages:
+\begin{itemize}
+    \item \textbf{AST/ALT Ratio:} A distinctive clinical feature of dengue-associated liver injury is that aspartate aminotransferase (AST) rises disproportionately higher than alanine aminotransferase (ALT), producing an $\text{AST}/\text{ALT} \text{ ratio} > 1$ (frequently around 1.7--1.8) \cite{who2009, souza2004}. This pattern differs from typical acute viral hepatitis (where ALT typically exceeds AST) and reflects systemic tissue involvement including immune cells and myocytes in addition to hepatic inflammation.
+    \item \textbf{Elevated Transaminases Flag ($\text{AST} > 40 \text{ U/L}$ or $\text{ALT} > 40 \text{ U/L}$):} The threshold of $40 \text{ U/L}$ represents the standard laboratory upper limit of normal (ULN). Elevated transaminases correlate strongly with severe disease progression (Dengue Hemorrhagic Fever and Dengue Shock Syndrome) \cite{binh2009}, with severe dengue definitions incorporating extreme transaminase elevations ($\ge 1,000 \text{ U/L}$) \cite{who2009}.
+\end{itemize}
 
 \subsection{Demographic Interaction Features}
-Additional features included the patient's age grouped by decade, and a gender-age interaction term, to capture non-linear demographic effects.
+\begin{itemize}
+    \item \textbf{Age Grouped by Decade:} The clinical risk and physiological vulnerability to severe dengue follow a non-linear, bimodal relationship with age, exhibiting heightened vulnerability in young children and older adults \cite{halstead2007, anders2011}. Grouping continuous age into decadal intervals enables tree-based models to learn decade-specific decision boundaries rather than assuming a strictly monotonic linear trend.
+    \item \textbf{Gender--Age Interaction Term ($\text{Gender} \times \text{Age}$):} Epidemiological studies indicate that biological sex and age interact non-linearly to influence both vector exposure risks and severe clinical outcomes \cite{martinezvega2015}. A multiplicative interaction term encodes this joint demographic effect into the feature space.
+\end{itemize}
+
+Table~\ref{tab:feature_engineering_summary} provides a summary of the engineered features, their clinical rationale, and supporting literature.
+
+\begin{table}[htbp]
+\centering
+\caption{Summary of Engineered Features, Clinical Basis, and Literature Justifications}
+\label{tab:feature_engineering_summary}
+\small
+\begin{tabularx}{\textwidth}{|l|l|X|l|}
+\hline
+\textbf{Feature Name} & \textbf{Formulation} & \textbf{Clinical Basis \& Rationale} & \textbf{Key Authority} \\ \hline
+\texttt{wbc\_leukopenia} & $\text{WBC} < 4.0 \times 10^3/\mu\text{L}$ & Early bone marrow suppression; supportive diagnostic sign & WHO (2009) \cite{who2009} \\ \hline
+\texttt{lymph\_low} & $\text{Lymphocyte \%} < 20\%$ & Early lymphopenia predicts dengue infection and severity & Yap et al. (2011) \cite{yap2011} \\ \hline
+\texttt{neut\_high} & $\text{Neutrophil \%} > 70\%$ & Early-phase inflammatory leukocyte shift & Potts \& Rothman (2008) \cite{potts2008} \\ \hline
+\texttt{ast\_alt\_ratio} & $\text{AST} / (\text{ALT} + 10^{-5})$ & AST rises disproportionately to ALT in dengue hepatic injury & Souza et al. (2004) \cite{souza2004} \\ \hline
+\texttt{liver\_involvement} & $\text{AST} > 40 \lor \text{ALT} > 40$ & Transaminase elevation above ULN indicates liver damage & Binh et al. (2009) \cite{binh2009} \\ \hline
+\texttt{age\_decade} & $\lfloor \text{Age} / 10 \rfloor$ & Captures non-linear, bimodal age-severity relationship & Halstead (2007) \cite{halstead2007} \\ \hline
+\texttt{gender\_age\_int} & $\text{Gender} \times \text{Age}$ & Encodes joint sex--age disparity in clinical risk & Martínez-Vega (2015) \cite{martinezvega2015} \\ \hline
+\end{tabularx}
+\end{table}
 
 \section{Machine Learning Model Development}
 \subsection{Dataset Splitting}
@@ -429,7 +457,7 @@ The methodology established the dataset, preprocessing procedure, age-specific c
 
 \chapter{RESULTS AND ANALYSIS}
 \section{Exploratory Data Analysis}
-Exploratory analysis of baseline hematological parameters showed differences in feature distributions between age cohorts (Figure \ref{fig:eda}). Pediatric cases exhibited higher baseline median lymphocyte percentages compared to adult cases.
+Exploratory data analysis of the 972 laboratory-confirmed NS1-positive dengue patients revealed notable physiological and distribution differences between the pediatric ($n=158$, $\le 18$ years; median age 16.0 years, IQR 4.0) and adult ($n=814$, $> 18$ years; median age 30.0 years, IQR 17.0) cohorts (Figure~\ref{fig:eda}).
 
 \begin{figure}[htbp]
     \centering
@@ -437,6 +465,14 @@ Exploratory analysis of baseline hematological parameters showed differences in 
     \caption{Comparison of key hematological parameters between pediatric ($n=158$) and adult ($n=814$) cohorts.}
     \label{fig:eda}
 \end{figure}
+
+Key distributional observations include:
+\begin{itemize}
+    \item \textbf{Lymphocyte Distribution and Reactive Lymphocytosis:} Pediatric patients exhibited a higher baseline median lymphocyte percentage of $39.39\%$ (IQR: $23.87\%$) compared to $35.70\%$ (IQR: $22.52\%$) in adults. When stratified by severity, pediatric severe cases exhibited a pronounced shift toward higher lymphocyte percentages (median $49.49\%$ vs. $35.35\%$ in non-severe pediatric cases), consistent with atypical reactive lymphocytosis during acute severe immune responses in children. In adults, the corresponding shift was less extreme (median $41.82\%$ in severe vs. $30.60\%$ in non-severe).
+    \item \textbf{White Blood Cell Count (WBC):} Leukopenia was prevalent across both age groups, with pediatric cases exhibiting a median baseline WBC of $5.64 \times 10^3/\mu\text{L}$ (IQR: 4.53) and adult cases exhibiting a median of $5.30 \times 10^3/\mu\text{L}$ (IQR: 3.73), with broader variance observed in pediatric counts.
+    \item \textbf{Hematocrit (HCT) and Hemoconcentration:} Adults demonstrated higher baseline median hematocrit ($41.50\%$, IQR: $8.12\%$) than pediatric patients ($39.03\%$, IQR: $7.87\%$). Adult severe cases showed evidence of plasma leakage and hemoconcentration with a median HCT of $43.20\%$ (compared to $40.07\%$ in non-severe adults), whereas pediatric severe cases maintained a median HCT of $39.17\%$.
+    \item \textbf{Liver Transaminases:} Both cohorts exhibited hepatic transaminase elevations with median AST ($57.00 \text{ U/L}$) consistently exceeding median ALT ($49.00 \text{ U/L}$), corroborating the hallmark $\text{AST} > \text{ALT}$ pattern of dengue-mediated liver involvement across both age groups.
+\end{itemize}
 
 \section{Model Performance Evaluation}
 Across all cohorts, ensemble methods (RF and Stacking) consistently outperformed Logistic Regression. In the pediatric cohort, the Stacking Ensemble and Random Forest tied on Accuracy (90.6\%) and F1-Score (0.800), with Random Forest achieving the highest AUC of 0.961. In the adult cohort, Random Forest achieved 84.7\% Accuracy, 0.892 AUC-ROC, 0.900 Specificity, and an F1-Score of 0.820. Evaluations were based on a single stratified 80/20 train-test split; consequently, these metrics reflect single-split validation rather than established cross-center generalizability, particularly given the constrained pediatric cohort size ($n=158$).
@@ -477,7 +513,7 @@ Across all cohorts, ensemble methods (RF and Stacking) consistently outperformed
 \endgroup
 
 \section{SHAP Feature Attribution}
-Feature attribution rankings were generated using XGBoost TreeExplainer outputs (Figure \ref{fig:shap}). Lymphocyte percentage, WBC count, and AST emerged among the top predictive features across models.
+Feature attribution analysis was performed using the XGBoost TreeExplainer across the Pooled, Pediatric, and Adult cohorts (Figure~\ref{fig:shap}). Table~\ref{tab:shap_rankings} lists the top-5 features and their corresponding mean absolute SHAP values ($\text{mean } |\text{SHAP}|$) for each cohort.
 
 \begin{figure}[htbp]
     \centering
@@ -486,8 +522,33 @@ Feature attribution rankings were generated using XGBoost TreeExplainer outputs 
     \label{fig:shap}
 \end{figure}
 
+\begin{table}[htbp]
+\centering
+\caption{Top-5 Features by Mean Absolute SHAP Contribution ($\text{mean } |\text{SHAP}|$) Across Cohorts}
+\label{tab:shap_rankings}
+\small
+\begin{tabular}{c|lc|lc|lc}
+\toprule
+\textbf{Rank} & \multicolumn{2}{c|}{\textbf{Pooled Cohort}} & \multicolumn{2}{c|}{\textbf{Pediatric Cohort}} & \multicolumn{2}{c}{\textbf{Adult Cohort}} \\
+ & \textbf{Feature} & \textbf{Mean $|\text{SHAP}|$} & \textbf{Feature} & \textbf{Mean $|\text{SHAP}|$} & \textbf{Feature} & \textbf{Mean $|\text{SHAP}|$} \\
+\midrule
+1 & Age          & 1.179 & Lymphocyte \% & 1.438 & Lymphocyte \% & 1.173 \\
+2 & Lymphocyte \%& 1.173 & Neutrophil \% & 0.876 & Age           & 0.922 \\
+3 & HCT          & 0.643 & WBC           & 0.714 & HCT           & 0.905 \\
+4 & WBC          & 0.626 & RBC           & 0.562 & Neutrophil \% & 0.737 \\
+5 & RBC          & 0.618 & Age           & 0.522 & WBC           & 0.728 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \section{Pediatric--Adult Rank Comparison}
-Kendall's $\tau$-b rank correlation between pediatric and adult SHAP feature rankings was 0.900. This indicates strong relative agreement in overall feature importance ranking between age groups. However, while feature rankings were similar, individual feature contribution magnitudes and decision splits differed between cohorts.
+Kendall's $\tau$-b rank correlation was computed across the ordered feature sets to quantify the alignment in feature importance hierarchies:
+\begin{itemize}
+    \item \textbf{Pediatric vs. Adult Cohort:} $\tau\text{-b} = 0.900$, demonstrating strong relative agreement in overall clinical feature importance ranking.
+    \item \textbf{Pediatric vs. Pooled Cohort:} $\tau\text{-b} = 0.850$.
+    \item \textbf{Adult vs. Pooled Cohort:} $\tau\text{-b} = 0.950$, reflecting the dominant proportion of adults ($83.7\%$) in the pooled dataset.
+\end{itemize}
+While relative rankings are highly correlated across age groups, the absolute SHAP contribution magnitudes and specific distribution spreads differ substantially. For example, Lymphocyte percentage exerts a significantly stronger contribution in the pediatric model ($\text{mean } |\text{SHAP}| = 1.438$) than in the adult model ($1.173$), while Hematocrit (HCT) ranks 3rd in adults ($0.905$) but falls outside the top-5 in children.
 
 \section{Model-derived Feature Splits}
 To convert continuous SHAP values into explicit feature thresholds, a depth-1 decision tree was fitted to SHAP values ($> 0$), identifying single feature splits associated with positive model contribution:
@@ -666,6 +727,14 @@ This research establishes a foundation for a logical progression of future studi
 \bibitem{chowdhury2022} S. U. Chowdhury et al., "Shapley-Additive-Explanations-Based Factor Analysis for Dengue Severity Prediction," \textit{Journal of Imaging}, vol. 8, no. 9, p. 229, 2022.
 \bibitem{masum2025} A. K. M. Masum et al., "Enhancing Dengue Fever Diagnosis: A Machine Learning Framework with Stacking Ensemble and SHAP Explainability," \textit{IEEE QPAIN}, 2025.
 \bibitem{tuhin2025} I. A. Tuhin et al., "An interpretable machine learning model for dengue detection with clinical hematological data," \textit{Healthcare Analytics}, 2025.
+\bibitem{who2009} World Health Organization (WHO), \textit{Dengue: Guidelines for Diagnosis, Treatment, Prevention and Control}, Geneva: World Health Organization, 2009.
+\bibitem{halstead2007} S. B. Halstead, "Dengue," \textit{The Lancet}, vol. 370, no. 9599, pp. 1644-1652, 2007.
+\bibitem{yap2011} G. Yap et al., "Lymphopenia as a predictor of dengue fever," \textit{PLOS Neglected Tropical Diseases}, vol. 5, no. 1, p. e988, 2011.
+\bibitem{potts2008} J. A. Potts and A. L. Rothman, "Clinical and laboratory features that distinguish dengue from other febrile illnesses in endemic populations," \textit{Tropical Medicine \& International Health}, vol. 13, no. 11, pp. 1328-1340, 2008.
+\bibitem{souza2004} L. J. Souza et al., "Aminotransferase changes and acute hepatitis in patients with dengue fever," \textit{Revista do Instituto de Medicina Tropical de São Paulo}, vol. 46, no. 2, pp. 77-81, 2004.
+\bibitem{binh2009} P. T. Binh et al., "Liver involvement in dengue," \textit{Journal of Clinical Virology}, vol. 46, no. 2, pp. 99-103, 2009.
+\bibitem{anders2011} K. L. Anders et al., "The epidemiology of dengue varies at the household level," \textit{PLOS Neglected Tropical Diseases}, vol. 5, no. 7, p. e1250, 2011.
+\bibitem{martinezvega2015} R. A. Martínez-Vega et al., "Gender differences in dengue: a systematic review and meta-analysis," \textit{Emerging Microbes \& Infections}, vol. 4, no. 1, p. e11, 2015.
 \bibitem{lu2025} B. Lu et al., "Assessing generalizability of a dengue classifier across multiple datasets," \textit{PLOS ONE}, vol. 20, no. 8, p. e0323886, 2025.
 \bibitem{haque2025} M. E. Haque et al., "A novel interpretable and real-time dengue prediction framework using clinical blood parameters," \textit{Frontiers in AI}, vol. 8, p. 1626699, 2025.
 \bibitem{joly2024} N. A. Joly et al., "An Explainable AI Based Approach for Forecasting Dengue Diseases Using Patient's Phenotypic Traits," \textit{IEEE ICCIT}, 2024.
