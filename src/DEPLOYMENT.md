@@ -1,82 +1,84 @@
 # Dengue Clinical Risk Dashboard — Deployment Guide
 
-This guide provides end-to-end instructions for deploying the **React + Vite Dashboard** and the **FastAPI Machine Learning Backend** together on a **single Vercel domain** (or via a decoupled architecture).
+---
+
+## ⚠️ Why Vercel Fails for Full Python ML Backends (500 MB Limit)
+
+When deploying Python serverless functions on Vercel, the platform packages all Python libraries into an AWS Lambda container with a **strict hard limit of 500 MB uncompressed**:
+- `xgboost` + `shap` + `scikit-learn` + `scipy` + `pandas` + `llvmlite` = **1640.37 MB** (exceeds Vercel's 500 MB limit).
+
+### The Solution: Decoupled Production Architecture (Industry Standard)
+- **Frontend (Vite + React)**: Hosted on **Vercel** (Blazing fast global edge network, 0 MB ML overhead, free).
+- **Backend (FastAPI + XGBoost + SHAP)**: Hosted on **Render**, **Railway**, **Fly.io**, or **Hugging Face Spaces** (Full container support, no bundle size limits, persistent database).
+
+```
+          ┌─────────────────────────┐
+          │   React + Vite Client   │
+          │   (Hosted on Vercel)    │
+          └───────────┬─────────────┘
+                      │
+                      │ HTTPS API Calls (VITE_API_URL)
+                      ▼
+          ┌─────────────────────────┐
+          │   FastAPI ML Backend    │
+          │  (Render / Railway / HF)│
+          └───────────┬─────────────┘
+                      │
+          ┌───────────▼─────────────┐
+          │   SQLite / PostgreSQL   │
+          │  (Assessment History)   │
+          └─────────────────────────┘
+```
 
 ---
 
-## 🏗️ Architecture: Unified Single-Domain Deployment on Vercel
+## 🚀 Step 1: Deploy Backend (2 Minutes on Render — Free)
 
-```
-                                  https://your-app.vercel.app
-                                              │
-                      ┌───────────────────────┴───────────────────────┐
-                      ▼                                               ▼
-          Static Client Assets                            Serverless API Function
-       (dashboard/dist/index.html)                            (api/index.py)
-                      │                                               │
-             React 19 + Recharts                             FastAPI Backend
-          • Risk Assessment Form                          • /predict & /api/predict
-          • Waterfall & Radar Charts                      • /assessments & /api/assessments
-          • Patient Timeline & Deltas                     • /health & /api/health
-                                                                      │
-                                                          XGBoost + SHAP Tree Models
-                                                         (pediatric_best / adult_best)
-                                                                      │
-                                                             SQLite Database
-                                                       (/tmp/dengue_dashboard.db)
-```
+1. Push your repository to **GitHub**.
+2. Go to [Render Dashboard](https://dashboard.render.com/) and click **New +** → **Web Service**.
+3. Select your repository and configure the settings:
+   - **Name**: `dengue-risk-api`
+   - **Region**: Oregon (US West) or Frankfurt (EU)
+   - **Root Directory**: `src/backend` (or `backend`)
+   - **Runtime**: `Python 3`
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `uvicorn api:app --host 0.0.0.0 --port $PORT`
+   - **Instance Type**: `Free`
+4. Expand **Environment Variables** and add:
+   - `DATABASE_URL` = `sqlite+aiosqlite:///./dengue_dashboard.db`
+   - `MODEL_DIR` = `../models`
+5. Click **Create Web Service**.
+6. Once deployed, copy your live backend URL (e.g., `https://dengue-risk-api.onrender.com`).
+
+> **Tip**: Verify your backend is running by opening `https://dengue-risk-api.onrender.com/health` in your browser. It should return:
+> `{"status":"ok","models_loaded":["Pediatric","Adult"],"db":"connected"}`
 
 ---
 
-## 🚀 How to Deploy on Vercel in 1 Domain
+## ⚡ Step 2: Deploy Frontend on Vercel
 
-### Option 1: Via Vercel Web Dashboard (GitHub Import)
-1. Push your repository to GitHub.
-2. Go to [vercel.com/new](https://vercel.com/new) and import your repository.
-3. In the project settings:
+1. Go to [vercel.com/new](https://vercel.com/new) and import your GitHub repository.
+2. Configure the project settings:
    - **Framework Preset**: `Vite`
-   - **Root Directory**: `src` (if deploying from `src/` folder) or `./` (if root of repo is `src`)
-   - **Build Command**: `cd dashboard && npm install && npm run build` *(auto-configured via `vercel.json`)*
-   - **Output Directory**: `dashboard/dist` *(auto-configured via `vercel.json`)*
-4. **Environment Variables**:
-   - `MODEL_DIR`: `models` *(optional, models are automatically bundled in `src/models/`)*
-   - Leave `VITE_API_URL` empty so the frontend automatically calls relative `/predict`, `/assessments`, and `/health` routes on the same domain.
-5. Click **Deploy**.
+   - **Root Directory**: Click `Edit` and select `src/dashboard` (or `dashboard`)
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+3. Expand **Environment Variables** and add:
+   - **Key**: `VITE_API_URL`
+   - **Value**: `https://dengue-risk-api.onrender.com` *(your live Render backend URL from Step 1)*
+4. Click **Deploy**.
 
 ---
 
-### Option 2: Via Vercel CLI
-```bash
-# Install Vercel CLI if needed
-npm install -g vercel
+## 🧪 Step 3: Verification Checklist
 
-# From the src directory:
-vercel
-
-# For production deployment:
-vercel --prod
-```
-
----
-
-## 🧪 Verification & Health Check
-
-Once deployed, you can verify your single-domain deployment:
-
-1. **API Status & Health**:
+1. **Check Backend Health**:
    ```bash
-   curl https://<your-vercel-domain>.vercel.app/health
+   curl https://<your-render-api>.onrender.com/health
    # Returns: {"status":"ok","models_loaded":["Pediatric","Adult"],"db":"connected"}
    ```
 
-2. **Run a Test Prediction**:
-   ```bash
-   curl -X POST https://<your-vercel-domain>.vercel.app/predict \
-     -H "Content-Type: application/json" \
-     -d '{"patient_id":"P001","age":30,"gender":0,"wbc":3.2,"hct":44.0,"rbc":4.5,"lymph":18.0,"neut":72.0,"alt":65.0,"ast":80.0,"plt":40.0}'
-   ```
-
-3. **Dashboard Web Interface**:
-   - Open `https://<your-vercel-domain>.vercel.app` in your browser.
-   - Enter patient parameters and click **Run & Store Assessment Snapshot**.
-   - Verify risk score, SHAP waterfall explanations, and patient longitudinal history render cleanly without CORS or routing issues.
+2. **Check Dashboard in Browser**:
+   - Open your deployed Vercel URL (`https://your-dashboard.vercel.app`).
+   - Enter patient parameters (e.g. Age: 25, WBC: 3.0, PLT: 40) and click **Run & Store Assessment Snapshot**.
+   - Confirm risk score, SHAP waterfall chart, and timeline update in real-time.
