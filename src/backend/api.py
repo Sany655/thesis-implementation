@@ -135,6 +135,8 @@ async def lifespan(app: FastAPI):
     else:
         logger.warning("Adult model not found in searched directories.")
 
+    await seed_initial_data_if_empty()
+
     yield
 
 app = FastAPI(title="Dengue Risk Assessment API", lifespan=lifespan)
@@ -293,6 +295,130 @@ def preprocess_features(data: PatientData) -> pd.DataFrame:
         'age_decade', 'gender_age_int'
     ]
     return df[expected_cols]
+
+async def seed_initial_data_if_empty():
+    try:
+        async with async_session() as session:
+            result = await session.execute(select(Patient).limit(1))
+            if result.scalars().first() is not None:
+                logger.info("Database already contains patient records.")
+                return
+
+            logger.info("Database empty on startup. Checking for seed CSV...")
+            possible_csv_paths = [
+                os.path.join(os.path.dirname(__file__), "seed_data.csv"),
+                os.path.join(os.path.dirname(__file__), "..", "..", "data", "synthesized_longitudinal_dengue_dataset.csv"),
+                os.path.join(os.path.dirname(__file__), "..", "data", "synthesized_longitudinal_dengue_dataset.csv"),
+                os.path.join(os.getcwd(), "data", "synthesized_longitudinal_dengue_dataset.csv"),
+            ]
+            csv_path = None
+            for p in possible_csv_paths:
+                if os.path.exists(p):
+                    csv_path = p
+                    break
+
+            if not csv_path:
+                logger.warning("Seed CSV not found, skipping auto-seeding.")
+                return
+
+            logger.info(f"Seeding database from {csv_path}...")
+            df_seed = pd.read_csv(csv_path)
+
+            unique_patients = df_seed.drop_duplicates(subset=["Patient"])
+            for _, p_row in unique_patients.iterrows():
+                patient = Patient(
+                    patient_id=str(p_row["Patient"]),
+                    age=float(p_row["Age"]),
+                    gender="Male" if str(p_row["Sex"]).lower() == "male" else "Female"
+                )
+                session.add(patient)
+            await session.flush()
+
+            for _, row in df_seed.iterrows():
+                ts_str = str(row["Timestamp"]) if "Timestamp" in row and pd.notna(row["Timestamp"]) else ""
+                try:
+                    ts = datetime.strptime(ts_str, "%Y-%m-%d %H:%M:%S")
+                except Exception:
+                    ts = datetime.utcnow()
+
+                assessment = LabAssessment(
+                    assessment_id=str(uuid.uuid4()),
+                    patient_id=str(row["Patient"]),
+                    assessment_time=ts,
+                    wbc=float(row["WBC (×10³/µL)"]),
+                    hct=float(row["HCT (%)"]),
+                    rbc=float(row["RBC"]),
+                    lymphocyte=float(row["Lymph %"]),
+                    neutrophil=float(row["Neut %"]),
+                    ast=float(row["AST"]),
+                    alt=float(row["ALT"]),
+                    plt=float(row["PLT (×10³/µL)"])
+                )
+                session.add(assessment)
+                await session.flush()
+
+                if "Pediatric" in models and "Adult" in models:
+                    p_data = PatientData(
+                        patient_id=str(row["Patient"]),
+                        age=float(row["Age"]),
+                        gender=0 if str(row["Sex"]).lower() == "male" else 1,
+                        wbc=float(row["WBC (×10³/µL)"]),
+                        hct=float(row["HCT (%)"]),
+                        rbc=float(row["RBC"]),
+                        lymph=float(row["Lymph %"]),
+                        neut=float(row["Neut %"]),
+                        alt=float(row["ALT"]),
+                        ast=float(row["AST"]),
+                        plt=float(row["PLT (×10³/µL)"])
+                    )
+                    df_feat = preprocess_features(p_data)
+                    ped_prob = float(models['Pediatric'].predict_proba(df_feat)[0][1] * 100)
+                    adult_prob = float(models['Adult'].predict_proba(df_feat)[0][1] * 100)
+
+                    def extract_shap(explainer, X):
+                        import numpy as np
+                        raw = explainer.shap_values(X)
+                        if isinstance(raw, list):
+                            return np.array(raw[1][0])
+                        arr = np.array(raw)
+                        if arr.ndim == 3:
+                            return arr[0, :, 1]
+                        else:
+                            return arr[0]
+
+                    ped_shap_vals = extract_shap(explainers['Pediatric'], df_feat)
+                    adult_shap_vals = extract_shap(explainers['Adult'], df_feat)
+                    feat_list = df_feat.columns.tolist()
+                    feat_vals = df_feat.iloc[0].tolist()
+
+                    for cohort_name, prob, s_vals in [
+                        ("Pediatric", ped_prob, ped_shap_vals),
+                        ("Adult", adult_prob, adult_shap_vals)
+                    ]:
+                        pred_class = "High-risk pattern" if prob > 50 else "Low-risk pattern"
+                        pred = ModelPrediction(
+                            prediction_id=str(uuid.uuid4()),
+                            assessment_id=assessment.assessment_id,
+                            cohort=cohort_name,
+                            model="RandomForest",
+                            predicted_class=pred_class,
+                            probability=prob
+                        )
+                        session.add(pred)
+                        await session.flush()
+
+                        for f_i, val in enumerate(s_vals):
+                            session.add(ShapExplanation(
+                                prediction_id=pred.prediction_id,
+                                feature=feat_list[f_i],
+                                shap_value=float(val),
+                                feature_val=float(feat_vals[f_i])
+                            ))
+
+            await session.commit()
+            logger.info("Successfully seeded database on startup.")
+    except Exception as e:
+        logger.error(f"Error during auto-seeding: {e}\n{traceback.format_exc()}")
 
 # ─── Endpoints Router ─────────────────────────────────────────────────────────
 router = APIRouter()
@@ -517,6 +643,34 @@ async def get_assessments(patient_id: str):
         raise HTTPException(status_code=500, detail=f"Failed to fetch assessments: {str(e)}")
 
 
+@router.get("/patients")
+async def get_patients():
+    try:
+        async with async_session() as session:
+            result = await session.execute(
+                select(Patient)
+                .options(selectinload(Patient.assessments))
+                .order_by(Patient.patient_id.asc())
+            )
+            patients = result.scalars().all()
+
+            patient_list = []
+            for p in patients:
+                patient_list.append({
+                    "patient_id": p.patient_id,
+                    "age": p.age,
+                    "gender": p.gender,
+                    "cohort": "Pediatric" if p.age <= 18 else "Adult",
+                    "assessments_count": len(p.assessments),
+                })
+            return patient_list
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Unexpected error in /patients: {e}\n{traceback.format_exc()}")
+        raise HTTPException(status_code=500, detail=f"Failed to fetch patients: {str(e)}")
+
+
 @router.get("/health")
 async def health_check():
     return {
@@ -537,7 +691,7 @@ async def root():
         "status": "online",
         "models_loaded": list(models.keys()),
         "endpoints": [
-            "/predict", "/assessments/{patient_id}", "/health",
-            "/api/predict", "/api/assessments/{patient_id}", "/api/health"
+            "/predict", "/assessments/{patient_id}", "/patients", "/health",
+            "/api/predict", "/api/assessments/{patient_id}", "/api/patients", "/api/health"
         ]
     }

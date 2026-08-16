@@ -51,6 +51,22 @@ function App() {
       const history = await historyPromise;
       if (history && history.length > 0) {
         setAssessments(history);
+        const latest = history[history.length - 1];
+        if (latest?.input) {
+          setPatientData({
+            patient_id: latest.patient_id || patientData.patient_id,
+            age: latest.input.age !== undefined ? String(latest.input.age) : '',
+            gender: latest.input.gender !== undefined ? String(latest.input.gender) : '',
+            wbc: latest.input.wbc !== undefined ? String(latest.input.wbc) : '',
+            hct: latest.input.hct !== undefined ? String(latest.input.hct) : '',
+            rbc: latest.input.rbc !== undefined ? String(latest.input.rbc) : '',
+            lymph: latest.input.lymph !== undefined ? String(latest.input.lymph) : '',
+            neut: latest.input.neut !== undefined ? String(latest.input.neut) : '',
+            alt: latest.input.alt !== undefined ? String(latest.input.alt) : '',
+            ast: latest.input.ast !== undefined ? String(latest.input.ast) : '',
+            plt: latest.input.plt !== undefined ? String(latest.input.plt) : '',
+          });
+        }
       } else {
         toast('No history found for this Patient ID.', { icon: 'ℹ️' });
         setAssessments([]);

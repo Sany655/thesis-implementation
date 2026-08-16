@@ -73,3 +73,24 @@ export const fetchAssessments = async (patientId) => {
   const result = await response.json();
   return result;
 };
+
+/**
+ * GET /patients
+ * Returns array of patients in the system.
+ */
+export const fetchPatients = async () => {
+  let response;
+  try {
+    response = await fetch(`${API_BASE}/patients`);
+  } catch (networkErr) {
+    throw new Error('Cannot reach the backend server. Is uvicorn running?');
+  }
+
+  if (!response.ok) {
+    const msg = await parseErrorMessage(response);
+    throw new Error(msg);
+  }
+
+  const result = await response.json();
+  return result;
+};
