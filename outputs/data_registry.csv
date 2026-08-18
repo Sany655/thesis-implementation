@@ -1,0 +1,6 @@
+Source,File,SHA-256,Raw_Rows,Columns
+BD_v4,Dengue Hematology Dataset_bd v4.csv,c20adaf84bb638e84a124ab15b090f7b008a8ef2d8dd876ed399ced1b87d4184,1329,13
+BD_v2,dengue_dataset v2.csv,2535228a4f4fc7f74f698b6a4cc8036f33c37617c357e9a32d49b220ee3e8459,50,10
+Kaggle,Dengue Fever Hematological Dataset - Md Mahmudul Hasan Moon - kaggle.csv,7fe3ca60e1adfe0ab1f24f382452ee4600709bd846a3cb7d2b309f0288bb4f44,1523,19
+BD_v1,Dengue Hematology Dataset_bd v1.csv,9f0fff4cef39c6045e33618d307c47224361e8f26a6cb92c8fa3749c30fffe54,1037,13
+BD_v3,Dengue Hematology Dataset_bd v3.csv,9f0fff4cef39c6045e33618d307c47224361e8f26a6cb92c8fa3749c30fffe54,1037,13

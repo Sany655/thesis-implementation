@@ -101,17 +101,14 @@ const PatientInputForm = ({ data, onChange }) => {
             className="form-control"
             value={data.patient_id}
             onChange={onChange}
-            placeholder="e.g. P005 (P005 to P050)"
+            placeholder="e.g. P001"
             list="patient-options"
           />
           <datalist id="patient-options">
-            {Array.from({ length: 46 }, (_, i) => {
-              const num = String(i + 5).padStart(3, '0');
-              return <option key={num} value={`P${num}`} label={`Patient P${num} (Days 1–5 longitudinal data)`} />;
-            })}
+            <option value="P001" label="Patient P001 (Days 1–5 longitudinal data)" />
           </datalist>
           <small style={{ color: 'var(--text-light)', fontSize: '0.75rem' }}>
-            Synthesized longitudinal cohort available: <strong>P005</strong> to <strong>P050</strong> (5 longitudinal days each)
+            Enter a Patient ID (e.g. <strong>P001</strong>) and click <em>Load History</em> to inspect longitudinal trajectory
           </small>
         </div>
 

@@ -1,0 +1,11 @@
+Feature,Mean_Abs_SHAP
+HCT_pct,2.873491
+RBC,1.5030092
+Age,1.0557301
+WBC_k,0.98895556
+Lymph_pct,0.94474417
+Neut_pct,0.5324245
+Gender,0.0
+HGB,0.0
+ALT,0.0
+AST,0.0
