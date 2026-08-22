@@ -1,0 +1,629 @@
+{
+    "results": [
+        {
+            "abstract": "This study presents a comprehensive statistical and graphical analysis of hematological parameters in a cohort of 1523 dengue patients in a thorough search for the determination of the clinical features of dengue fever. The most important parameters were hemoglobin level, neutrophil and lymphocyte counts, and total platelet counts, whose statistical analysis has been conducted with the vision to clarify their role in dengue pathology. Statistical significance finds the key hematological parameters such as neutrophils, lymphocytes, monocytes, red blood cells, and RDW-CV to be strongly associated with dengue, and the same is borne out by their p-values. The gender, hemoglobin, MCH, and PDW are less strongly related, however. The consistency of results using T-tests as well as Z-tests strengthens the findings, highlighting significant markers while also pointing out how more intricate interactions would be uncovered using multivariate analysis. Subsequently, several data visualizations were constructed using box plots, violin plots, and pair plots. Hematological parameters in dengue positive and negative patients are somewhat disparate, as shown by box plots; positive patients presented with lower WBC and RBC counts and higher hemoglobin levels and monocyte percentages. Although females tend to have greater monocyte percentages and platelet counts and males tend to have overall greater hematocrit levels, violin plots do not indicate any gender differences in the majority of the blood parameters. The pair plot indicates that younger patients with lower hemoglobin are more likely to have positive dengue results, with some overlap between total WBC count and lymphocyte percentage. In conclusion, this database will be very useful and will provide a tremendous benefit to dengue research studies, public health initiatives, and better patient diagnosis and treatment methods.\n\n\u00a9 2025 The Authors.",
+            "authors": [
+                "Md. Asraful Sharker Nirob",
+                "A. F. K. Siam",
+                "Prayma Bishshash",
+                "M. Assaduzzaman",
+                "M. Haque",
+                "Arif Mahmud"
+            ],
+            "doi": "10.1016/j.dib.2025.111664",
+            "journal_name": "Data in Brief",
+            "pages": "",
+            "publish_year": 2025,
+            "title": "A comprehensive hematological dataset for dengue incidence in Bangladesh",
+            "url": "https://consensus.app/papers/a-comprehensive-hematological-dataset-for-dengue-nirob-siam/22e077f6bd385e79a4ecd9b78cd0d524/?utm_source=publicapi",
+            "volume": "60",
+            "citation_count": 4,
+            "publisher_name": "Elsevier",
+            "sjr_best_quartile": 3,
+            "is_preprint": false,
+            "influential_citation_count": 0,
+            "institutions": [
+                "Daffodil International University",
+                "Mymensingh Medical College Hospital"
+            ],
+            "publish_date": "2025-05-01"
+        },
+        {
+            "abstract": "Background: The aim of this study was to examine the impact of different stages of dengue infection on immune cell counts among dengue patients and to compare them with cases of non-dengue febrile illness.\n\nMethods: The recruited patients were divided into two groups: the first group served as a control (n = 55), representing non-dengue febrile illness, and the second group was identified as dengue febrile illness (n = 149), which was further divided into three groups based on infection stage. Blood samples were collected from the selected patients and subjected to blood cell component analysis. To find IgG and IgM as well as the dengue virus non-structural antigen-1 (NS1), an immunochromatographic test (ICT) kit was utilized. Additionally, a hematological analyzer was used to determine complete blood cell counts (CBC). Data was thoroughly analyzed using Graph Pad Prism 6 software. The differences in means of different groups were calculated by applying the student's t-test.\n\nResults: The findings revealed the presence of severe leucopenia and thrombocytopenia at stages 1 and 2, accompanied by lymphopenia at stage 1. Group comparisons indicated that only teenagers exhibited a significantly lower white blood cell count compared to older individuals, while no significant differences were observed in lymphocytes, platelets, and monocytes across all age groups. Comparing different age groups of normal individuals to dengue-infected patients, the results unveiled that leucopenia was most severe in adults, followed by teenagers and children, with no significant difference in the elderly. Furthermore, adults showed the greatest degree of thrombocytopenia, followed by teens and kids, with the elderly showing the greatest degree of thrombocytopenia. Adults and teens showed extreme neutrophilia, whereas young children and the elderly showed no discernible abnormalities. Elderly patients experienced a marked decrease in monocyte count, a phenomenon not observed in other age groups.\n\nConclusion: In conclusion both, leucopenia & thrombocytopenia, are most severe in stages 1 and 2, whereas neutrophilia & lymphopenia are predominantly severe in stage 1. These results imply that the consequences associated with dengue infection are more severe in the early stages and tend to ameliorate as the patient progresses toward recovery.\n\n\u00a9 2024 The Authors. Published by Elsevier Ltd.",
+            "authors": [
+                "Faiza Zeb",
+                "K. Haleem",
+                "Mansour Almuqbil",
+                "M. Rashid",
+                "Wajid Hussain",
+                "Farhana Maqbool",
+                "I. Tauseef",
+                "L. Jafri",
+                "B. A. Mannasaheb",
+                "Syed Arif Hussain",
+                "Mohammed Sharique Ahmed Quadri",
+                "Amro Mohammed Sawadi Khormi",
+                "S. M. Asdaq"
+            ],
+            "doi": "10.1016/j.heliyon.2024.e34053",
+            "journal_name": "Heliyon",
+            "pages": "",
+            "publish_year": 2024,
+            "title": "Age, gender, and infectious status-wise assessments of hematological parameters among patients with dengue infection",
+            "url": "https://consensus.app/papers/age-gender-and-infectious-statuswise-assessments-of-zeb-haleem/d90e8d689928585998ba6b3ac159943d/?utm_source=publicapi",
+            "volume": "10",
+            "citation_count": 10,
+            "takeaway": "Dengue infection causes more severe leucopenia and thrombocytopenia in stages 1 and 2, with neutrophilia and lymphopenia being more severe in stage 1.",
+            "publisher_name": "Elsevier",
+            "sjr_best_quartile": 1,
+            "sample_size": 204,
+            "population_type": "human",
+            "is_preprint": false,
+            "influential_citation_count": 0,
+            "institutions": [
+                "Hazara University",
+                "King Saud University",
+                "Pir Mehr Ali Shah Arid Agriculture University",
+                "Huazhong University of Science and Technology",
+                "Health Services Academy",
+                "Alfaisal University",
+                "Almaarefa University",
+                "King Saud Medical City"
+            ],
+            "publish_date": "2024-07-01"
+        },
+        {
+            "abstract": "Dengue fever is an important public health problem in tropical and subtropical areas, and the understanding of its hematological changes is crucial for the improvement of diagnosis, treatment, and prognosis. This data set presents hematological parameters for the systematic record of patients suffering from dengue infection: age, sex, hemoglobin, WBC count, differential count, RBC panel, platelet count, and PDW. The dataset has in-depth records of patients admitted to Upazila Health Complex, Kalai, Jaipurhat, Bangladesh and thus offers an opportunity for further analysis of hematological changes produced by dengue infection. This dataset is valuable because of the potential contribution that these data will make to developing predictive models for disease severity and patient outcomes, enhancing clinical decision-making. It serves as a benchmark for the comparison of hematological responses across different demographics and geographical locations, adding value to the knowledge of dengue in the world. Moreover, the study has gone further to indicate how the characteristics related to blood may be affected by various treatment regimens, hence offering better treatment protocols. The data preprocessing in this study involved cleaning, normalization, and encoding of the variables before proceeding to perform the statistical analysis. This showed a Chi-Square test for no significant association of sex with the diagnostic outcome, as given by the p-value of 0.277. On the other hand, the Z-test and T-test results indicated a significant difference in the hemoglobin levels concerning gender; the obtained p-values are 2.534 \u00d7 10-8 and 4.325 \u00d7 10-8, respectively. These findings emphasize how gender influences hematological responses against dengue. In summary, this database will be a great help and will give a leading edge to the research studies of dengue, public health strategies, and improved diagnosis and treatment modalities for patients.\n\n\u00a9 2024 The Author(s).",
+            "authors": [
+                "M. Assaduzzaman",
+                "O. Islam",
+                "Md. Asraful Sharker Nirob",
+                "M. Mim",
+                "Arif Mahmud"
+            ],
+            "doi": "10.1016/j.dib.2024.111030",
+            "journal_name": "Data in Brief",
+            "pages": "",
+            "publish_year": 2024,
+            "title": "A benchmark dataset for analyzing hematological responses to dengue fever in Bangladesh",
+            "url": "https://consensus.app/papers/a-benchmark-dataset-for-analyzing-hematological-assaduzzaman-islam/055938b1301256539e9574504cd4e217/?utm_source=publicapi",
+            "volume": "57",
+            "citation_count": 8,
+            "study_type": "cross-sectional study",
+            "takeaway": "This dataset reveals that gender influences hematological responses to dengue fever, aiding in improved diagnosis and treatment modalities for patients.",
+            "publisher_name": "Elsevier",
+            "sjr_best_quartile": 3,
+            "population_type": "human",
+            "is_preprint": false,
+            "countries_of_study": [
+                "bangladesh"
+            ],
+            "influential_citation_count": 0,
+            "institutions": [
+                "Daffodil International University"
+            ],
+            "publish_date": "2024-10-01"
+        },
+        {
+            "abstract": "Objectives: Older adults with dengue often present with atypical symptoms yet experience worse outcomes. We aimed to characterize age-related differences in clinical presentation, longitudinal laboratory dynamics, and in-hospital outcomes among hospitalized dengue patients in Northern Vietnam.\n\nMethods: We conducted a prospective longitudinal observational study at a national tertiary infectious disease hospital in Hanoi. Adult patients with laboratory-confirmed dengue were stratified into two groups: older adults (\u226560 years) and younger adults (<60 years). Clinical features, daily laboratory parameters, interventions, and outcomes were compared. Multivariable quadratic linear mixed-effects models, adjusted for comorbidities, were used to characterize nonlinear platelet recovery trajectories over the course of illness.\n\nResults: A total of 444 patients were included (227 older adults, 217 younger adults). Older adults presented with lower admission temperatures and fewer classic symptoms but exhibited deeper nadir thrombocytopenia, higher peak aspartate aminotransferase (AST) levels, and a greater need for platelet transfusions. After adjustment for hypertension and diabetes, advanced age remained an independent predictor of more profound thrombocytopenia. In contrast, the association with higher peak AST was attenuated to a marginal trend after adjustment. Quadratic mixed-effects modeling demonstrated that age \u226560 years was associated with a distinct recovery curvature (P<0.001 for the age\u00d7day\u00b2 interaction), independent of hypertension or diabetes.\n\nConclusions: Older adults with dengue exhibit a distinct phenotype characterized by milder initial symptoms but severe laboratory abnormalities and a higher treatment burden. Longitudinal monitoring of laboratory trajectories, rather than relying solely on symptom-based assessment, is essential to optimize risk stratification and management in this vulnerable population.\n\nCopyright \u00a9 2026 The Authors. Published by Elsevier Ltd.. All rights reserved.",
+            "authors": [
+                "Dang Thi Bich",
+                "T. T. Hoan",
+                "Le Xuan Hung",
+                "Nguy\u1ec5n Kim Th\u01b0"
+            ],
+            "doi": "10.1016/j.ijid.2026.108707",
+            "journal_name": "International journal of infectious diseases : IJID : official publication of the International Society for Infectious Diseases",
+            "pages": "\n          108707\n",
+            "publish_year": 2026,
+            "title": "Attenuated clinical presentation but severe laboratory evolution: a longitudinal analysis of dengue infection in older adults hospitalized in Northern Vietnam.",
+            "url": "https://consensus.app/papers/attenuated-clinical-presentation-but-severe-laboratory-bich-hoan/519e52354e8157a3b6aa4caaafa4071b/?utm_source=publicapi",
+            "volume": "168",
+            "citation_count": 1,
+            "publisher_name": "Elsevier",
+            "sjr_best_quartile": 1,
+            "is_preprint": false,
+            "influential_citation_count": 0,
+            "institutions": [
+                "Hanoi Medical University Hospital",
+                "Hospital for Tropical Diseases",
+                "Hanoi Medical University"
+            ],
+            "publish_date": "2026-04-01"
+        },
+        {
+            "abstract": "Introduction: Dengue is an important viral infectious disease, mostly seen in tropical countries during the rainy season, and is emerging as a public health hazard for healthcare facilities. The most common parameters used to assess the severity of dengue are platelet count and haematocrit. However, new haematological parameters have emerged to predict the severity of dengue fever and assist clinicians, especially in resource-limited settings. Aim: To highlight the significance of Neutrophil-Lymphocyte Ratio (NLR), Neutrophil-Platelet Ratio (NPR), and Neutrophil-toLymphocyte and Platelet Ratio (NLPR) in predicting outcomes in patients with dengue infection. Materials and Methods: A retrospective observational study was conducted in rural central India in the Department of Medicine at Jawaharlal Nehru Medical College, Wardha, Maharashtra, India. A total of 540 patients infected with the dengue virus between June 2021 and December 2021. Data analysis was conducted from January to April 2022. Neutrophil, platelet, and lymphocyte counts were used to calculate NLR, NPR, and NLPR, and their roles in predicting the final outcome were studied. The final analysis was performed using the Statistical Package for Social Sciences (SPSS) software, version 21.0. The p-value<0.05 than 0.05 was considered statistically significant. Results: The mean age of the patients was 29.85\u00b113.40 years, ranging from 18 to 85 years, with a median age of 25 years. A total of 331 (61.7%) patients below 30 years of age were significantly higher than patients aged 30 years or older (38.3%) (Z=3.39; p=0.0007). The Area Under Curve (AUC) for NLR (0.852) was higher than that for NLPR (0.828) and NPR (0.708). Therefore, NLR was more effective in predicting adverse outcomes compared to NLPR and NPR. However, the efficacies of NLR and NLPR seemed to be more or less equal. Conclusion: The NLR was a better predictor of outcome or severity in dengue fever when compared to NPR and NLPR. Hence, it can be a cost-effective tool used by physicians working in rural hospitals with limited resources.",
+            "authors": [
+                "S. Agrawal",
+                "Sunil Kumar",
+                "D. Talwar",
+                "Mansi Patel",
+                "Harshitha Reddy"
+            ],
+            "doi": "10.7860/jcdr/2023/65292.18658",
+            "journal_name": "JOURNAL OF CLINICAL AND DIAGNOSTIC RESEARCH",
+            "pages": "",
+            "publish_year": 2023,
+            "title": "Significance of Neutrophil-lymphocyte Ratio, Neutrophil-platelet Ratio, and Neutrophil-tolymphocyte and Platelet Ratio in Predicting Outcomes in Dengue Patients on Admission in Wardha, Maharashtra, India: A Retrospective Cohort Study",
+            "url": "https://consensus.app/papers/significance-of-neutrophillymphocyte-ratio-agrawal-kumar/9c9dceda41f0569ea9e09fd2501471f3/?utm_source=publicapi",
+            "volume": "",
+            "citation_count": 9,
+            "study_type": "cohort study",
+            "takeaway": "The Neutrophil-Lymphocyte Ratio (NLR) is a better predictor of outcome or severity in dengue fever patients compared to Neutrophil-Platelet Ratio (NPR) and Neutrophil-to-Lymphocyte and Platelet Ratio (NLPR).",
+            "publisher_name": "JCDR Research and Publications Private Limited",
+            "is_preprint": false,
+            "influential_citation_count": 0,
+            "publish_date": "2023-01-01"
+        },
+        {
+            "abstract": "The World Health Organization (WHO) has revised dengue case classification in 2009 to better reflect the severity of the disease. However, there was no comprehensive meta-analysis of pooled routine blood parameters according to the age or the categories of the 2009 WHO classification. This study aimed to meta-analyze the routine blood parameters of dengue infected children and adults. Electronic search was performed with eligible articles included for review. Meta-analysis was conducted for six blood parameters stratified into children, adults and all ages, which were further grouped into the three 2009 WHO case classifications (dengue without warning signs, DwoWS; dengue with warning signs, DwWS; severe dengue, SD), non-severe dengue (non-SD) and 'All' cases. A total of 55 articles were included in the meta-analysis. Fifteen studies were conducted in the children's age category, 31 studies in the adult category and nine studies in all ages. The four selected pooled blood parameters for children were white blood cell (WBC) (\u00d7103/L) with 5.11 (SD), 5.64 (DwWS), 5.52 (DwoWS) and 4.68 (Non-SD) hematocrit (HCT) (%) with 36.78 (SD), 40.70 (DwWS), 35.00 (DwoWS) and 29.78 (Non-SD) platelet (PLT) (\u00d7103/\u00b5L) with 78.66 (SD), 108.01 (DwWS), 153.47 (DwoWS) and 108.29 (non-SD); and aspartate aminotransferase (AST) (/\u00b5L) with 248.88 (SD), 170.83 (DwWS), 83.24 (DwoWS) and 102.99 (non-SD). For adult, WBC were 4.96 (SD), 6.44 (DwWS), 7.74 (DwoWS) and 3.61 (non-SD); HCT were 39.50 (SD), 39.00 (DwWS), 37.45 (DwoWS) and 41.68 (non-SD); PLT were 49.62 (SD), 96.60 (DwWS), 114.37 (DwoWS) and 71.13 (non-SD); and AST were 399.50 (SD), 141.01 (DwWS), 96.19 (DwoWS) and 118.13 (non-SD). These blood parameters could not differentiate between each dengue severity according to the WHO 2009 classification, SD, DwoWS, DwWS and non-SD, because the timing of blood drawing was not known and there was an overlapping confidence interval among the clinical classification. Hence, these pooled blood parameter values could not be used to guide clinicians in management and did not correlate with severity as in previous scientific literatures and guidelines.",
+            "authors": [
+                "G. Low",
+                "S. F. Jiee",
+                "Retneswari Masilamani",
+                "Selvanaayagam Shanmuganathan",
+                "Pramila Rai",
+                "Mitali Manda",
+                "Osamudiamen Favour Omosumwen",
+                "Jackob Kagize",
+                "Alex Gavino",
+                "Aizad Azahar",
+                "M. Jabbar"
+            ],
+            "doi": "10.1080/20477724.2022.2161864",
+            "journal_name": "Pathogens and Global Health",
+            "pages": "565 - 589",
+            "publish_year": 2023,
+            "title": "Routine blood parameters of dengue infected children and adults. A meta-analysis",
+            "url": "https://consensus.app/papers/routine-blood-parameters-of-dengue-infected-children-and-low-jiee/914f1ddc253350ee88a94b3bd0208548/?utm_source=publicapi",
+            "volume": "117",
+            "citation_count": 2,
+            "study_type": "meta-analysis",
+            "takeaway": "Routine blood parameters in dengue infected children and adults cannot differentiate between severity levels due to unreliable blood drawing timing and overlapping confidence intervals.",
+            "publisher_name": "Taylor & Francis",
+            "sjr_best_quartile": 2,
+            "study_count": 9,
+            "is_preprint": false,
+            "influential_citation_count": 0,
+            "institutions": [
+                "The University of Sydney",
+                "Nepean Hospital",
+                "Ministry of Health",
+                "Universiti Tunku Abdul Rahman",
+                "Menzies School of Health Research",
+                "Torrens University Australia",
+                "Universiti Putra Malaysia"
+            ],
+            "publish_date": "2023-01-02"
+        },
+        {
+            "abstract": "Background: Dengue infection remains prevalent globally, with a shift toward adult cases. WHO diagnosis relies on clinical and laboratory criteria to identify and manage the disease effectively.\n\nAim: This study aims to investigate the differences in clinical and laboratory findings of dengue infection based on age and gender.\n\nMaterials and methods: This analytical cross-sectional study utilized medical record data from 162 pediatric and adult dengue patients diagnosed with dengue fever (DF) or dengue hemorrhagic fever (DHF) in Surabaya hospital in 2022. The study assessed hemoglobin, hematocrit, leukocyte, and platelet levels across six age groups: toddlers (0-5 years), children (6-10 years), adolescents (11-18 years), young adults (19-29 years), and adults (30-59 years). The variables observed in this study include age, gender, classification, and type of dengue infection among hospitalized patients diagnosed with dengue.\n\nResults: The findings of this study indicate no statistically significant difference between pediatric and adult patients regarding the classification of DF and DHF (p = 0.085). However, laboratory results revealed a significant difference in the incidence of thrombocytopenia between children and adults (p = 0.019). Furthermore, a significant association was found between platelet count and dengue classification, with lower platelet levels observed in DHF cases compared to DF (p = 0.001).\n\nConclusions: This study shows significant clinical and laboratory differences between children and adults with dengue, highlighting the necessity of age-specific diagnostics to enhance early detection and appropriate treatment.\n\nCopyright (c) 2026 Sulistiawati, Linda Dewanti, Alpha Fardah Athiyyah, Atika; Bilqis Inayatillah; Jan Nouwen, Lady Savita Nabila; Avita Diva Choirun Nisa; Ronald Pratama Adiwinoto.",
+            "authors": [
+                "Sulistiawati",
+                "Linda Dewanti",
+                "A. Athiyyah",
+                "Atika",
+                "B. Inayatillah",
+                "J. Nouwen",
+                "Lady Savita Nabila",
+                "Avita Diva Choirun Nisa",
+                "R. Adiwinoto"
+            ],
+            "doi": "10.3855/jidc.22187",
+            "journal_name": "Journal of infection in developing countries",
+            "pages": "\n          878-885\n",
+            "publish_year": 2026,
+            "title": "Age and Gender-Based Clinical and Laboratory Features in Dengue Infection: A Comparative Study.",
+            "url": "https://consensus.app/papers/age-and-genderbased-clinical-and-laboratory-features-in-sulistiawati-dewanti/a07f2e0782b65d3a89d5841e7442ced1/?utm_source=publicapi",
+            "volume": "20 6",
+            "citation_count": 0,
+            "publisher_name": "Open Learning on Enteric Pathogens",
+            "sjr_best_quartile": 3,
+            "is_preprint": false,
+            "influential_citation_count": 0,
+            "institutions": [
+                "Airlangga University",
+                "Erasmus MC",
+                "Universitas Hang Tuah"
+            ],
+            "publish_date": "2026-06-30"
+        },
+        {
+            "abstract": "Dengue virus is the most prevalent arthropod-borne viral disease in humans. Severe dengue, defined by hemorrhagic fever and dengue shock syndrome, can develop quickly in people who have warning indications such as abdominal pain, mucosal bleeding, and a significant decrease in platelet count. Laboratory markers such as hematocrit, platelet count, liver enzymes, and coagulation tests are critical for early diagnosis and prognosis. This retrospective study was carried out from January 2023 to December 2024 at a super-specialty tertiary care hospital. There were 283 adult patients with dengue with warning signs, who were categorized into 102 with platelet transfusion and 181 with no platelet transfusion. Data on patient demographics, clinical history, laboratory values, and radiological findings were systematically obtained from hospital records at the time of admission. Laboratory parameters such as white blood cell (OR = 2.137), hemoglobin (OR = 2.15), aPTT (OR = 5.815), AST2/ALT (OR = 2.431), platelet count (OR = 26.261) and NS1 (OR = 4.279) were found to be significantly associated (p < 0.01) with platelet transfusion. Similarly, an increased prothrombin time (OR = 2.432) contributed to prolonged hospital stays and the presence of ascites (OR = 5.059), gallbladder wall thickening (OR = 4.212), and pleural effusion (OR = 2.917), contributing to the severity of the dengue infection. These significant laboratory markers help with identifying patients with dengue who may develop severe dengue, requiring platelet transfusion, thereby prioritizing patient care and enabling the implementation of targeted interventions.",
+            "authors": [
+                "K. Sivasubramanian",
+                "Raj Bharath R",
+                "L. Vajravelu",
+                "Madan Kumar D",
+                "Aritra Banerjee"
+            ],
+            "doi": "10.3390/v17050661",
+            "journal_name": "Viruses",
+            "pages": "",
+            "publish_year": 2025,
+            "title": "Key Laboratory Markers for Early Detection of Severe Dengue",
+            "url": "https://consensus.app/papers/key-laboratory-markers-for-early-detection-of-severe-sivasubramanian-r/9c9db1f2ef115fe0a1f17ada341ea405/?utm_source=publicapi",
+            "volume": "17",
+            "citation_count": 7,
+            "study_type": "cross-sectional study",
+            "takeaway": "Key laboratory markers help identify patients with dengue who may develop severe dengue and require platelet transfusion, prioritizing patient care and implementing targeted interventions.",
+            "publisher_name": "MDPI",
+            "sjr_best_quartile": 1,
+            "sample_size": 283,
+            "population_type": "human",
+            "is_preprint": false,
+            "influential_citation_count": 1,
+            "institutions": [
+                "SRM Institute of Science and Technology"
+            ],
+            "publish_date": "2025-04-30"
+        },
+        {
+            "abstract": "Background: Dengue is an acute viral illness spread by vector aedes mosquito and caused by RNA virus of the family Flaviviridae. Dengue presents with high fever, severe headache, vomiting, arthralgia, myalgia. Laboratory findings include thrombocytopenia and leukopenia. Dengue is self-limiting illness. Objectives were to study hematological profile of pediatric patients with dengue in district hospital samba from September to November 2022.\nMethods: Dengue patients aged 0-18 years detected by ELISA NS1 antigen assay in DH samba were included in the study. CBC of all these patients was analyzed on day of presentation to hospital and day of dengue positivity.\nResults: There were 50 participants in this study. Out of these 35 (70%) were males and 15 (30%) were females, 11 patients were 1-5-year-old (22%); 16 patients were 6-12-year-old (32%); 23 patients were 13-18-year-old (46%), 21 patients (42%) had thrombocytopenia at presentation. 29 out of 50 (58%) were anemic, 19 out of 50 (38%) patients had leukocytopenia. Statistically significant association were seen between age group and platelet counts; platelet and leukocyte count.\nConclusions: Teenagers were most commonly affected. Males were affected 3\u00d7 more than females. Although thrombocytopenia was not universal at presentation but it was observed in less than half (42%) of study participants. One third of study participants (38%) had leukocytopenia at presentations. Thrombocytopenia was most predominant in adolescent age group. Leukocytopenia and thrombocytopenia were associated with each other.",
+            "authors": [
+                "Arshee Pattu"
+            ],
+            "doi": "10.18203/2349-3291.ijcp20241037",
+            "journal_name": "International Journal of Contemporary Pediatrics",
+            "pages": "",
+            "publish_year": 2024,
+            "title": "Hematological profile of pediatric patients with dengue in district hospital Samba",
+            "url": "https://consensus.app/papers/hematological-profile-of-pediatric-patients-with-dengue-pattu/95d5b6e3163458dbab4edf6e01dc8b0a/?utm_source=publicapi",
+            "volume": "",
+            "citation_count": 0,
+            "study_type": "cross-sectional study",
+            "takeaway": "Dengue fever in pediatric patients is most common in teenagers, with thrombocytopenia being most prevalent in this age group and leukocytopenia being associated with each other.",
+            "publisher_name": "Medip Academy",
+            "is_preprint": false,
+            "influential_citation_count": 0,
+            "institutions": [
+                "Fistulacure"
+            ],
+            "publish_date": "2024-04-25"
+        },
+        {
+            "abstract": "Objective: Dengue is an infectious disease that burdens global public health, especially children. There are three phases of dengue infection; the last phase is the most expected, namely the recovery phase. One of the signs of this phase is platelet recovery. The platelet recovery time is still unclear because it is greatly influenced by several factors, such as immune response and lymphocyte and neutrophil activity. These factors play an important role in platelet repair and the recovery phase.\nMethods: This study was a cohort prospective study. Data were obtained between January and June 2024 in Dr. Moewardi Hospital. The inclusion criteria of this study were pediatric patients diagnosed with dengue and had complete laboratory data (neutrophils, lymphocytes, and platelets) until the fifth day of fever. Data was analyzed using the Mann-Whitney test, Fisher Exact tests, and receiver Operating Characteristic (ROC) method to obtain the Area Under Curve (AUC) value, cut point, sensitivity (Sn), and specificity (Sp).\nResults: This study shows absolute lymphocytes (30%; 9/30), predominance of lymphocytes (46.7%; 14/30), and Neutrophil-Lymphocyte Ratio (NLR) (63.3%; 19/30). Statistical analysis results in correlation with platelets improvement: absolute lymphocytes (AUC 77.8%, OR 5.00, Sn 66.7%, Sp 72.7%, p=0.102), predominance of lymphocytes (AUC 73.6%, OR 7.80, Sn 16.7%, Sp 66.7%, p=0.024), and NLR (AUC 78.7%, OR 10.00, Sn 91.7%, Sp 50.0%, p=0.009).\nConclusion: Supporting examination of the neutrophil-lymphocyte ratio (NLR) has been proven to be a better indicator of the recovery phase, especially in monitoring the increase in platelets in children with dengue infection compared to lymphocyte examination.",
+            "authors": [
+                "Muhammad Ibrahim Pribadi",
+                "Husnia Auliyatul Umma",
+                "Rustam Siregar"
+            ],
+            "doi": "10.59213/tp.2025.199",
+            "journal_name": "Trends in Pediatrics",
+            "pages": "",
+            "publish_year": 2025,
+            "title": "Neutrophil-lymphocyte ratio as an indicator of recovery phase in children with dengue fever",
+            "url": "https://consensus.app/papers/neutrophillymphocyte-ratio-as-an-indicator-of-recovery-pribadi-umma/265f77d589985849a0065cb0ef1bc851/?utm_source=publicapi",
+            "volume": "",
+            "citation_count": 4,
+            "study_type": "cohort study",
+            "takeaway": "The neutrophil-lymphocyte ratio (NLR) is a better indicator of the recovery phase and platelet recovery in children with dengue fever compared to lymphocyte examination.",
+            "sjr_best_quartile": 4,
+            "is_preprint": false,
+            "influential_citation_count": 0,
+            "institutions": [
+                "Sebelas Maret University"
+            ],
+            "publish_date": "2025-03-20"
+        },
+        {
+            "abstract": "Dengue fever (DF) is a viral infection transmitted between humans by Aedes mosquitoes. To identify DF and evaluate severity, serological tests and clinical parameters are commonly used, but these may not be available in small local hospitals or subjective. The study aimed to identify the correlation of changes in complete blood count, including white blood cells (WBC), red blood cells (RBC), and platelet with severity of DF. This is a cross-sectional study, conducted at Bach Mai Hospital between October 2023 and February 2024. Data was imported to Excel then transferred to SPSS for analysis using the ANOVA or paired t-test. The study included 182 patients with a mean age of 41.1 \u00b1 20.77 years (age range: 3-95). Patients with severe DF had significantly higher WBC counts and the neutrophil percentage compared to those with mild DF and DF with warning signs (P < .05). Patients with severe DF had a significantly lower lymphocyte percentage and the RBC count compared to those with mild DF and DF with warning signs (P < .05). Hematocrit values were similar across all groups (P > .05) and platelet counts were relatively similar across the groups (P > .05). Patients with severe DF had significantly higher WBC and neutrophil percentages, as well as lower lymphocyte and RBC counts, compared to those with non-severe DF. Significant changes in these parameters can help identify patients at risk of severe DF, allowing for timely intervention in small local hospitals.\n\nCopyright \u00a9 2025 the Author(s). Published by Wolters Kluwer Health, Inc.",
+            "authors": [
+                "Duc-Nhu Dang",
+                "Thi-An Do",
+                "T. Nguyen",
+                "H. Tran",
+                "Manh Quan Ngo",
+                "Ngoc Nghia Nguyen",
+                "Huy Phuong Nguyen",
+                "Thi Huong Ly Tran",
+                "Trong Khoa Nguyen",
+                "H. Duong",
+                "L. Phung",
+                "Thi Thu Ha Luong",
+                "Trong Thanh Vo",
+                "Vuong The Vinh Tran",
+                "Hoang-Hiep Phan",
+                "Qu\u1ed1c Th\u1eafng Tr\u1ea7n"
+            ],
+            "doi": "10.1097/md.0000000000043564",
+            "journal_name": "Medicine",
+            "pages": "",
+            "publish_year": 2025,
+            "title": "Alternative markers in complete blood count as predictors of dengue fever severity",
+            "url": "https://consensus.app/papers/alternative-markers-in-complete-blood-count-as-predictors-dang-do/6bbb6edd28955489abb9608c02de7a70/?utm_source=publicapi",
+            "volume": "104",
+            "citation_count": 1,
+            "study_type": "cross-sectional study",
+            "takeaway": "Severe dengue fever patients have higher white blood cell and neutrophil percentages, lower lymphocyte and RBC counts, which can help identify patients at risk for severe dengue, allowing for timely intervention in small local hospitals.",
+            "publisher_name": "Wolters Kluwer Health",
+            "sjr_best_quartile": 3,
+            "sample_size": 182,
+            "population_type": "human",
+            "is_preprint": false,
+            "countries_of_study": [
+                "thailand"
+            ],
+            "influential_citation_count": 0,
+            "institutions": [
+                "Vietnam National University, Hanoi",
+                "B\u1ea1ch Mai Hospital",
+                "Ministry of Health",
+                "Thang Long University",
+                "Hanoi Lung Hospital",
+                "Hai phong University Of Medicine and Pharmacy",
+                "Hai Phong University",
+                "Vietnam National Children's Hospital",
+                "Phenikaa University"
+            ],
+            "publish_date": "2025-08-01"
+        },
+        {
+            "abstract": "Objective: To analyze the laboratory data of patients infected with the dengue virus (DENV) in order to identify characteristic patterns associated with the infection. Methods: A cross-sectional retrospective study was conducted, evaluating secondary laboratory data from 2,117 patients treated at the Laboratory of the Military Police of the State of Goi\u00e1s (LCHPM) between 2020 and 2022. Data from 389 patients who tested positive for DENV infection through NS1, IgM, and IgG assays were included. The following laboratory parameters were assessed: total leukocyte count, neutrophils, lymphocytes, platelet count, and the platelet-to-lymphocyte ratio (PLR), neutrophil-to-lymphocyte ratio (NLR), and leukocyte-to-lymphocyte ratio (LLR). The study was approved by the Research Ethics Committee. Results: A total of 389 patients were diagnosed with dengue, showing significant alterations in platelet count (p<0.0001), leukocytes (p<0.0001), lymphocytes (p<0.0001), neutrophils (p<0.0001), and monocytes (p=0.0044), when compared with patients negative for infection. A marked increase in cases was observed in 2022, with a 330% rise between the fourth quarter of 2021 and the third quarter of 2022. Conclusion: The laboratory profile of the analyzed patients confirmed thrombocytopenia, leukocytosis, lymphopenia, monocytosis, elevated neutrophils, and hepatic alterations in infected patients, reinforcing the importance of laboratory and epidemiological analysis in the clinical management of dengue.",
+            "authors": [
+                "Isadora Soares de Lima",
+                "Ana Beatriz Belo Alves",
+                "A.C. Sanches",
+                "Fernanda de Oliveira Feitosa",
+                "Ant\u00f4nio M\u00e1rcio Teodoro Cordeiro Silva",
+                "S\u00e9rgio Henrique Nascente Costa",
+                "C. Gomes"
+            ],
+            "doi": "10.25248/reas.e22018.2025",
+            "journal_name": "Revista Eletr\u00f4nica Acervo Sa\u00fade",
+            "pages": "",
+            "publish_year": 2025,
+            "title": "Laboratory analysis of patients infected with the dengue virus",
+            "url": "https://consensus.app/papers/laboratory-analysis-of-patients-infected-with-the-dengue-lima-alves/0ac339ce27605bb28e55d39f352db275/?utm_source=publicapi",
+            "volume": "",
+            "citation_count": 0,
+            "study_type": "cross-sectional study",
+            "takeaway": "Dengue virus infection leads to significant alterations in platelet count, leukocytes, lymphocytes, neutrophils, and monocytes, emphasizing the importance of laboratory and epidemiological analysis in clinical management.",
+            "publisher_name": "Revista Eletronica Acervo Saude",
+            "is_preprint": false,
+            "influential_citation_count": 0,
+            "publish_date": "2025-12-31"
+        },
+        {
+            "abstract": "Background and Objectives: Dengue is an arboviral mosquito-borne infection prevalent in tropical and subtropical regions worldwide. The objective of this study was to evaluate the impact of dengue on pediatric hematological and hepatic parameters and to explore their association with the disease's progression.\nMethods: This retrospective study was conducted in the Department of Paediatrics at SMGS Hospital in Jammu. We evaluated 100 patients under 18 years of age who were clinically diagnosed with dengue fever. Detailed hematological parameters (TLC, hematocrit, platelet count) and liver function tests (AST, ALT) were assessed.\nResults: A total of 100 patients were included in the study. Among these, 82 patients were diagnosed with dengue fever, 13 with dengue hemorrhagic fever (DHF), and 5 with dengue shock syndrome (DSS). Out of the 100 patients in the study, 70 presented with thrombocytopenia of which 39 had mild thrombocytopenia, 20 had moderate, and 11 had severe thrombocytopenia. Liver function tests revealed elevated ALT and AST levels in 86 and 95 patients, respectively. A statistically significant association was found between the degree of thrombocytopenia and transaminitis with disease severity.\nConclusion: Thrombocytopenia and increased transaminases are significant markers for gauging the severity of dengue infection.\n\nKey words: ALT, AST, DF, DHF, DSS",
+            "authors": [
+                "Mona Jamwal",
+                "Afsana Anjum",
+                "K. Sharma",
+                "Nikhil Gupta"
+            ],
+            "doi": "10.52403/ijhsr.20250203",
+            "journal_name": "International Journal of Health Sciences and Research",
+            "pages": "",
+            "publish_year": 2025,
+            "title": "Alterations in Hematological Parameters and Liver Function Test with Respect to Severity of Dengue in Pediatric Population",
+            "url": "https://consensus.app/papers/alterations-in-hematological-parameters-and-liver-jamwal-anjum/127576f969e25b4697dabc6da0dac17a/?utm_source=publicapi",
+            "volume": "",
+            "citation_count": 0,
+            "study_type": "cross-sectional study",
+            "takeaway": "Thrombocytopenia and increased transaminases are significant markers for gauging the severity of dengue infection in pediatric patients.",
+            "publisher_name": "Galore Knowledge Publication Pvt. Ltd.",
+            "is_preprint": false,
+            "influential_citation_count": 0,
+            "institutions": [
+                "All India Institute of Medical Sciences",
+                "Shri Mata Vaishno Devi University"
+            ],
+            "publish_date": "2025-02-05"
+        },
+        {
+            "abstract": "Background:\u00a0Dengue fever is a painful febrile illness caused by a mosquito-borne Arbovirus. Epidemic episodes often occur during the rainy season. Complete blood count (CBC) is essential in patients with dengue fever and serological tests are necessary to confirm it. This study aimed to evaluate the hematological changes in dengue fever patients in Jashore Medical College Hospital, Bangladesh. Methods:\u00a0This prospective cross-sectional study was conducted in the Department of Medicine, Jashore Medical college Hospital, Bangladesh from July 2023 to Decembar 2023. The study involved 177 dengue fever patients identified through NS1 and/or IgM antibody tests. Purposive sampling was used for patient selection, and data analysis utilized SPSS version 23.0. Results: Analysis of hematological parameters on the 1st and 3rd days indicated significant shifts in platelet, leucocyte, neutrophil, and lymphocyte counts. Platelet count decreased from 99.67\u00b196.17 x 109/L to 82.72\u00b160.84 x 109/L (p=0.048). Leucocyte count rose from 6.43\u00b13.01 x 109/L to 7.85\u00b15.58 x 109/L (p=0.003), while neutrophil count decreased from 6.31\u00b11.38 x 109/L to 5.44\u00b11.36 x 109/L (p<0.001). Lymphocyte count also increased from 3.06\u00b11.80 x 109/L to 3.78\u00b11.19 x 109/L (p<0.001). No significant shifts were observed in hemoglobin (p=0.579) or hematocrit (p=0.639) levels. Conclusion:\u00a0Among dengue fever patients, platelet and neutrophil counts decrease while leukocyte and lymphocyte counts increase significantly between the 1st and 3rd days. However, there are no significant shifts observed in hemoglobin or hematocrit levels in the same tenure.\nJ MEDICINE 2025; 26: 43-47",
+            "authors": [
+                "Tosdikur Rahman Khan",
+                "G. K. Acherjya",
+                "J. Hossain",
+                "Selim Reza",
+                "Tahera Nasrin"
+            ],
+            "doi": "10.3329/jom.v26i1.78995",
+            "journal_name": "Journal of Medicine",
+            "pages": "",
+            "publish_year": 2025,
+            "title": "Evaluation of Hematological Changes in Dengue Fever: experience of 2023 outbreak from Jashore, Bangladesh",
+            "url": "https://consensus.app/papers/evaluation-of-hematological-changes-in-dengue-fever-khan-acherjya/1c7a840321a35d9cbf0013d8d2050916/?utm_source=publicapi",
+            "volume": "",
+            "citation_count": 1,
+            "study_type": "cross-sectional study",
+            "takeaway": "Dengue fever patients experience significant decreases in platelet and neutrophil counts, while leukocyte and lymphocyte counts increase between the 1st and 3rd days, but no significant shifts in hemoglobin or hematocrit levels.",
+            "is_preprint": false,
+            "influential_citation_count": 0,
+            "institutions": [
+                "Dhaka Medical College and Hospital",
+                "Sina Hospital"
+            ],
+            "publish_date": "2025-02-23"
+        },
+        {
+            "abstract": "Dengue fever is a mosquito-borne viral infection that produces characteristic abnormalities in routine blood tests, yet these hematologic changes are typically analysed separately for each parameter rather than as a combined multivariate profile. This study investigated whether the joint hematologic profile of adult dengue patients in Bangladesh is systematically displaced from healthy adult reference values. We analysed a cohort of laboratory-confirmed adult dengue cases from a Bangladeshi hospital and focused on four core hematologic indices: haemoglobin, white blood cell count, platelet count, and platelet distribution width (PDW). External adult reference means were used to define a healthy location vector, and robust multivariate inference was carried out using the rank-based location test of Utts and Hettmansperger (1980). Sex-specific (male, female) and pooled (all adults) analyses were performed after careful data cleaning, outlier diagnostics, and checks of non-normality. Across all sex-specific and pooled analyses, the same multivariate profile emerged: haemoglobin, white-cell, and platelet levels were consistently lower than their healthy reference means, whereas PDW was higher, indicating greater platelet-size variability. The Utts\u2013Hettmansperger test strongly rejected the null hypothesis of equality with the healthy reference vector in every analysis, documenting a large and coherent displacement of the dengue group in the four-dimensional hematologic space. Taken together, these results provide robust, distribution-free statistical evidence that adult dengue fever in Bangladesh is associated with a stable, biologically interpretable shift in core blood indices, integrating leukopenia, thrombocytopenia, and altered platelet morphology into a single multivariate summary. This study demonstrates that robust rank-based multivariate location tests can enhance traditional laboratory interpretation by quantifying the joint displacement of key blood indices in infectious-disease cohorts such as adult dengue.",
+            "authors": [
+                "Nabila A. Alsharif",
+                "I. A. Hussain",
+                "Ethar Hussain Jawad"
+            ],
+            "doi": "10.19139/soic-2310-5070-3346",
+            "journal_name": "Statistics, Optimization &amp; Information Computing",
+            "pages": "",
+            "publish_year": 2026,
+            "title": "Adult Dengue Fever in Bangladesh: A One-Sample Rank-Based Test of Hematologic Location Against Healthy References",
+            "url": "https://consensus.app/papers/adult-dengue-fever-in-bangladesh-a-onesample-rankbased-alsharif-hussain/279a73cf4ee65ba096f4dcf91444780a/?utm_source=publicapi",
+            "volume": "",
+            "citation_count": 0,
+            "study_type": "cross-sectional study",
+            "takeaway": "Adult dengue fever in Bangladesh is associated with a stable shift in core blood indices, integrating leukopenia, thrombocytopenia, and altered platelet morphology into a single multivariate summary.",
+            "publisher_name": "International Academic Press",
+            "is_preprint": false,
+            "influential_citation_count": 0,
+            "institutions": [
+                "University of Baghdad"
+            ],
+            "publish_date": "2026-03-08"
+        },
+        {
+            "abstract": "\n \n The dengue virus belongs to the genus Flavivirus in the Flaviviridae family and is transmitted mainly by Aedes aegypti mosquitoes. It is a single-stranded positive-sense RNA virus existing as four serotypes (DEN-1-4). Hematological abnormalities are among characteristic laboratory findings in dengue. Thrombocytopenia and leukopenia are considered markers of dengue pathophysiology, reflecting bone marrow suppression.\n \n \n \n The aim of the study was the assessment of clinical profile, complete blood count and biochemical parameters, with particular emphasis on platelet indices, in patients hospitalized for dengue fever. The secondary aim was to evaluate laboratory risk factors for developing thrombocytopenia <100 G/l during hospitalization.\n \n \n \n We analyzed medical records of patients with confirmed dengue who were hospitalized between 2016 and 2024. Inclusion criteria contain: age \u226518 years old and positive dengue NS1 antigen test on admission. The presence of dengue IgM antibodies was not required. Exclusion criteria contain: any chronic diseases, confirmed viral, bacterial and parasitic co-infections. Group differences were assessed using the Student\u2019s t-test, and correlations were evaluated using the Pearson coefficient.\n \n \n \n We included clinical data of n=27 patients, female/male n=18/9 with the mean age of 37.6\u00b110.1 years. All patients had dengue NS1 antigen and n=8/27 (29.6%) had detectable IgM anti-dengue antibodies. The mean duration of hospitalization was 6.04 days. The lowest mean platelet count (108.06 G/L) was observed on the third day of hospitalization. In the analyzed cohort, the most common CBC abnormalities were observed in WBC and NEU (100% of patients), PCT (92.6%), and PLT (63%). Baseline plateletcrit was the only platelet parameter significantly negatively correlated with thrombocytopenia <100 G/L. Baseline AST was the only parameter positively correlated with thrombocytopenia <100 G/L.\n \n \n \n Thrombocytopenia and leukopenia were observed in the majority of patients hospitalized for dengue. Baseline aspartate aminotransferase AST and plateletcrit were the only laboratory parameters associated with the development of more pronounced thrombocytopenia.\n",
+            "authors": [
+                "Julia Wiktorowska",
+                "Agnieszka Adamiak",
+                "Julia Miku\u0142a",
+                "A. Lembas",
+                "Mariusz Sapu\u0142a",
+                "Alicja Wiercinska-Drapalo"
+            ],
+            "doi": "10.32394/pe/221034",
+            "journal_name": "Przeglad Epidemiologiczny",
+            "pages": "",
+            "publish_year": 2026,
+            "title": "Changes in platelet parameters among patients with non-severe dengue",
+            "url": "https://consensus.app/papers/changes-in-platelet-parameters-among-patients-with-wiktorowska-adamiak/f8e57b8ca91e5a5db13f4f5080363adf/?utm_source=publicapi",
+            "volume": "",
+            "citation_count": 0,
+            "study_type": "cross-sectional study",
+            "takeaway": "Thrombocytopenia and leukopenia are common in dengue patients hospitalized, with baseline plateletcrit and AST being key factors in predicting thrombocytopenia severity.",
+            "publisher_name": "Narodowy Instytut Zdrowia Publicznego \u2013 Pa\u0144stwowy Zak\u0142ad Higieny",
+            "sjr_best_quartile": 4,
+            "is_preprint": false,
+            "influential_citation_count": 0,
+            "publish_date": "2026-05-06"
+        },
+        {
+            "abstract": "\u00a0Background: Dengue fever, caused by Orthoflavivirus denguei, constitutes an escalating public health crisis in Bangladesh, with successive epidemic waves of increasing severity and expanding geographical distribution. Objective: This study aimed to characterize the demographic, clinical, hematological, and biochemical profiles and evaluate treatment outcomes of hospitalized dengue patients at a tertiary referral center. Methods: A prospective observational study was conducted at Cumilla Medical College Hospital (January\u2013December 2024) involving 116 serologically confirmed dengue patients. Demographic, clinical, hematological, and biochemical data were collected, and severity classified per WHO 2009 criteria. Data were analyzed using SPSS v26; results expressed as mean \u00b1 SD and percentages, with p<0.05 considered statistically significant. Results: The mean age of the study population was 32.47 \u00b1 11.83 years (95% CI: 30.29\u201334.65), with male predominance (n=71, 61.2%) and urban preponderance (n=79, 68.1%; p=0.002). Fever was universal (100%), followed by headache (81.0%), myalgia (75.0%), vomiting (58.6%), abdominal pain (45.7%; p=0.018), and skin rash (35.3%). Hemorrhagic manifestations occurred in 25.0% of patients (p=0.004). Mean platelet count was 68.34 \u00b1 42.17 \u00d710\u00b3/\u00b5L (95% CI: 60.57\u201376.11; p<0.001), with nadir at day 5.2 \u00b1 1.4. Leukopenia was significant (WBC: 4.82 \u00b1 2.14 \u00d710\u00b3/\u00b5L; p=0.009). Hepatic transaminases were markedly elevated (AST: 128.56 \u00b1 94.73 IU/L; ALT: 89.42 \u00b1 67.28 IU/L; both p<0.001). The neutrophil-to-lymphocyte ratio (NLR) was 3.74 \u00b1 2.08 (p=0.003), and serum albumin was reduced at 3.21 \u00b1 0.54 g/dL (p=0.014). Per WHO classification, 50.0% exhibited dengue with warning signs and 16.4% had severe dengue. Mean hospital stay was 4.63 \u00b1 1.89 days (p=0.006); ICU admission rate was 12.1% (p<0.001), platelet transfusion was administered to 23.3% (p=0.011), and in-hospital mortality was 0.86%. Comorbidities were present in 29.3% of patients, with hypertension (15.5%) and diabetes mellitus (12.1%; p=0.037) being the most prevalent. Conclusion: Dengue fever in Cumilla predominantly affects young adult males, presenting with significant thrombocytopenia, hepatic dysfunction, and hypoalbuminemia. Early recognition of warning signs and prompt hemodynamic management remain essential for reducing morbidity and mortality.",
+            "authors": [
+                "M. Ahsan",
+                "Ullah Rumi",
+                "Md Abdul Baset",
+                "Abu Baqar",
+                "Moataz Jamil",
+                "Md Ismail Hossain",
+                "Shaifuddin Khaled"
+            ],
+            "doi": "10.70945/ibmcj.v021i01.025",
+            "journal_name": "Islami Bank Medical College Journal",
+            "pages": "",
+            "publish_year": 2026,
+            "title": "Clinical Profile and Outcomes of Dengue Fever Patients Admitted to a Tertiary Care Hospital in Bangladesh",
+            "url": "https://consensus.app/papers/clinical-profile-and-outcomes-of-dengue-fever-patients-ahsan-rumi/5e53750b29fc5b02921102a289f722b5/?utm_source=publicapi",
+            "volume": "",
+            "citation_count": 0,
+            "is_preprint": false,
+            "influential_citation_count": 0,
+            "institutions": [
+                "Comilla Medical College",
+                "Rajasthan University of Health Sciences",
+                "Shaheed Suhrawardy Medical College",
+                "Dhaka Medical College and Hospital",
+                "National Institute of Cardiovascular Diseases",
+                "Bangladesh Medical University"
+            ],
+            "publish_date": "2026-01-31"
+        },
+        {
+            "abstract": "Aim: The objective of this study was to correlate laboratory tests during the evolution of dengue fever, comparing frequencies between the different clinical forms in order to use test results to predict the severity of the disease.\n\nMethods: This is an observational, descriptive and retrospective study of 154 patients with clinical and serological diagnoses of dengue fever who, in the period from January to May 2008, were admitted in a tertiary state hospital in the city of Fortaleza that is a referral center for infectious diseases. The patients were allocated to two groups according to age: under 15 years old (n = 66) and 15 years or older (n = 88). The tests analyzed were blood count, platelet count, and serum aspartate aminotransferase (AST) and alanine aminotransferase (ALT) concentrations.\n\nResults: Thrombocytopenia and elevated transaminases were observed in patients with classic dengue fever. The main laboratory abnormalities found in dengue hemorrhagic fever were thrombocytopenia, hemoconcentration and elevated transaminases, similar to severe dengue with the exception of hemoconcentration. Most laboratory abnormalities started on the 3rd day but were more evident on the 5th day with restoration of values by the 11(th) day; this was more prominent in under 15-year-olds and with the more severe clinical forms.\n\nConclusion: These results are relevant in assessing the disease because they can be used as markers for more severe forms and can help by enabling the adaptation of the therapeutic conduct to the needs of individual patients.",
+            "authors": [
+                "Francisca Raimunda F. Guerreiro Azin",
+                "R. P. Gon\u00e7alves",
+                "Maria Helena Pitombeira",
+                "D. Lima",
+                "I.R.C. Branco"
+            ],
+            "doi": "10.5581/1516-8484.20120012",
+            "journal_name": "Revista Brasileira de Hematologia e Hemoterapia",
+            "pages": "36 - 41",
+            "publish_year": 2011,
+            "title": "Dengue: profile of hematological and biochemical dynamics",
+            "url": "https://consensus.app/papers/dengue-profile-of-hematological-and-biochemical-dynamics-azin-gonalves/135d2e93a7665263acaa5d25306ed614/?utm_source=publicapi",
+            "volume": "34",
+            "citation_count": 100,
+            "study_type": "other",
+            "takeaway": "Laboratory tests can predict the severity of dengue fever, aiding in individualized therapeutic approaches for individual patients.",
+            "publisher_name": "Elsevier",
+            "sample_size": 154,
+            "population_type": "human",
+            "is_preprint": false,
+            "countries_of_study": [
+                "brazil"
+            ],
+            "influential_citation_count": 3,
+            "institutions": [
+                "Universidade Federal do Cear\u00e1"
+            ],
+            "publish_date": "2011-01-01"
+        },
+        {
+            "abstract": "Introduction: Dengue presents with a variable clinical course, ranging from mild illness to potentially fatal hemorrhage and shock. We aimed to evaluate the capabilities of various hematological parameters observed early in the course of illness for predicting the clinical outcomes of illness.\n\nMethods: We retrospectively analyzed the records of children admitted in the pediatric inpatient services of the institute with dengue between 2017 and 2019. We determined the relationships between the hematological parameters observed during the first evaluation and the various clinical outcomes.\n\nResults: We evaluated data from 613 patients (age range, 26 days to 17 years). Of these, 29.85% exhibited fever with warning signs, and 8.97% had severe dengue. Lower values of hemoglobin, platelet count, mean corpuscular volume, mean corpuscular hemoglobin concentration, and mean platelet volume, and higher values of total leukocyte count (TLC), hematocrit, and red cell distribution width variably correlated with numerous clinical outcomes-duration of hospital stay, development of complications, requirement of blood component transfusion, inotropic support, and mortality. Among the parameters, TLC \u226520,000/mL and initial platelet count \u226420,000/mL significantly associated with mortality, with odds ratios (95% confidence interval) of 11.81 (4.21-33.80) and 5.53 (1.90-16.09), respectively.\n\nConclusions: Hematological parameters observed early during dengue infection may predict its clinical outcomes in infected children. Initial high TLC and low platelet count are potential predictors of fatal outcomes in the course of disease.",
+            "authors": [
+                "S. Nandwani",
+                "B. Bhakhri",
+                "Nupur Singh",
+                "R. Rai",
+                "D. Singh"
+            ],
+            "doi": "10.1590/0037-8682-0519-2020",
+            "journal_name": "Revista da Sociedade Brasileira de Medicina Tropical",
+            "pages": "",
+            "publish_year": 2021,
+            "title": "Early hematological parameters as predictors for outcomes in children with dengue in northern India: A retrospective analysis",
+            "url": "https://consensus.app/papers/early-hematological-parameters-as-predictors-for-nandwani-bhakhri/9a9b5a72e6765545b375a46497df5134/?utm_source=publicapi",
+            "volume": "54",
+            "citation_count": 32,
+            "study_type": "cross-sectional study",
+            "takeaway": "Early hematological parameters in dengue-infected children can predict clinical outcomes, with initial high total leukocyte count and low platelet count potentially predicting fatal outcomes.",
+            "publisher_name": "Brazilian Society of Tropical Medicine",
+            "sjr_best_quartile": 2,
+            "sample_size": 613,
+            "population_type": "human",
+            "is_preprint": false,
+            "countries_of_study": [
+                "india"
+            ],
+            "influential_citation_count": 2,
+            "institutions": [
+                "ICARE Eye Hospital & Postgraduate Institute",
+                "Nethradhama Superspeciality Eye Hospital"
+            ],
+            "publish_date": "2021-01-29"
+        },
+        {
+            "abstract": "Background: The usefulness of laboratory tests in the decision-making process with regard to early identification of dengue virus infection has not been widely reported, particularly the aspartate aminotransferase (AST)/platelet count ratio index during a patient's days of illness. The aim of this study was to examine the pattern of the ratio index over the course of illness and identify whether it is a marker of dengue virus infection in dengue patients, as well as to assess the role of other laboratory tests.\n\nMethods: A chart review of 205 dengue patients was analyzed using available records of 845 laboratory results within different time intervals or exam dates during the course of illness. We used repeated measures mixed binary logistic regression analyses to model the dengue virus infection, defined as giving at least one positive antibody test (yes/no).\n\nResults: The high risk of dengue virus infection in dengue patients was found in the male gender (adjusted OR=4.316, 95% CI: 1.285-14.498, P=0.018), in patients with a high AST/platelet count ratio index (adjusted OR=1.438, 95% CI: 1.057-1.957, P=0.021), in patients with a low MCV level (adjusted OR=0.815, 95% CI: 0.679-0.978, P=0.028), and in patients with a low ALT level (adjusted OR=0.996, 95% CI: 0.993-0.999, P=0.010).\n\nConclusion: Laboratory markers, in particular the AST/platelet count ratio index, can be useful for clinicians to strengthen the decision-making process in primary care settings. Furthermore, our model revealed that low MCV and low ALT are predictors of the dengue virus infection, while being a male increases the risk of dengue virus infection. More studies are needed to evaluate the impact of the AST/platelet count ratio index on the severity of dengue fever infection during the onset of symptoms and course of treatment.\n\nCopyright \u00a9 2020 The Authors. Published by Elsevier Ltd.. All rights reserved.",
+            "authors": [
+                "Anwar E. Ahmed",
+                "B. Dahman",
+                "Asmaa Altamimi",
+                "D. McClish",
+                "H. Al-Jahdali"
+            ],
+            "doi": "10.1016/j.jiph.2020.03.009",
+            "journal_name": "Journal of infection and public health",
+            "pages": "",
+            "publish_year": 2020,
+            "title": "The aspartate aminotransferase/platelet count ratio index as a marker of dengue virus infection: Course of illness.",
+            "url": "https://consensus.app/papers/the-aspartate-aminotransferaseplatelet-count-ratio-ahmed-dahman/0dd6db052ba959859aca85f7bcf85f02/?utm_source=publicapi",
+            "volume": "",
+            "citation_count": 12,
+            "study_type": "other",
+            "takeaway": "The AST/platelet count ratio index, low MCV, and low ALT levels are predictors of dengue virus infection, while being male increases the risk of infection.",
+            "publisher_name": "Elsevier",
+            "sjr_best_quartile": 1,
+            "sample_size": 205,
+            "population_type": "human",
+            "is_preprint": false,
+            "influential_citation_count": 3,
+            "institutions": [
+                "Henry M. Jackson Foundation",
+                "Uniformed Services University of the Health Sciences",
+                "King Saud bin Abdulaziz University for Health Sciences",
+                "King Abdullah International Medical Research Center",
+                "National Guard Health Affairs",
+                "Virginia Commonwealth University",
+                "Saudi Center for Disease Prevention and Control"
+            ],
+            "publish_date": "2020-04-04"
+        }
+    ],
+    "page": 0,
+    "page_size": 20,
+    "is_end": false
+}
